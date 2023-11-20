@@ -32,6 +32,3 @@ printf "${username}\n${pass}\n${mfa}\n" | /opt/cisco/secureclient/bin/vpn connec
 unset username pass mfa
 echo "Done"
 exit 0
-
-# https://dev.to/andreassiegel/connect-to-a-vpn-from-the-command-line-on-mac-os-1e26
-# https://hello.atlassian.net/wiki/spaces/~bbaker/blog/2020/08/03/800750057/The+VPN+has+a+command+line
