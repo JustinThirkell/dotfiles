@@ -1,0 +1,11 @@
+# CodeWhisperer pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/bashrc.pre.bash" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/bashrc.pre.bash"
+# Atlassian security config
+shopt -s histappend
+export HISTFILESIZE=1048576
+export HISTSIZE=1048576
+export HISTTIMEFORMAT="%s "
+export PROMPT_COMMAND="history -a; history -c; history -r"
+
+# CodeWhisperer post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/bashrc.post.bash" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/bashrc.post.bash"
