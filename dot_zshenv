@@ -1,0 +1,4 @@
+export VISUAL=nano
+export EDITOR="$VISUAL"
+. "$HOME/.cargo/env"
+export HOMEBREW_AUTO_UPDATE_SECS=$((60 * 60 * 24 * 30)) # 30 days

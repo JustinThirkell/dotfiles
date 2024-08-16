@@ -1,0 +1,58 @@
+alias sourcetree='open -a SourceTree'
+alias tower='open -a Tower'
+
+staging() {
+  # Get the api-token
+  #VAULT_ITEM_FIELD='Private/foo API token/credential'
+  #API_TOKEN=$(op read "op://$VAULT_ITEM_FIELD")
+  source ~/.thing/.env
+  
+  # Construct other params
+  EMAIL="$USER@foo.com"
+  STAGING_GATEWAY='https://bar'
+
+  # Set the environment variables
+  export GRAPHQL_GATEWAY="$STAGING_GATEWAY"
+  
+  # Execute the command
+  thing_cli "$@"
+}
+
+thing_command() {
+    service=$1
+    command=$2
+    env=${3:-prod-west}
+
+    cli="foo ${command} -s ${service} -e ${env}"
+    echo "Invoking '${cli}'"
+    eval $cli
+
+}
+
+alias foo="thing resource dynamodb grant -s bar -e prod-west --resource baz --console | pbcopy; open --url $(pbpaste)" 
+
+db() {
+  local SERVICE=$1
+  shift;
+  local ENVIRONMENT=$1
+  shift;
+  thing resource postgres grant -s $SERVICE -e $ENVIRONMENT --resource db $@
+}
+
+pr() {
+  project=${PWD##*/}
+  rawBranch=$(git rev-parse --abbrev-ref HEAD)
+  org=$(git config --get remote.origin.url | grep -Eo "(\w*)/$project.git\/?$" | cut -d/ -f1)
+  branch=$(python3 -c "import urllib.parse; print(urllib.parse.quote_plus('''$rawBranch'''))")
+  if [[ $org = *[!\ ]* ]]
+  then
+      echo "Opening browser..."
+  else
+      echo "Not in a bitbucket repo"
+      exit
+  fi
+
+  open "https://bitbucket.org/${org}/${project}/pull-requests/new?source=${branch}"
+}
+
+alias pr=pr
