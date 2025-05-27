@@ -1,0 +1,56 @@
+
+[include]
+  # local/private config goes in the include
+  path = ~/.gitconfig.local
+  path = ~/.gitconfig.aliases
+
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+
+[commit]
+  gpgsign = true
+
+[init]
+	defaultBranch = main
+
+[core]
+	editor = code --wait
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[pager]
+  branch = false
+
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+  ui = true
+
+[pull]
+  rebase = false
+
+[push]
+  # Setting to git 2.0 default to suppress warning message
+  # default = simple
+  
+  autoSetupRemote = true
+
+[rebase]
+	autosquash = true
+
+[rerere]
+  enabled = true
+
+[mergetool]
+  keepBackup = false
+
+[difftool]
+  prompt = false

@@ -1,0 +1,16 @@
+#compdef c
+
+# Completion function for 'c' command
+# Lists directories under $PROJECTS
+
+_arguments '1:projects:->projects'
+
+case "$state" in
+  projects)
+    _files -W $PROJECTS -/
+    # Uncomment if you want to include GOPATH paths
+    # _files -W $GOPATH/src/github.com -/
+    ;;
+esac
+
+# See further documentation in `functions/c`.

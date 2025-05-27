@@ -1,0 +1,6 @@
+git/gitconfig.local.symlink
+zsh/zshrc.local.symlink
+Brewfile.lock.json
+dotfiles.initialized
+*.local
+.DS_Store

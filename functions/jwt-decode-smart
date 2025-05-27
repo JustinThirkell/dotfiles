@@ -1,0 +1,61 @@
+#!/bin/zsh
+#
+# Usage: jwt-decode-smart <jwtstring>
+# Description: decodes jwt string into human-readable json
+# and adds expiry time and remaining time to the output
+
+jwt-decode-smart() { # Split JWT token into header, payload, and signature parts
+  local token="$1"
+
+  # Properly handle base64 decoding with padding
+  decode_base64_url() {
+    local input="$1"
+    # Add padding if necessary
+    local remainder=$((${#input} % 4))
+    local padding=""
+    if [ $remainder -eq 2 ]; then padding="=="; fi
+    if [ $remainder -eq 3 ]; then padding="="; fi
+
+    # Replace URL-safe chars and decode
+    echo "$input$padding" | tr '_-' '/+' | base64 -d 2>/dev/null
+  }
+
+  # Extract and decode parts
+  local header_b64=$(echo "$token" | cut -d. -f1)
+  local payload_b64=$(echo "$token" | cut -d. -f2)
+
+  local header=$(decode_base64_url "$header_b64" | jq 2>/dev/null || echo "{}")
+  local payload=$(decode_base64_url "$payload_b64" | jq 2>/dev/null || echo "{}")
+
+  # Get current time for expiry calculation
+  local now=$(date +%s)
+
+  # Extract timestamps
+  local iat=$(echo "$payload" | jq -r '.iat')
+  local exp=$(echo "$payload" | jq -r '.exp')
+
+  # Format timestamps in local time
+  local issued_at=$(date -r $iat "+%Y-%m-%d %H:%M:%S" 2>/dev/null || echo "Invalid timestamp")
+  local expires_at=$(date -r $exp "+%Y-%m-%d %H:%M:%S" 2>/dev/null || echo "Invalid timestamp")
+
+  # Calculate remaining time
+  local remaining=$((exp - now))
+  local remaining_display="00:00"
+  if [ $remaining -gt 0 ]; then
+    local remaining_mins=$((remaining / 60))
+    local remaining_secs=$((remaining % 60))
+    remaining_display=$(printf "%02d:%02d" $remaining_mins $remaining_secs)
+  fi
+
+  # Output as JSON array
+  jq -n --arg issued "$issued_at" --arg expires "$expires_at" --arg remaining "$remaining_display" '
+    [
+      '"$header"',
+      '"$payload"',
+      {
+        "issuedAt": $issued,
+        "expiryAt": $expires,
+        "remainingTime": $remaining
+      }
+    ]'
+}
