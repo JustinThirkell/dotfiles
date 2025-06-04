@@ -2,18 +2,15 @@ cask_args appdir: '/Applications'
 
 tap "auth0/auth0-cli"
 tap "aws/tap"
-tap "buo/cask-upgrade"
+tap 'buo/cask-upgrade'
 tap "common-fate/granted"
-tap "domt4/autoupdate"
-tap "homebrew/bundle"
+tap 'github/gh'
+tap 'homebrew/bundle'
 tap "oven-sh/bun"
-tap "timo-reymann/deterministic-zip"
-tap "yoheimuta/protolint"
 
 brew "awscli"
 brew "biome"
 brew "coreutils"
-brew "dash"
 brew "gh"
 brew "git"
 brew "gnu-tar"
@@ -21,14 +18,8 @@ brew "jq"
 brew "lsd"
 brew "mas"
 brew "powerlevel10k"
-brew "protobuf"
-brew "protolint"
-brew "tealdeer"
-brew "tfenv"
-brew "yarn"
 brew "common-fate/granted/granted"
 brew "oven-sh/bun/bun"
-brew "timo-reymann/deterministic-zip/deterministic-zip"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 
@@ -41,7 +32,6 @@ cask "font-caskaydia-cove-nerd-font"
 cask "font-fira-code-nerd-font"
 cask "font-hack-nerd-font"
 cask "font-meslo-lg-nerd-font"
-cask "google-chrome"
 cask "insomnia"
 cask "iterm2"
 cask "jordanbaird-ice"
@@ -55,6 +45,7 @@ cask "session-manager-plugin"
 cask "shortcat"
 cask "stats"
 cask "tower"
+cask "typinator"
 cask "visual-studio-code"
 cask "voiceink"
 
@@ -66,7 +57,6 @@ mas "Day Progress", id: 6450280202
 mas "Floating Clock", id: 1545752052
 mas "Lungo", id: 1263070803
 mas "MKV2MP4", id: 585396074
-mas "Okta Verify", id: 490179405
 mas "Pandan", id: 1569600264
 mas "Shareful", id: 1522267256
 

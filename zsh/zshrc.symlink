@@ -64,8 +64,6 @@ zle -N down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search # Up arrow
 bindkey "^[[B" down-line-or-beginning-search # Down arrow
 
-source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-
 # zsh-syntax-highlighting (Load this last or very late)
 source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 

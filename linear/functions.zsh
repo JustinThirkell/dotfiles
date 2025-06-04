@@ -4,7 +4,12 @@
 
 # 1. Define the user-configurable path, error if not set.
 # User should set LINEAR_SDK_WRAPPER_PATH in env or here.
-: "${LINEAR_SDK_WRAPPER_PATH:?Error: LINEAR_SDK_WRAPPER_PATH is not set. Please define it (e.g., ~/dev/vital/linear/linear_wrapper.js)}"
+: "${LINEAR_SDK_WRAPPER_PATH:-"Need to set LINEAR_SDK_WRAPPER_PATH in .zshrc.local"}"
+
+# Check if the path is the default placeholder or an empty string, if so, exit silently.
+if [[ "$LINEAR_SDK_WRAPPER_PATH" == "Need to set LINEAR_SDK_WRAPPER_PATH in .zshrc.local" || -z "$LINEAR_SDK_WRAPPER_PATH" ]]; then
+  return 1 # Stop sourcing .zfunctions if the path isn't properly set or is empty.
+fi
 
 # 2. Expand tilde (if any) and prepare the path for internal use.
 # Functions will use _INTERNAL_EXPANDED_LINEAR_SDK_PATH.
@@ -18,15 +23,15 @@ if [[ ! -f "$_INTERNAL_EXPANDED_LINEAR_SDK_PATH" ]]; then
 fi
 
 # Ensure API key is available
-: "${LINEAR_API_KEY:?Error: LINEAR_API_KEY is not set. Please ensure it is defined in your environment.}"
+: "${LINEAR_API_KEY:-"Need to set LINEAR_API_KEY in .zshrc.local"}"
 
 # Define Linear IDs - some of these will cause an error if not set
-LINEAR_DEFAULT_TEAM_ID="${LINEAR_DEFAULT_TEAM_ID:?Error: LINEAR_DEFAULT_TEAM_ID is not set. Please set this environment variable or update .zfunctions with your actual ID.}"
+LINEAR_DEFAULT_TEAM_ID="${LINEAR_DEFAULT_TEAM_ID:-"Need to set LINEAR_DEFAULT_TEAM_ID in .zshrc.local"}"
 LINEAR_TEST_TEAM_ID="${LINEAR_TEST_TEAM_ID:-}"                                                                                                                     # Optional, kept as is
-LINEAR_DEFAULT_PROJECT_ID="${LINEAR_DEFAULT_PROJECT_ID:?Error: LINEAR_DEFAULT_PROJECT_ID is not set. Please set this environment variable or update .zfunctions.}" # Now Mandatory
+LINEAR_DEFAULT_PROJECT_ID="${LINEAR_DEFAULT_PROJECT_ID:-"Need to set LINEAR_DEFAULT_PROJECT_ID in .zshrc.local"}" # Now Mandatory
 LINEAR_TEST_PROJECT_ID="${LINEAR_TEST_PROJECT_ID:-}"                                                                                                               # Optional
-LINEAR_ADHOC_LABEL_ID="${LINEAR_ADHOC_LABEL_ID:?Error: LINEAR_ADHOC_LABEL_ID is not set. Please set this environment variable or update .zfunctions.}"             # Kept as Mandatory
-LINEAR_USER_ID="${LINEAR_USER_ID:?Error: LINEAR_USER_ID is not set. Please set this environment variable or update .zfunctions (your Linear user UUID).}"          # Now Mandatory
+LINEAR_ADHOC_LABEL_ID="${LINEAR_ADHOC_LABEL_ID:-"Need to set LINEAR_ADHOC_LABEL_ID in .zshrc.local"}"             # Kept as Mandatory
+LINEAR_USER_ID="${LINEAR_USER_ID:-"Need to set LINEAR_USER_ID in .zshrc.local"}"          # Now Mandatory
 
 # Helper function to get issue details from Linear API using Node.js SDK wrapper
 sdk_linear_get_issue() {
