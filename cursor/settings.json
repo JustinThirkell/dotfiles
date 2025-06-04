@@ -1,0 +1,17 @@
+{
+    "workbench.colorTheme": "Monokai Pro",
+    "workbench.iconTheme": "Monokai Pro Icons",
+    "window.commandCenter": true,
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "explorer.autoReveal": "focusNoScroll",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 12,
+    "git.suggestSmartCommit": false,
+    "git.autofetch": true,
+    "editor.fontFamily": "MesloLGS NF, CaskaydiaCove Nerd Font, FireCode Nerd Font, Menlo, Monaco, 'Courier New', monospace",
+    "terminal.integrated.fontSize": 12,
+    "editor.formatOnSave": true,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "workbench.activityBar.orientation": "horizontal"
+}
