@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "gitconfig*": "properties",
+        "zshrc*": "shellscript"
+    }
+}
