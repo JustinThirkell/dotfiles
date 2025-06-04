@@ -13,5 +13,6 @@
     "terminal.integrated.fontSize": 12,
     "editor.formatOnSave": true,
     "typescript.updateImportsOnFileMove.enabled": "always",
-    "workbench.activityBar.orientation": "horizontal"
+    "workbench.activityBar.orientation": "horizontal",
+    "git.confirmSync": false
 }
