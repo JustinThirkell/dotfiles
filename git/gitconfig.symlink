@@ -1,4 +1,3 @@
-
 [include]
   # local/private config goes in the include
   path = ~/.gitconfig.local
@@ -18,6 +17,7 @@
 
 [core]
 	editor = code --wait
+	excludesfile = ~/.gitignore_global
 
 [filter "lfs"]
 	clean = git-lfs clean -- %f

@@ -1,0 +1,5 @@
+# Global Git Ignore File
+# This file contains patterns that should be ignored across all Git repositories
+
+# Ignore .specstory directory
+.specstory/ 

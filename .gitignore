@@ -4,4 +4,3 @@ Brewfile.lock.json
 dotfiles.initialized
 *.local
 .DS_Store
-.specstory
