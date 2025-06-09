@@ -1,7 +1,7 @@
 {
 	"workbench.colorTheme": "Monokai Pro",
 	"workbench.iconTheme": "Monokai Pro Icons",
-	"workbench.activityBar.orientation": "horizontal",
+	"workbench.activityBar.orientation": "vertical",
 	"workbench.editorAssociations": {
 		"*.excalidraw.png": "editor.excalidraw"
 	},
@@ -44,6 +44,7 @@
 	"cursor.cpp.enablePartialAccepts": true,
 	"cursor.cpp.disabledLanguages": ["markdown", "plaintext", "terraform"],
 	"vsicons.dontShowNewVersionMessage": true,
+	"specstory.helpUsImprove": false,
 
 	"[shellscript]": {
 		"editor.defaultFormatter": "foxundermoon.shell-format"
