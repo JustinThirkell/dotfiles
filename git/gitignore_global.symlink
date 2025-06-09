@@ -2,4 +2,10 @@
 # This file contains patterns that should be ignored across all Git repositories
 
 # Ignore .specstory directory
-.specstory/ 
+.specstory/
+
+# the .cursorindexingignore file contains this to avoid specstory files being pulled in:
+  # Don't index SpecStory auto-save files, but allow explicit context inclusion via @ references
+  # .specstory/**
+# so we'll ignore the cursor ignore file, to prevent it being pulled into the repo shared with everyone else
+.cursorindexingignore 
