@@ -3,6 +3,7 @@
 		"gitconfig*": "properties",
 		"zshrc*": "shellscript",
 		"ohmyzsh*": "shellscript",
-		"p10k*": "shellscript"
+		"p10k*": "shellscript",
+		"gitignore_global*": "gitignore"
 	}
 }
