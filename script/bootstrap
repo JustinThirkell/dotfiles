@@ -136,7 +136,7 @@ link_file() {
 install_dotfiles() {
   info 'installing dotfiles'
 
-  local overwrite_all=false backup_all=true skip_all=false
+  local overwrite_all=false backup_all=false skip_all=false
 
   for src in $(find -H "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -not -path '*.git*'); do
     dst="$HOME/.$(basename "${src%.*}")"
@@ -144,7 +144,7 @@ install_dotfiles() {
   done
 }
 
-setup_oh_my_zsh () {
+setup_oh_my_zsh() {
   info 'setup oh-my-zsh'
 
   mkdir -p ~/.oh-my-zsh/custom/themes
