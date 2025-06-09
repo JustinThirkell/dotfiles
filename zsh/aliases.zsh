@@ -30,3 +30,5 @@ alias ys="yarn start"
 
 # AWS
 alias assume="source /opt/homebrew/bin/assume"
+# https://docs.commonfate.io/granted/internals/shell-alias
+export GRANTED_ALIAS_CONFIGURED="true"
