@@ -51,5 +51,8 @@
 	},
 	"[yaml]": {
 		"editor.defaultFormatter": "redhat.vscode-yaml"
+	},
+	"[properties]": {
+		"editor.defaultFormatter": "foxundermoon.shell-format"
 	}
 }
