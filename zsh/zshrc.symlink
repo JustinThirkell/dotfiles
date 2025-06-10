@@ -56,13 +56,6 @@ unset config_files
 # ------------------------------------------------------------------------------
 # Zsh Enhancements (Load towards the end)
 # ------------------------------------------------------------------------------
-# Better history searching with arrow keys
-autoload -U up-line-or-beginning-search
-autoload -U down-line-or-beginning-search
-zle -N up-line-or-beginning-search
-zle -N down-line-or-beginning-search
-bindkey "^[[A" up-line-or-beginning-search # Up arrow
-bindkey "^[[B" down-line-or-beginning-search # Down arrow
 
 # zsh-syntax-highlighting (Load this last or very late)
 source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
