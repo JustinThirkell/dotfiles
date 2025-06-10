@@ -4,6 +4,7 @@
 		"zshrc*": "shellscript",
 		"ohmyzsh*": "shellscript",
 		"p10k*": "shellscript",
-		"gitignore_global*": "gitignore"
+		"gitignore_global*": "gitignore",
+		"": "shellscript"
 	}
 }
