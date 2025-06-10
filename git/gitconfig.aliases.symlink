@@ -79,59 +79,59 @@
   # log commits only on this branch
   log-branch-specific-commits = !sh -c 'git log --no-merges main..$1' -
 
-  ##############################################################################################
-  # mobilutz
-  ##############################################################################################
-	promote = !$DOTZSH/bin/git-promote
-	wtf     = !$DOTZSH/bin/git-wtf
-	# View abbreviated SHA, description, and history graph of the latest 20 commits.
-	l = log --pretty=oneline -n 20 --graph --abbrev-commit
-	# View the current working tree status using the short format.
-	s = status -s
-	st = status -s
+  # ##############################################################################################
+  # # mobilutz
+  # ##############################################################################################
+	# promote = !$DOTZSH/bin/git-promote
+	# wtf     = !$DOTZSH/bin/git-wtf
+	# # View abbreviated SHA, description, and history graph of the latest 20 commits.
+	# l = log --pretty=oneline -n 20 --graph --abbrev-commit
+	# # View the current working tree status using the short format.
+	# s = status -s
+	# st = status -s
 
-	# Show the diff between the latest commit and the current state.
-	d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+	# # Show the diff between the latest commit and the current state.
+	# d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
 
-	# `git di $number` shows the diff between the state `$number` revisions ago and the current state.
-	di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
+	# # `git di $number` shows the diff between the state `$number` revisions ago and the current state.
+	# di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
 
-	# Amend the currently staged files to the latest commit.
-	amend = commit --amend --reuse-message=HEAD
+	# # Amend the currently staged files to the latest commit.
+	# amend = commit --amend --reuse-message=HEAD
 
-	# Credit an author on the latest commit.
-	credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
+	# # Credit an author on the latest commit.
+	# credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
 
-	# Stash all
-	staash = stash --all
+	# # Stash all
+	# staash = stash --all
 
-	# Nicer branch output
-	bb = !${DOTZSH}/git/better-git-branch.sh
+	# # Nicer branch output
+	# bb = !${DOTZSH}/git/better-git-branch.sh
 
-	# Checkout master branch
-	com = checkout master
+	# # Checkout master branch
+	# com = checkout master
 
-	# Rebase origin/master
-	rom = rebase origin/master
+	# # Rebase origin/master
+	# rom = rebase origin/master
 
-	# Rebase continue
-	rc = rebase --continue
+	# # Rebase continue
+	# rc = rebase --continue
 
-	# Rename a branch
-	rename = branch -m
+	# # Rename a branch
+	# rename = branch -m
 
-  ##############################################################################################
-  # andrew lock
-  ##############################################################################################
+  # ##############################################################################################
+  # # andrew lock
+  # ##############################################################################################
 
-  # https://andrewlock.net/pushing-a-whole-stack-of-branches-with-a-single-git-command/
-	merge-base-origin ="!f() { git merge-base ${1-HEAD} origin/$(git default); };f "
-	stack = "!f() { \
-		BRANCH=${1-HEAD}; \
-		MERGE_BASE=$(git merge-base-origin $BRANCH); \
-		git log --decorate-refs=refs/heads --simplify-by-decoration --pretty=format:\"%(decorate:prefix=,suffix=,tag=,separator=%n)\" $MERGE_BASE..$BRANCH; \
-	};f "
-	push-stack = "!f() { \
-		BRANCH=${1-HEAD}; \
-		git stack $BRANCH | xargs -I {} git push --force-with-lease origin {}; \
-	};f "
+  # # https://andrewlock.net/pushing-a-whole-stack-of-branches-with-a-single-git-command/
+	# merge-base-origin ="!f() { git merge-base ${1-HEAD} origin/$(git default); };f "
+	# stack = "!f() { \
+	# 	BRANCH=${1-HEAD}; \
+	# 	MERGE_BASE=$(git merge-base-origin $BRANCH); \
+	# 	git log --decorate-refs=refs/heads --simplify-by-decoration --pretty=format:\"%(decorate:prefix=,suffix=,tag=,separator=%n)\" $MERGE_BASE..$BRANCH; \
+	# };f "
+	# push-stack = "!f() { \
+	# 	BRANCH=${1-HEAD}; \
+	# 	git stack $BRANCH | xargs -I {} git push --force-with-lease origin {}; \
+	# };f "
