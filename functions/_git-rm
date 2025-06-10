@@ -1,3 +1,6 @@
+#!/bin/zsh
+#
+#
 #compdef git-rm
 _arguments -S -A '-*' \
   '-f[override the up-to-date check]' \

@@ -1,3 +1,5 @@
+#!/bin/zsh
+#
 # show ssh keys with file:
 # ref: https://unix.stackexchange.com/a/566474
 function ssh-add_wf() {
