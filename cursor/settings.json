@@ -1,6 +1,6 @@
 {
 	"workbench.colorTheme": "Monokai Pro",
-	"workbench.iconTheme": "Monokai Pro Icons",
+	"workbench.iconTheme": "vscode-icons",
 	"workbench.activityBar.orientation": "vertical",
 	"workbench.editorAssociations": {
 		"*.excalidraw.png": "editor.excalidraw"
