@@ -8,7 +8,7 @@ alias git_cheatsheet='code --goto ~/.oh-my-zsh/plugins/git/README.md:1'
 
 # Git
 alias gs='gst'
-alias gpom='git pull --no-rebase origin main'
+alias gpom='git pull --no-rebase --no-edit origin main'
 alias gbrlog='git log --oneline --date=short HEAD ^main -10' # or git log upstream/main..HEAD
 # alias g="git"
 # alias gc="git commit -S"
