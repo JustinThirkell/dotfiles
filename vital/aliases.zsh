@@ -17,3 +17,6 @@ alias hco="rm -rf apps/health/playwright/.cache && yarn apps/health playwright t
 alias pdev="yarn apps/patient vite dev --mode test"
 alias pui="rm -rf apps/patient/dist && yarn apps/patient playwright test --config playwright.ui.config.ts"
 alias pco="rm -rf apps/patient/playwright/.cache && yarn apps/patient playwright test --config playwright.component.config.ts"
+
+alias determine-shard="npx tsx $PROJECTS/vital/katoa/apps/care/cli/determine-shard.ts"
+alias get-visit="$PROJECTS/vital/katoa/apps/care/cli/get-visit.sh"
