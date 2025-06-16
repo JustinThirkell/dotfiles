@@ -22,6 +22,7 @@ brew "common-fate/granted/granted"
 brew "oven-sh/bun/bun"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
+brew "uv"
 
 cask "1password-cli"
 cask "alt-tab"
