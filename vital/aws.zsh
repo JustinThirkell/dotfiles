@@ -10,7 +10,7 @@ function aws-sso-refresh-roles() {
 }
 
 function aws-dev() {
-  assume dev/SandboxAdmin --duration 8h #--export-all-env-vars
+  assume dev/SandboxAdmin --duration 8h
 }
 
 function aws-daily() {
