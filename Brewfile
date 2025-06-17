@@ -49,6 +49,7 @@ cask "tower"
 cask "typinator"
 cask "visual-studio-code"
 cask "voiceink"
+cask "grandperspective"
 
 mas "Actions", id: 1586435171
 mas "Battery Indicator", id: 1206020918
