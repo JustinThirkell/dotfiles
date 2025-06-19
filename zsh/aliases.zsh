@@ -2,6 +2,9 @@ alias reload!='. ~/.zshrc'
 
 alias cls='clear' # Good 'ol Clear Screen command
 
+# Python
+alias python='python3'
+
 # apps
 alias tower='open -a Tower'
 alias git_cheatsheet='code --goto ~/.oh-my-zsh/plugins/git/README.md:1'
