@@ -1,0 +1,280 @@
+{
+	name = "Sunshine";
+	identifier = "com.ergonis.Sunshine";
+	version = "2.0";
+	author = "Ergonis Software";
+	requiredKeyCueVersion = "7.0";
+	develop = NO; // set to "YES" during development
+
+
+	spaceBetweenColumns = 40;
+	spaceInsideColumns = 5;
+	groupHeadingHeight = 30;
+	spaceBelowGroupHeading = 10;
+	lineSpacing = 4.0;
+	emojiDetailSpace = 6;
+	screenFill = 0.9;
+
+	screenMarginTop = 45; // we need about 45 extra pixels for the sun
+	screenMarginBottom = 0;
+	screenMarginLeft = 60; // extra margin left and right for symmetric layout
+	screenMarginRight = 60;
+
+	searchIconColor = 622; // brown
+	highlightedSearchIconColor = A00; // clicked clear icon in search area appears in red
+
+	scale = 1.0;
+
+// ===== Text
+
+	regularText = {
+		font = ("Optima", "Papyrus", "Baskerville", "Palatino", "Times");
+		size = 18;
+		color = 400; // dark red
+		shadow = { dx = 2.0; dy = -2.0; blur = 3.0; }; // default color
+	};
+	
+	highlightedText = { // highlighted text does not change; we add a little red sun
+		inherit = regularText;
+	};
+
+	messageText = {
+		inherit = regularText;
+		color = FFF; // white on red background
+	};
+
+	dimmedText = {
+		inherit = regularText;
+		color = 666; // medium gray
+		shadow = none; // without shadow, so it appears flat
+	};
+
+	menuHeaderText = {
+		inherit = regularText;
+		color = FFFC; // white, slightly transparent
+		shadow = { dx = 0.0; dy = 0.0; blur = 2.0; color = FFF; }; // white "halo"
+	};
+
+	submenuHeaderText = {
+		inherit = regularText;
+	};
+
+	KeyCueItemText = {
+		inherit = regularText;
+		color = 800; // like regular items, but in brighter red
+	};
+
+	highlightedKeyCueItemText = { // highlighted text does not change; we add a little red sun
+		inherit = KeyCueItemText;
+	};
+
+	KeyCueHeaderText = {
+		inherit = menuHeaderText;
+	};
+
+// ===== Areas
+
+	backgroundArea = { // sky picture for the background behind the table
+		fillColor = none;
+		minAlpha = 0.4; // opacity range 0.4 to 0.8
+		maxAlpha = 0.8;
+		frameColor = none; // no frame, extends to the edge of the screen
+		frameWidth = 0;
+		radius = 0;
+		picture = {
+			file = "Sky.jpg";
+		};
+	};
+	
+	defaultArea = { // custom area, used for some other areas
+		fillColor = none; // no plain fill color; we use a gradient instead
+		frameColor = AA0; // yellow
+		frameWidth = 1;
+		minAlpha = 0.5;
+		maxAlpha = 0.9;
+		fillGradient = (FF8, 0.7, FF8, 0.3, FFF); // bottom 70% in yellow, then transition to white
+		radius = 40; // large radius
+		shadow = { dx = 0.0; dy = -3.0; blur = 10.0; color = 000; }; // soft shadow
+	};
+
+	
+	tableArea = {
+		inherit = defaultArea; // like defaultArea
+		overlay = (sunArea); // but with a sun picture in the top-left corner
+		extendLeft = 30; // make space for the sun
+		extendRight = 30; // also to the right, for a symmetric layout
+	};
+	sunArea = {
+		fillColor = none; // no color fill; we are using the picture
+		shadow = { dx = 0.0; dy = 0.0; blur = 50.0; color = FF06; }; // yellow "shadow" creates a halo
+		frameWidth = 0; // no frame
+		relativeLeft = 0; // anchor point in the top left corner
+		relativeRight = 0;
+		relativeTop = 1.0;
+		relativeBottom = 1.0;
+		extendLeft = 60; // 60 pixels in all directions: total size 120x120
+		extendRight = 60;
+		extendTop = 60;
+		extendBottom = 60;
+		picture = {
+			file = "SunRays.pdf"; // scaled to fill the 120x120 square
+		};
+		overlay = (sunInsideArea); // use another overlay to add a spot in the center
+	};
+	sunInsideArea = {
+		frameWidth = 0; // no frame
+		fillColor = FC05; // transparent orange
+		shadow = { dx = 0.0; dy = 0.0; blur = 10.0; color = FC0; }; // "halo" in the same color
+		extendLeft = -40; // smaller by 40 pixels, inset from all edges; final size: 40x40
+		extendRight = -40;
+		extendTop = -40;
+		extendBottom = -40;
+		radius = 20; // this is actually a circle
+	};
+	
+	columnSeparatorArea = {
+		fillColor = F006; // transparent red
+		frameColor = none; // no frame; we just fill a rectangle
+		frameWidth = 0;
+		radius = 2; // round ends
+		relativeLeft = 0.35; // 35% from the left edge
+		relativeRight = 0.35;
+		extendLeft = 0; // 2 pixels wide
+		extendRight = 2;
+	};
+	
+	legendArea = {
+		inherit = defaultArea;
+		frameWidth = 3; // wider frame
+		radius = 50; // round ends left and right
+		extendLeft = 20; // space for the icons
+		extendRight = 20;
+		extendTop = 3; // make a little higher above ...
+		extendBottom = 8; // ... and below
+		verticalOffset = -16; // move 16 pixels further down
+	};
+	
+	messageArea = {
+		inherit = legendArea;
+		frameColor = 600; // red frame
+		fillGradient = (800, 1.0, C44); // gradient from dark red to brighter red
+	};
+	
+	headerArea = {
+		fillColor = 6228; // transparent dark red
+		frameColor = 3118; // transparent darker red
+		frameWidth = 1;
+		radius = 20; // round ends
+		shadow = { dx = 0.0; dy = -3.0; blur = 5.0; color = 000; }; // black drop shadow
+	};
+	
+	KeyCueHeaderArea = {
+		inherit = headerArea;
+		fillColor = 500; // darker red
+	};
+	
+	groupHeadingArea = {
+		inherit = headerArea;
+		fillColor = 6226; // like header, but more transparent (appears pale)
+		extendLeft = 5; // adjust left edge
+	};
+	
+	highlightArea = {
+		frameWidth = 0; // no frame
+		frameColor = none;
+		fillColor = none; // no fill
+		shadow = none; // no shadow
+		minAlpha = 1.0; // always fully opaque (ignore tranparency slider from preferences)
+		maxAlpha = 1.0;
+		relativeLeft = 0; // anchor at the left edge
+		relativeRight = 0;
+		relativeTop = 0.5; // anchor vertically centered
+		relativeBottom = 0.5;
+		extendLeft = 12; // extend to the left and right
+		extendRight = 10;
+		extendTop = 11; // as well as to the top and bottom (size = 22x22)
+		extendBottom = 11;
+		picture = {
+			file = "RedSun.pdf"; // show a red sun picture to the left of the item
+		};
+	};
+
+	submenuArea = {
+		extendLeft = 3.0; // extend to the left ...
+		extendRight = 12.0; // and the right
+		radius = 10; // same radius all around
+		frameColor = 4004; // transparent dark red
+		frameWidth = 1.5;
+		fillColor = none; // no fill (we use a gradient)
+		fillGradient = (A001, 1.0, A001, 5, F003, 10, F003, 14, F000); // bottom: darken slightly; tab: darken more
+		// from bottom to top:
+		//   A001: color at the bottom starts with red, very transparent
+		//   1.0 means everything except the remaining 29 pixels
+		//   A001: using the bottom color means fill with single color; no gradient
+		//   5 pixel gradient
+		//   F003: end color is red, more opaque, appears darker
+		//   10 pixels (bottom part of the tab)
+		//   F003: single color because the color at the end is the same
+		//   24 pixels at the top (upper part of the tab)
+		//   F000: gradient that fades out F003 to fully transparent (F000)
+	};
+
+	selectionArea = {
+		extendLeft = -6.0; // extend a bit to the left
+		extendRight = 0.0;
+		extendTop = -1.0; // move 1 pixel down
+		extendBottom = 1.0;
+		frameColor = FF0; // bright yellow
+		frameWidth = 3.0;
+		fillColor = none;
+		radius = 20; // round ends
+		shadow = { dx = 0.0; dy = -1.0; blur = 4.0; color = DB0; }; // yellow "halo"
+	};
+
+	highlightedSelectionArea = {
+		inherit = selectionArea; // like selectionArea
+		frameColor = F40; // but orange instead of yellow
+	};
+	
+	searchArea = {
+		inherit = defaultArea; // uses the same gradient style
+		extendLeft = -2; // inset 2 pixels from the left and right
+		extendRight = -2;
+		extendTop = -4; // inset 4 pixels from the top and bottom
+		extendBottom = -4;
+		radius = 20; // round ends
+		frameColor = 0006; // transparent black; darkens the background
+		frameWidth = 2;
+	};
+
+	emojiSelectionArea = {
+		inherit = selectionArea;
+		extendLeft = 0;
+		extendRight = 0;
+		extendTop = 1;
+		extendBottom = 0;
+		radius = 4;
+	};
+
+	highlightedEmojiSelectionArea = {
+		inherit = emojiSelectionArea;
+		frameColor = F40; // orange instead of yellow
+	};
+
+	emojiDetailArea = {
+		inherit = defaultArea; // uses the same gradient style
+		shadow = none;
+		minAlpha = 0.9;
+		maxAlpha = 0.9;
+		extendTop = 0.0;
+		extendBottom = 0.0;
+		extendLeft = 0.0;
+		extendRight = 0.0;
+		frameColor = 388858;
+		frameWidth = 4;
+		fillColor = none;
+		radius = 2;
+	};
+
+
+}

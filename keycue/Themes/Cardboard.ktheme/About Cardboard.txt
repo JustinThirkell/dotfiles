@@ -1,0 +1,4 @@
+The Cardboard.jpg background picture in this theme was taken from a larger public domain image from:
+	http://www.photos-public-domain.com
+The original picture is much larger and takes up more than 2 MB.
+For use with KeyCue, we have trimmed, scaled and compressed the image.

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>name</key>
+	<string>Google Chrome</string>
+	<key>shortcuts</key>
+	<array>
+		<dict>
+			<key>heading</key>
+			<true/>
+			<key>title</key>
+			<string>Extensions</string>
+		</dict>
+		<dict>
+			<key>keycode</key>
+			<integer>31</integer>
+			<key>modifiers</key>
+			<integer>1179648</integer>
+			<key>title</key>
+			<string>Okta apps</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,341 @@
+{
+	name = "Cardboard"; // the human-readable English name
+	identifier = "com.ergonis.Cardboard"; // unique identifier
+	version = "2.0";
+	author = "Ergonis Software";
+	requiredKeyCueVersion = "7.0";
+	develop = NO; // set to "YES" during development
+	message = "";
+
+	spaceBetweenColumns = 40;
+	spaceInsideColumns = 5;
+	groupHeadingHeight = 35;
+	spaceBelowGroupHeading = 10;
+	lineSpacing = 4.0;
+	emojiDetailSpace = 6.0;
+	dimmedEmojiAlpha = 0.25;
+	screenFill = 0.9;
+
+	screenMarginTop = 45; // extra space for the application icon
+	screenMarginBottom = 0;
+	screenMarginLeft = 0;
+	screenMarginRight = 0;
+	
+	searchIconColor = 333; // dark gray
+	highlightedSearchIconColor = A00; // clear icon in search area appears in red
+
+	scale = 1.0;
+
+
+// ===== Text
+
+	regularText = {
+		font = ("Arial", "ArialMT", "Helvetica");
+		size = 18;
+		color = 004; // dark blue text
+		shadow = { dx = 2.0; dy = -2.0; blur = 3.0; }; // default color
+	};
+	
+	highlightedText = {
+		inherit = regularText;
+		color = 920; // matchin items appear in red
+	};
+
+	messageText = {
+		inherit = regularText;
+		color = FFF; // message at the bottom in white on dark red background
+	};
+
+	dimmedText = {
+		inherit = regularText;
+		color = 0007; // transparent black
+		shadow = none; // dimmed items should appear flat, without a shadow
+	};
+
+	menuHeaderText = {
+		inherit = regularText;
+		color = FFFD; // white, slightly transparent
+		shadow = { dx = 0.0; dy = 0.0; blur = 2.0; color = FFFFFF; }; // centered white "shadow", actually a "halo" around the text
+	};
+
+	submenuHeaderText = {
+		inherit = regularText; // exactly the same as regularText
+	};
+
+	KeyCueItemText = {
+		inherit = regularText;
+		color = 600; // dark red
+	};
+
+	highlightedKeyCueItemText = {
+		inherit = regularText;
+		color = C00; // brighter red than highlightedText, so the difference to KeyCueItemText is easier to see
+	};
+
+	KeyCueHeaderText = {
+		inherit = menuHeaderText; // exactly the same as menuHeaderText; only the backgorund is different (KeyCueHeaderArea)
+	};
+
+	columnHeadingText = {
+		size = 22; // larger than regular text
+		color = FFF8; // white, 50% transparent
+		shadow = none;
+	};
+
+// ===== Areas
+
+	defaultArea = { // custom area that is inherited in table, legend and search
+		fillColor = FFF5; // transparent white overlay, increases the lightness of the picture
+		frameColor = none; // no frame
+		frameWidth = 0;
+		minAlpha = 0.7; // alpha range goes from 70% to 100%
+		maxAlpha = 1.0;
+		radius = 0; // sharp corners
+		picture = { // the cardboard background image
+			scale = outside; // scale proportionally to fill the whole area
+			minAlpha = 0.7; // scale the picture in the same way as the background
+			maxAlpha = 1.0;
+			file = "Cardboard.jpg";
+		};
+	};
+
+	tableArea = {
+		inherit = defaultArea;
+		extendTop = 50; // extra space on top for the application icon
+		extendLeft = 30; // wider on both sides
+		extendRight = 30;
+		// the table has 5 overlays with pictures: the application icon and pins in the four corners.
+		overlay = (appIconArea, pinTopLeftArea, pinTopRightArea, pinBottomLeftArea, pinBottomRightArea);
+	};
+	appIconArea = { // application icon, centered above the table
+		relativeTop = 1.0; // anchor at the top of the table
+		relativeBottom = 1.0;
+		extendTop = -6; // top: 6 pixels below the top
+		extendBottom = 54; // bottom: 54 pixels below the top; height = 54-6 = 48
+		shadow = { dx = 0.0; dy = -1.0; blur = 3.0; color = 000F; }; // black shadow 1 pixel below
+		picture = {
+			scale = inside; // scale the icon proportionally, so that it is completely visible (48x48)
+			name = "AppIcon"; // the picture does not come a file; we use the current application's icon
+		};		
+	};
+	pinTopLeftArea = {
+		relativeLeft = 0.0; // anchor point: top left corner
+		relativeRight = 0.0;
+		relativeTop = 1.0;
+		relativeBottom = 1.0;
+		extendTop = 10; // 10 pixels above edge
+		extendBottom = 30; // 40 pixels high
+		extendLeft = 0; // left-align with table
+		extendRight = 40; // 40 pixels wide
+		shadow = { dx = 0.0; dy = -8.0; blur = 5.0; color = 0008; }; // shadow 8 pixels below, 50% opaque
+		picture = { // the original picture is 100x100, will get scaled down to fit inside the area
+			scale = inside;
+			file = "PinRed.png";
+		};
+	};
+	pinTopRightArea = {
+		relativeLeft = 1.0; // anchor point: top right corner
+		relativeRight = 1.0;
+		relativeTop = 1.0;
+		relativeBottom = 1.0;
+		extendTop = 10; // 10 pixels above edge
+		extendBottom = 30; // 40 pixels high
+		extendLeft = 40; // 40 pixels wide
+		extendRight = 0; // right-align with table
+		shadow = { dx = 0.0; dy = -8.0; blur = 5.0; color = 0008; }; // shadow 8 pixels below, 50% opaque
+		picture = { // the original picture is 100x100, will get scaled down to fit inside the area
+			scale = inside;
+			file = "PinBlue.png";
+		};
+	};
+	pinBottomLeftArea = {
+		relativeLeft = 0.0; // anchor point: bottom left corner
+		relativeRight = 0.0;
+		relativeTop = 0.0;
+		relativeBottom = 0.0;
+		extendTop = 30; // 40 pixels high
+		extendBottom = 10; // 10 pixels below edge
+		extendLeft = 0; // left-align with table
+		extendRight = 40; // 40 pixels wide
+		shadow = { dx = 0.0; dy = -6.0; blur = 5.0; color = 0006; }; // shadow 6 pixels below, slightly more transparent
+		picture = { // the original picture is 100x100, will get scaled down to fit inside the area
+			scale = inside;
+			file = "PinYellow.png";
+		};
+	};
+	pinBottomRightArea = {
+		relativeLeft = 1.0; // anchor point: bottom right corner
+		relativeRight = 1.0;
+		relativeTop = 0.0;
+		relativeBottom = 0.0;
+		extendTop = 30; // 40 pixels high
+		extendBottom = 10; // 10 pixels below edge
+		extendLeft = 40; // 40 pixels wide
+		extendRight = 0; // right-aligh with table
+		shadow = { dx = 0.0; dy = -6.0; blur = 5.0; color = 0006; }; // shadow 6 pixels below, slightly more transparent
+		picture = { // the original picture is 100x100, will get scaled down to fit inside the area
+			scale = inside;
+			file = "PinGreen.png";
+		};
+	};
+	
+	columnSeparatorArea = { // vertical lines between columns
+		fillColor = 0004; // black, about 25% opaque
+		frameColor = none; // no frame, we just fill a 1-pixel-wide vertical rectangle
+		frameWidth = 0;
+		radius = 1; // rounded caps
+		relativeLeft = 0.5; // centered horizontally in the column space
+		relativeRight = 0.5;
+		extendLeft = 6; // move to the left by 6 pixels
+		extendRight = -5; // right border: move left by 5 pixels, results in a width of 1 pixel
+		overlay = (separatorLightArea); // add a lighter line, offset to the right
+	};
+	separatorLightArea = {
+		extendRight = 1.5; // move to the right by 1.5 pixels
+		extendLeft = -1.5;
+		fillColor = FFF6; // white, about 40% opaque
+	};
+	
+	lineArea = { // horizontal lines between rows
+		fillColor = 0004; // black, about 25% opaque
+		frameColor = none; // no frame, we just fill a 1-pixel-high horizontal rectangle
+		frameWidth = 0.0;
+		radius = 0;
+		relativeTop = 0.0; // aligned with the bottom of the row
+		relativeBottom = 0.0;
+		extendTop = 0.0; // top of rectangle aligns with bottom of row
+		extendBottom = 1.0; // extend one pixel below
+		extendLeft = 10; // add 10 pixels to the left ...
+		extendRight = 5; // ... and 5 pixels to the right
+		overlay = (lineLightArea);
+	};
+	lineLightArea = {
+		extendTop = -1; // move down by 1 pixel
+		extendBottom = 1;
+		fillColor = FFF6; // white, about 40% opaque
+	};
+	
+	legendArea = {
+		inherit = defaultArea; // legend is filled with the same cardboard picture
+		extendLeft = 20; // extend 20 pixels to the left and right, ...
+		extendRight = 20; // ... to make space for the magnifier and clear icons
+		extendTop = 3; // make a little higher above ...
+		extendBottom = 8; // ... and below
+		verticalOffset = -16; // move 16 pixels further down
+	};
+	
+	messageArea = {
+		inherit = legendArea; // same attributes as the legend
+		extendTop = 5; // extend 2 pixels more to the top and bottom
+		extendBottom = 10; // (because we add a 2-pixel frame)
+		minAlpha = 1.0; // always show message fully opaque
+		maxAlpha = 1.0; // (not affected by transparency slider in preferences)
+		frameWidth = 2; // two-pixel frame
+		frameColor = FFF; // white frame
+		radius = 2; // slightly round the corners (only the frame will appear rounded)
+		fillColor = 421A; // use a red transparent overlay to change the cardboard color
+	};
+	
+	headerArea = {
+		fillColor = 1245; // bluish background
+		frameColor = none; // no frame
+		frameWidth = 0;
+		radius = 2; // slightly rounded
+		shadow = { dx = 0.0; dy = -3.0; blur = 5.0; color = 000; }; // soft shadow at the bottom
+	};
+	
+	KeyCueHeaderArea = {
+		inherit = headerArea; // like headerArea ...
+		fillColor = 4215; // but with a red tint
+	};
+	
+	groupHeadingArea = {
+		inherit = headerArea; // similar appearance as headerArea
+		extendLeft = 4; // extend a few pixels to the left to improve visual alignment
+		radiusTopLeft = 30; // rounded tops
+		radiusTopRight = 30;
+		radiusBottomLeft = 10; // bottoms have a smaller radius
+		radiusBottomRight = 10;
+	};
+	
+	highlightArea = { // we do not use a background for highlighted items
+		frameColor = none;
+		fillColor = none;
+		shadow = none;
+	};
+
+	submenuArea = {
+		extendLeft = 3.0; // extend to the left ...
+		extendRight = 12.0; // and the right
+		radius = 2; // subtle rounding
+		radiusTopLeft = 6; // the tab has a larger rounding radius
+		radiusTabRight = 6;
+		frameColor = 0003; // slight border, black, 20% opaque
+		frameWidth = 1.5; // slightly more than 1 pixel
+		fillColor = none;
+		shadow = none;
+		fillGradient = (1121, 1.0, 1121, 1, 1125, 24, 1121); // bottom: darken slightly; tab: emboss
+		// from bottom to top:
+		//   color at the bottom starts with bluish gray, very transparent
+		//   1.0 means everything except the remaining 25 pixels
+		//   using the bottom color means fill with single color; no gradient
+		//   1 pixel at the border between content and tab
+		//   the single-pixel row is darker (same color, but more opaque)
+		//   24 pixels at the top (the height of the tab)
+		//   gradient from the 1-pixel row to the lighter color that we used for the content
+	};
+
+	selectionArea = { // selection is underlined with a "hand-drawn" line
+		relativeTop = 0.0; // align at the bottom of the selected item
+		relativeBottom = 0.0;
+		extendLeft = -4.0; // move the left edge inwards
+		extendRight = 5.0; // extend a few pixels to the right
+		extendTop = 16.0; // 15 picture upwards (fore the curved left end)
+		extendBottom = 5.0; // bottom line is 5 pixels below the selected item
+		frameColor = none; // no frame
+		frameWidth = 0.0;
+		fillColor = none; // no fill
+		radius = 0;
+		picture = {
+			// the default scaling mode is "fill"
+			leftBorder = 24; // do not stretch the leftmost 24 pixels
+			file = "BlueUnderline.pdf";
+		};		
+	};
+
+	highlightedSelectionArea = {
+		inherit = selectionArea; // same as selectionArea
+		picture = {
+			leftBorder = 24;
+			file = "RedUnderline.pdf"; // but in red instead of blue
+		};
+	};
+
+	searchArea = {
+		inherit = defaultArea; // search area uses the cardboard background
+	};
+
+	emojiSelectionArea = {
+		extendLeft = 0;
+		extendRight = 2;
+		extendTop = 3;
+		extendBottom = 0;
+		frameColor = 005;
+		frameWidth = 3;
+		radius = 3;
+	};
+	
+	highlightedEmojiSelectionArea = {
+		inherit = emojiSelectionArea;
+		frameColor = 800;
+	};
+	
+	emojiDetailArea = {
+		inherit = defaultArea;
+		minAlpha = 0.8;
+		maxAlpha = 0.8;
+		frameColor = 005;
+		frameWidth = 3;
+	};
+
+}

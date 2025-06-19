@@ -1,0 +1,201 @@
+{
+	name = "Tenaya";
+	identifier = "com.ergonis.Tenaya";
+	version = "2.0";
+	author = "Ergonis Software";
+	requiredKeyCueVersion = "7.1";
+	screenFill = 0.8;
+	develop = NO;
+	message = "";
+	
+	scale = 1.0;
+
+	groupHeadingHeight = 30;
+	spaceBelowGroupHeading = 30;
+	spaceBetweenColumns = 40;
+	spaceInsideColumns = 8;
+	lineSpacing = 8;
+	emojiDetailSpace = 6;
+
+	menuSeparatorLine = YES;
+	uniformSubmenus = YES;
+	
+// ===== Text
+
+	regularText = {
+		// El Capitan's / Yosemite's system font, if possible
+		font = (".AppleSystemUIFont", ".SFNSText-Regular", ".HelveticaNeueDeskInterface-Regular", "HelveticaNeue-Light"); 
+		size = 15;
+		color = 000;
+	};
+
+	dimmedText = {
+		inherit = regularText;
+		color = 999; // gray
+	};
+
+	highlightedText = {
+		inherit = regularText; // no change; we use the "blue circle" for highlighting
+	};
+
+	menuHeaderText = {
+		inherit = regularText;
+		size = 17;
+		color = 000a;
+	};
+
+	submenuHeaderText = {
+		inherit = regularText;
+		font = (".AppleSystemUIFontItalic", ".HelveticaNeueDeskInterface-Italic", "HelveticaNeue-LightItalic"); // italic version		
+		size = 16;
+		color = 000a;
+	};
+
+	groupHeadingText = {
+		inherit = regularText;
+		size = 24;
+		color = 0008;
+	};
+
+// ===== Areas
+
+	backgroundArea = {
+		fillColor = 888; // gray background
+		minAlpha = 0.0; // background can be hidden by moving the transparency slider to the leftmost position.
+		maxAlpha = 0.4;
+	};
+	
+	tableArea = {
+		fillColor = ececec; // light gray, similar to background in Yosemite windows
+		frameWidth = 0; // no frame
+		extendTop = 15;
+		extendBottom = 20;
+		extendLeft = 20;
+		extendRight = 12;
+		radius = 3;
+	};
+
+	legendArea = {
+		inherit = tableArea;
+		extendLeft = 20; // extra space for the icons
+		extendRight = 20;
+		extendTop = 10; // a bit higher than a text line
+		extendBottom = 10;
+		verticalOffset = -25; // just below the table
+		radiusTopLeft = 0; // top corners are not rounded
+		radiusTopRight = 0;
+	};
+	
+	messageArea = {
+		inherit = legendArea;
+		fillColor = FFA; // yellow background
+	};
+
+	headerArea = {
+		extendTop = 2.0;
+		fillColor = none;
+		fillGradient = (e5e5e5, 0.5, eeeeee, 0.01, f6f6f6, 0.5, fff);
+		frameColor = 0008;
+		frameWidth = 0.25;
+		radius = 2;
+	};
+
+	groupHeadingArea = {
+		inherit = headerArea;
+		extendTop = 12;
+		extendBottom = 10;
+		extendLeft = 5;
+		extendRight = 0;
+		radiusTopLeft = 3;
+		radiusTopRight = 3;
+		radiusBottomLeft = 0;
+		radiusBottomRight = 0;
+	};
+
+	submenuArea = {
+		// since do not want tabs, we do not fill and frame the submenu's shape
+		fillGradient = none;
+		frameColor = none;
+		fillColor = none;
+		// instead, we use an overlay to draw a simple rectangular outline
+		overlay = (submenuOutlineArea);
+	};
+	submenuOutlineArea = {
+		fillColor = none;
+		fillGradient = none;
+		extendTop = 1.0;
+		extendBottom = 0.0;
+		extendLeft = 14.0; // fine adjustment to make the frame as wide as the column
+		extendRight = 9.0;
+		frameColor = 0008; // 50% transparent black, appears light gray
+		frameWidth = 0.35; // thin subtle frame
+		radius = 2.0;
+	};
+
+	highlightArea = {
+		relativeLeft = 0.0; // place the circle at the left edge
+		relativeRight = 0.0;
+		extendLeft = 16;
+		extendRight = 6;
+		extendTop = -3; // reduce the height
+		extendBottom = -5;
+		picture = { file = "blueCircle.png"; scale = inside; };
+		fillColor = none;
+		
+	};
+	
+	selectionArea = {
+		relativeBottom = 0.0; // blue underline, relative to the bottom
+		relativeTop = 0.0;
+		extendTop = 3.0;
+		extendBottom = 1.0;
+		extendLeft = -9.0;
+		extendRight = -7.0;
+		frameColor = none;
+		frameWidth = 00;
+		fillColor = 419bf9;
+		radius = 2;
+	};
+
+	highlightedSelectionArea = {
+		inherit = selectionArea;
+		fillColor = 333; // dark gray instead of blue
+	};
+	
+	searchArea = {
+		fillColor = FFF; // cover the legend with solid white
+		frameColor = 0006;
+		frameWidth = 0.5;
+		radius = 3;
+	};
+
+	emojiSelectionArea = {
+		extendTop = 0.0;
+		extendBottom = 0.0;
+		extendLeft = 0.0;
+		extendRight = 0.0;
+		frameColor = 419bf9;
+		frameWidth = 4;
+		fillColor = none;
+		radius = 2;
+	};
+
+	highlightedEmojiSelectionArea = {
+		inherit = emojiSelectionArea;
+		frameColor = 333; // dark gray instead of blue
+	};
+	
+	emojiDetailArea = {
+		inherit = emojiSelectionArea;
+		fillColor = fffd;
+	};
+	
+	emojiDetailText = {
+		inherit = regularText;
+		color = 000;
+	};
+
+
+
+
+}
