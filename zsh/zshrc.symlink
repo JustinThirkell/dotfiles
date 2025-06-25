@@ -1,4 +1,13 @@
 # ------------------------------------------------------------------------------
+# Don't load anything for Cursor terminal
+# https://forum.cursor.com/t/guide-fix-cursor-agent-terminal-hangs-caused-by-zshrc/107260
+# ------------------------------------------------------------------------------
+if [[ "$PAGER" == "head -n 10000 | cat" || "$COMPOSER_NO_INTERACTION" == "1" ]]; then
+  echo "Cursor terminal detected, skipping zshrc"
+  return
+fi
+
+# ------------------------------------------------------------------------------
 # Powerlevel10k Instant Prompt (Keep this at the very top)
 # ------------------------------------------------------------------------------
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
