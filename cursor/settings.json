@@ -56,5 +56,6 @@
 	},
 	"[properties]": {
 		"editor.defaultFormatter": "foxundermoon.shell-format"
-	}
+	},
+	"cursor.composer.shouldChimeAfterChatFinishes": true
 }
