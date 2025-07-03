@@ -1,35 +1,3 @@
-# Function to set up git worktree and open Cursor IDE for PR review
-pr_review_worktree() {
-  if [ -z "$1" ]; then
-    echo "Error: Branch name required"
-    echo "Usage: pr-review <branch-name>"
-    return 1
-  fi
-
-  local branch_name="$1"
-  local worktree_path=$VITAL_DIR/katoa.worktrees/$branch_name
-
-  # Check if worktree already exists
-  if [ -d "$worktree_path" ]; then
-    echo "Error: Worktree directory already exists at $worktree_path"
-    return 1
-  fi
-
-  # Add the worktree using the origin remote branch
-  git worktree add -b $branch_name "$worktree_path" "origin/$branch_name"
-
-  if [ $? -eq 0 ]; then
-    # Open Cursor IDE
-    cursor $worktree_path
-
-    echo "Successfully set up worktree at $worktree_path"
-  else
-    echo "Error: Failed to create git worktree"
-    return 1
-  fi
-}
-alias review='pr_review_worktree'
-
 git_pr() {
   # branch format is username/identifier-title, per https://vital-software.slack.com/archives/C0129SCDG6M/p1741743391470719?thread_ts=1741149220.086069&cid=C0129SCDG6M
   # Example: justint/jt-32-foo
@@ -87,16 +55,15 @@ git_pr() {
     return 1
   fi
 
-  info "📝 Fetching issue details for $issue_id_from_branch using SDK wrapper"
+  info "📝 Fetching issue details for $issue_id_from_branch using Linear CLI"
 
-  # Get issue details from Linear using the new SDK helper function
+  # Get issue details from Linear using the new linear CLI wrapper
   local issue_details_json
-  issue_details_json=$(sdk_linear_get_issue "$issue_id_from_branch")
+  issue_details_json=$(linear issue "$issue_id_from_branch")
 
   if [[ $? -ne 0 || -z "$issue_details_json" ]]; then
-    error "Could not fetch issue details from Linear for issue ID: $issue_id_from_branch via SDK."
+    error "Could not fetch issue details from Linear for issue ID: $issue_id_from_branch"
     info "Please check that the issue exists, the ID is correct, and that you have proper access."
-    # sdk_linear_get_issue should log specific errors from the Node script
     return 1
   fi
 
@@ -218,3 +185,35 @@ Only return the PR description, don't return anything else."
   fi
 }
 alias pr=git_pr
+
+# Function to set up git worktree and open Cursor IDE for PR review
+pr_review_worktree() {
+  if [ -z "$1" ]; then
+    echo "Error: Branch name required"
+    echo "Usage: pr-review <branch-name>"
+    return 1
+  fi
+
+  local branch_name="$1"
+  local worktree_path=$VITAL_DIR/katoa.worktrees/$branch_name
+
+  # Check if worktree already exists
+  if [ -d "$worktree_path" ]; then
+    echo "Error: Worktree directory already exists at $worktree_path"
+    return 1
+  fi
+
+  # Add the worktree using the origin remote branch
+  git worktree add -b $branch_name "$worktree_path" "origin/$branch_name"
+
+  if [ $? -eq 0 ]; then
+    # Open Cursor IDE
+    cursor $worktree_path
+
+    echo "Successfully set up worktree at $worktree_path"
+  else
+    echo "Error: Failed to create git worktree"
+    return 1
+  fi
+}
+alias review='pr_review_worktree'
