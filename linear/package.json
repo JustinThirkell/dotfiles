@@ -1,0 +1,19 @@
+{
+	"name": "linear-zsh-wrapper",
+	"version": "1.0.0",
+	"description": "Node.js wrapper for Linear SDK for Zsh functions",
+	"main": "dist/linear_wrapper.js",
+	"scripts": {
+		"build": "tsc",
+		"start": "node dist/linear_wrapper.js",
+		"dev": "ts-node linear_wrapper.ts"
+	},
+	"dependencies": {
+		"@linear/sdk": "^40.0.0"
+	},
+	"license": "ISC",
+	"devDependencies": {
+		"@types/node": "^24.0.3",
+		"typescript": "^5.8.3"
+	}
+}
