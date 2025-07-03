@@ -1,3 +1,9 @@
+#! /bin/zsh
+# I'm trialling out a few productivity improvements.
+# These are deliberately not under source control in the katoa repo and are excluded by adding them to .git/info/exclude
+# Just in case my machine gets toasted I don't want to lose them, and so they are backed up like so....
+# If they work/once they're solid then they'll get added to the katoa repo.
+
 productivity-assets-backup() {
   local backup_date=$(date +%Y%m%d)
   local backup_dir="/Users/jt/Library/CloudStorage/GoogleDrive-justin.thirkell@vital.io/My Drive/Untracked files backup"
