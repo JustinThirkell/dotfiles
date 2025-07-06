@@ -9,7 +9,8 @@
 		"dev": "ts-node linear_wrapper.ts"
 	},
 	"dependencies": {
-		"@linear/sdk": "^40.0.0"
+		"@linear/sdk": "^40.0.0",
+		"safe-stable-stringify": "^2.5.0"
 	},
 	"license": "ISC",
 	"devDependencies": {

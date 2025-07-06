@@ -4,7 +4,7 @@ git_pr() {
   # PR title should be: [JT-32] "Issue title"
 
   # Default options
-  local SKIP_LLM=true
+  local SKIP_LLM=false
   local DEBUG=false
 
   # Process command line arguments
@@ -57,45 +57,50 @@ git_pr() {
 
   info "📝 Fetching issue details for $issue_id_from_branch using Linear CLI"
 
-  # Get issue details from Linear using the new linear CLI wrapper
-  local issue_details_json
-  issue_details_json=$(linear issue "$issue_id_from_branch")
+  # Get issue from Linear using our local linear function
+  local issue
+  issue=$(linear issue "$issue_id_from_branch")
 
-  if [[ $? -ne 0 || -z "$issue_details_json" ]]; then
+  if [[ $? -ne 0 || -z "$issue" ]]; then
     error "Could not fetch issue details from Linear for issue ID: $issue_id_from_branch"
     info "Please check that the issue exists, the ID is correct, and that you have proper access."
     return 1
   fi
 
-  debug "Received issue_details_json from SDK: $issue_details_json"
+  debug "Received issue from SDK: $issue"
 
-  local issue_title
-  issue_title=$(echo "$issue_details_json" | jq -r '.title')
-  local issue_description # For potential use in LLM prompt later
-  issue_description=$(echo "$issue_details_json" | jq -r '.description')
-  local issue_url # For potential use in LLM prompt later
-  issue_url=$(echo "$issue_details_json" | jq -r '.url')
+  # Sanitize JSON to handle any remaining control characters before jq parsing
+  local sanitized_issue
+  sanitized_issue=$(echo "$issue" | tr -d '\000-\037')
 
-  if [[ -z "$issue_title" || "$issue_title" == "null" ]]; then
+  # Extract all issue fields in a single jq call
+  local title description url
+  {
+    read -r title
+    read -r description
+    read -r url
+  } <<<"$(echo "$sanitized_issue" | jq -r '.title, .description, .url')"
+
+  if [[ -z "$title" || "$title" == "null" ]]; then
     error "Could not extract issue title from Linear response for issue ID: $issue_id_from_branch"
-    debug "Issue details JSON was: $issue_details_json"
+    debug "Issue details JSON was: $issue"
     return 1
   fi
 
-  info "Successfully fetched title for $issue_id_from_branch: '$issue_title'"
+  info "Successfully fetched title for $issue_id_from_branch: '$title'"
 
   # Convert issue_id_from_branch to uppercase for PR title
-  local issue_id_upper
-  issue_id_upper=$(echo "$issue_id_from_branch" | tr '[:lower:]' '[:upper:]')
-  [[ "$DEBUG" == "true" ]] && debug "issue_id_upper: $issue_id_upper"
+  local id
+  id=$(echo "$issue_id_from_branch" | tr '[:lower:]' '[:upper:]')
+  [[ "$DEBUG" == "true" ]] && debug "id: $id"
 
   # Ensure the first letter of the issue title is capitalized
-  local issue_title_capitalized
-  issue_title_capitalized=$(echo "$issue_title" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')
-  [[ "$DEBUG" == "true" ]] && debug "issue_title_capitalized: $issue_title_capitalized"
+  local title_capitalized
+  title_capitalized=$(echo "$title" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')
+  [[ "$DEBUG" == "true" ]] && debug "title_capitalized: $title_capitalized"
 
   # Format the PR title with uppercase issue ID and capitalized title
-  pr_title="[$issue_id_upper] $issue_title_capitalized"
+  pr_title="[$id] $title_capitalized"
   info "Generated PR title: $pr_title"
 
   # Generate PR description if LLM is not being skipped
@@ -103,23 +108,19 @@ git_pr() {
     info "📝 Generating PR description (LLM step)"
 
     # Construct a more detailed issue context string for the LLM
-    local linear_issue_context="Linear Issue ID: $issue_id_upper\nTitle: $issue_title\nURL: $issue_url\nDescription: $issue_description"
+    local linear_issue_context="Linear Issue ID: $id\nTitle: $title\nURL: $url\nDescription: $description"
     [[ "$DEBUG" == "true" ]] && debug "linear_issue_context for LLM: $linear_issue_context"
 
     ollama_prompt="Based on the following git diff and the branch name '$current_branch', write a \
 concise, informative, and detailed PR description that summarizes the changes. \
 Here is the Linear issue context for this PR:\n\n${linear_issue_context}. \
-\nUse five sections that are correctly formatted markdown:\
-# Purpose -> quick overview of what the PR is for\
-# Context -> background information about the PR. USE issue context if available, particularly the issue description. \
+\nUse sections that are correctly formatted markdown:\
+# Purpose -> concise overview of why the PR has been created.  Try to use the issue title if available.\
+## Context -> background information about the PR. USE issue context if available, particularly the issue description. \
 # Approach -> how the PR achieves the goal. IMPORTANT: in this section, only mention files that actually appear in the git diff. DO NOT invent or fabricate any file names. First EXTRACT the exact file names from the git diff, then only reference those specific files. If you're unsure about a file name, do not mention it at all. DOUBLE CHECK that each file you mention is present in the git diff before including it. If you list file names, use EXACT file paths from the git diff, not made-up ones or shortened versions. If no files are modified in the git diff, then describe the changes without referencing specific files. \
-# Testing -> ONLY include this section if the git diff contains files with names that include the word \"test\" or the word \"spec\". If you don't see any test files in the git diff, OMIT this section completely. If test files are present, describe how the PR was tested. \
-# Linear -> Add a markdown link using the Linear issue URL from the issue context. \
-\nUse line breaks before and after separate sections AND before and after titles to ensure they are correctly formatted. \
-Try to use emojis where possible. \
-. \
-At the end, include a note in italics stating that this summary was written by the whale 🐋 (DeepSeek R1), and to tag Justin if you're not \
-happy with it. \
+\nUse line breaks to ensure they are correctly formatted markdown. \
+Do not use emojis. \
+At the end, include a note in italics stating that this summary was written by an LLM, and to tag Justin if you're not happy with it. \
 Only return the PR description, don't return anything else."
 
     if [[ "$DEBUG" == "true" ]]; then

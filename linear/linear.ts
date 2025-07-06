@@ -1,5 +1,6 @@
 import type { Team, Project, Issue } from "@linear/sdk";
 import { LinearClient } from "@linear/sdk";
+import stringify from "safe-stable-stringify";
 
 /*
   ------------------------------------------------------------------------------------
@@ -42,6 +43,92 @@ const linear = new LinearClient({ apiKey });
 
 // Optionally supplied user id (used later for filtering in mutations)
 const LINEAR_USER_ID: string | undefined = process.env.LINEAR_USER_ID;
+
+// -------------------------------------------------------------------------------------------------
+// Main
+// -------------------------------------------------------------------------------------------------
+async function main(): Promise<void> {
+	const rawArgs = process.argv.slice(2);
+	const argv = stripGlobalFlags(rawArgs);
+	const command = argv[0];
+	const rest = argv.slice(1);
+	const params = parseArgs(rest);
+
+	try {
+		switch (command) {
+			case "teams": {
+				const all = Boolean(params.all);
+				const json = JSON.stringify(await listTeams(all), null, 2);
+				console.log(json);
+				return;
+			}
+			case "projects": {
+				const all = Boolean(params.all);
+				const json = JSON.stringify(
+					await listProjects(params.teamId as string | undefined, all),
+					null,
+					2,
+				);
+				console.log(json);
+				return;
+			}
+			case "issues": {
+				const json = JSON.stringify(
+					await listIssues(
+						params.teamId as string | undefined,
+						params.projectId as string | undefined,
+					),
+					null,
+					2,
+				);
+				console.log(json);
+				return;
+			}
+			case "issue": {
+				// Accept issue ID as positional argument or --id flag
+				const issueId =
+					rest[0] && !rest[0].startsWith("--")
+						? rest[0]
+						: (params.id as string);
+				const json = stringify(await getIssue(issueId), null, 2);
+				console.log(json);
+				return;
+			}
+			case "me": {
+				const json = JSON.stringify(await getMe(), null, 2);
+				console.log(json);
+				return;
+			}
+			case "set-userId": {
+				const json = JSON.stringify(await setUserId(), null, 2);
+				console.log(json);
+				return;
+			}
+			default:
+				console.error(
+					JSON.stringify({
+						error: `Unknown command: ${command}`,
+						supported: [
+							"teams",
+							"projects",
+							"issues",
+							"issue",
+							"me",
+							"set-userId",
+						],
+					}),
+				);
+				process.exit(1);
+				return;
+		}
+	} catch (err: unknown) {
+		const error = err as Error;
+		console.error(JSON.stringify({ error: error.message, stack: error.stack }));
+		process.exit(1);
+	}
+}
+
+main();
 
 // -------------------------------------------------------------------------------------------------
 // CLI argument parsing (very small utility – avoids bringing external deps)
@@ -167,33 +254,62 @@ async function listProjects(
 	info("Fetching projects…");
 	const projects: Project[] = await collectAllNodes(linear.projects());
 
-	// If --teamId is specified, filter by team
+	// Resolve team information for all projects
+	const projectsWithTeams = await Promise.all(
+		projects.map(async (p) => {
+			const teams = await p.teams();
+			const firstTeam = teams.nodes?.[0];
+			return {
+				id: p.id,
+				name: p.name,
+				state: p.state,
+				teamId: firstTeam?.id || null,
+				teamName: firstTeam?.name || null,
+			};
+		}),
+	);
+
+	// If --teamId is specified, filter by that specific team
 	if (teamIdArg) {
-		const filtered = projects.filter((p) => {
-			const teamId: string | undefined =
-				(p as any).teamId ?? (p as any).team_id;
-			return teamId === teamIdArg;
-		});
+		const filtered = projectsWithTeams.filter((p) => p.teamId === teamIdArg);
 		debug(
 			`Projects returned: ${filtered.length} (filtered by teamId: ${teamIdArg})`,
 		);
 
-		return filtered.map((p) => ({
-			id: p.id,
-			name: p.name,
-			state: p.state,
-			teamId: (p as any).teamId ?? (p as any).team_id,
-		}));
+		return filtered;
 	}
 
-	// Default: show all projects
-	debug(`Projects returned: ${projects.length}`);
-	return projects.map((p) => ({
-		id: p.id,
-		name: p.name,
-		state: p.state,
-		teamId: (p as any).teamId ?? (p as any).team_id,
-	}));
+	// If --all is specified, show all projects
+	if (showAll) {
+		debug(`Projects returned: ${projectsWithTeams.length} (showing all)`);
+		return projectsWithTeams;
+	}
+
+	// Default: show only projects from teams I'm a member of
+	const viewer = await linear.viewer;
+	if (!viewer) throw new Error("Could not fetch current user");
+
+	const teamMembershipsConnection = await viewer.teamMemberships();
+	const teamMemberships = await collectAllNodes(
+		Promise.resolve(teamMembershipsConnection),
+	);
+
+	// Extract team IDs from memberships
+	const myTeamIds = new Set<string>();
+	for (const membership of teamMemberships as any[]) {
+		const team = await membership.team;
+		if (team) {
+			myTeamIds.add(team.id);
+		}
+	}
+
+	const filtered = projectsWithTeams.filter(
+		(p) => p.teamId && myTeamIds.has(p.teamId),
+	);
+	debug(
+		`Projects returned: ${filtered.length} (filtered by current team membership)`,
+	);
+	return filtered;
 }
 
 async function listIssues(
@@ -377,76 +493,3 @@ async function setUserId(): Promise<unknown> {
 		throw new Error(`Failed to update zshrc file: ${(err as Error).message}`);
 	}
 }
-
-// -------------------------------------------------------------------------------------------------
-// Main
-// -------------------------------------------------------------------------------------------------
-async function main(): Promise<void> {
-	const rawArgs = process.argv.slice(2);
-	const argv = stripGlobalFlags(rawArgs);
-	const command = argv[0];
-	const rest = argv.slice(1);
-	const params = parseArgs(rest);
-
-	try {
-		let output: unknown;
-		switch (command) {
-			case "teams": {
-				const all = Boolean(params.all);
-				output = await listTeams(all);
-				break;
-			}
-			case "projects": {
-				const all = Boolean(params.all);
-				output = await listProjects(params.teamId as string | undefined, all);
-				break;
-			}
-			case "issues": {
-				output = await listIssues(
-					params.teamId as string | undefined,
-					params.projectId as string | undefined,
-				);
-				break;
-			}
-			case "issue": {
-				// Accept issue ID as positional argument or --id flag
-				const issueId =
-					rest[0] && !rest[0].startsWith("--")
-						? rest[0]
-						: (params.id as string);
-				output = await getIssue(issueId);
-				break;
-			}
-			case "me":
-				output = await getMe();
-				break;
-			case "set-userId":
-				output = await setUserId();
-				break;
-			default:
-				console.error(
-					JSON.stringify({
-						error: `Unknown command: ${command}`,
-						supported: [
-							"teams",
-							"projects",
-							"issues",
-							"issue",
-							"me",
-							"set-userId",
-						],
-					}),
-				);
-				process.exit(1);
-				return;
-		}
-
-		console.log(JSON.stringify(output, null, 2));
-	} catch (err: unknown) {
-		const error = err as Error;
-		console.error(JSON.stringify({ error: error.message, stack: error.stack }));
-		process.exit(1);
-	}
-}
-
-main();
