@@ -2,11 +2,11 @@
 # https://docs.commonfate.io/granted/usage/assuming-roles
 
 function aws-sso() {
-  granted sso login --sso-region us-west-2 --sso-start-url 'https://d-92670a7627.awsapps.com/start/#'
+  granted sso login --sso-region us-west-2 --sso-start-url "https://${AWS_APPS_IDENTIFIER}.awsapps.com/start/#"
 }
 
 function aws-sso-refresh-roles() {
-  granted sso populate --sso-region us-west-2 'https://d-92670a7627.awsapps.com/start/#'
+  granted sso populate --sso-region us-west-2 "https://${AWS_APPS_IDENTIFIER}.awsapps.com/start/#"
 }
 
 function aws-dev() {
