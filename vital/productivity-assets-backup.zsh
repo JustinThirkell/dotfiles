@@ -6,7 +6,7 @@
 
 productivity-assets-backup() {
   local backup_date=$(date +%Y%m%d)
-  local backup_dir="/Users/jt/Library/CloudStorage/GoogleDrive-justin.thirkell@vital.io/My Drive/Untracked files backup"
+  local backup_dir="$HOME/Library/CloudStorage/GoogleDrive-${USER_EMAIL}/My Drive/Untracked files backup"
   local patch_file="$backup_dir/productivity-assets-$backup_date.patch"
   local zip_file="$backup_dir/productivity-assets-$backup_date.zip"
 
