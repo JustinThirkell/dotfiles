@@ -23,6 +23,7 @@ brew "oven-sh/bun/bun"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 brew "uv"
+brew "ollama"
 
 cask "1password-cli"
 cask "alt-tab"
@@ -51,6 +52,9 @@ cask "visual-studio-code"
 cask "voiceink"
 cask "grandperspective"
 cask "github"
+cask "typora"
+cask "linear-linear"
+cask "claude"
 
 mas "Actions", id: 1586435171
 mas "Battery Indicator", id: 1206020918
@@ -89,7 +93,6 @@ mas "Shareful", id: 1522267256
 # Manual installs
 # 1Password
 # Arc
-# Claude
 # Cursor
 # Docker
 # GitHub Desktop
@@ -99,13 +102,8 @@ mas "Shareful", id: 1522267256
 # Google Drive
 # Google Sheets
 # Google Slides
-# Ice
 # Insomnia
-# Linear
 # Loom
-# Ollama
-# p4admin
-# p4merge
 # Slack
 # Spotify
 # superwhisper
