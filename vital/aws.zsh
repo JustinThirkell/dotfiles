@@ -22,3 +22,7 @@ function aws-creds-clear() {
   granted cache clear --storage=sso-token
   granted cache clear --storage=session-credentials
 }
+
+function aws-check-session() {
+  aws sts get-caller-identity
+}
