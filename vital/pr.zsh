@@ -4,7 +4,7 @@ git_pr() {
   # PR title should be: [JT-32] "Issue title"
 
   # Default options
-  local SKIP_LLM=false
+  local SKIP_LLM=true
   local DEBUG=false
 
   # Process command line arguments
@@ -124,35 +124,35 @@ At the end, include a note in italics stating that this summary was written by a
 Only return the PR description, don't return anything else."
 
     if [[ "$DEBUG" == "true" ]]; then
-      echo "🔍 Here's the prompt that will be given to Ollama:"
-      echo "-------------------------------------------------"
-      echo "$ollama_prompt"
-      echo "-------------------------------------------------"
+      debug "🔍 Here's the prompt that will be given to Ollama:"
+      debug "-------------------------------------------------"
+      debug "$ollama_prompt"
+      debug "-------------------------------------------------"
     fi
 
-    echo "⏳ Now running Ollama... (this might take a while)"
+    info "⏳ Now running Ollama... (this might take a while)"
 
     raw_description=$(git diff main | ollama run gemma3 "$ollama_prompt" | sed "s/\"//g")
-    [[ "$DEBUG" == "true" ]] && echo "raw_description: $raw_description"
+    [[ "$DEBUG" == "true" ]] && debug "raw_description: $raw_description"
 
     if [[ "$DEBUG" == "true" ]]; then
-      echo "📄 Raw PR description before removing think tags:"
-      echo "$raw_description"
-      echo "----------------------------------------"
+      debug "📄 Raw PR description before removing think tags:"
+      debug "$raw_description"
+      debug "----------------------------------------"
     fi
 
-    echo "🔍 Removing <think> tags"
+    info "🔍 Removing <think> tags"
 
     # Clean and escape the PR description
     pr_description=$(echo "$raw_description" |
       perl -0777 -pe 's/<think>.*?<\/think>//gs')
 
-    echo "🧹 Removing LLM output footer"
+    info "🧹 Removing LLM output footer"
     # Remove the output footer that sometimes appears in LLM responses
     pr_description=$(echo "$pr_description" |
       perl -0777 -pe 's/\n\n---\n\n\*Note: This PR description is concise.*?instructions\.\*//gs')
   else
-    echo "⏭️ Skipping PR description generation (--skip-llm flag set)"
+    info "⏭️ Skipping PR description generation (--skip-llm flag set)"
   fi
 
   # Check if a PR already exists for the current branch
@@ -165,21 +165,21 @@ Only return the PR description, don't return anything else."
     pr_number=$(echo "$sanitized_pr" | jq -r .number)
 
     if [[ "$SKIP_LLM" == "true" ]]; then
-      echo "🔄 Updating existing PR #$pr_number (title only)"
+      info "🔄 Updating existing PR #$pr_number (title only)"
       gh pr edit $pr_number --title "$pr_title"
     else
-      echo "🔄 Updating existing PR #$pr_number"
+      info "🔄 Updating existing PR #$pr_number"
       gh pr edit $pr_number --title "$pr_title" --body "$pr_description"
     fi
     echo "🎉 Successfully updated PR"
   else
     # Create new PR
     if [[ "$SKIP_LLM" == "true" ]]; then
-      echo "🆕 Creating new PR (without description)"
-      echo "gh pr create --title \"$pr_title\" --web"
+      info "🆕 Creating new PR (without description)"
+      info "gh pr create --title \"$pr_title\" --web"
       gh pr create --title "$pr_title" --web
     else
-      echo "🆕 Creating new PR"
+      info "🆕 Creating new PR"
       gh pr create --title "$pr_title" --body "$pr_description" --web
     fi
     echo "🎉 Successfully created PR"
@@ -190,8 +190,8 @@ alias pr=git_pr
 # Function to set up git worktree and open Cursor IDE for PR review
 pr_review_worktree() {
   if [ -z "$1" ]; then
-    echo "Error: Branch name required"
-    echo "Usage: pr-review <branch-name>"
+    error "Error: Branch name required"
+    error "Usage: pr-review <branch-name>"
     return 1
   fi
 
@@ -200,7 +200,7 @@ pr_review_worktree() {
 
   # Check if worktree already exists
   if [ -d "$worktree_path" ]; then
-    echo "Error: Worktree directory already exists at $worktree_path"
+    error "Error: Worktree directory already exists at $worktree_path"
     return 1
   fi
 
@@ -211,9 +211,9 @@ pr_review_worktree() {
     # Open Cursor IDE
     cursor $worktree_path
 
-    echo "Successfully set up worktree at $worktree_path"
+    info "Successfully set up worktree at $worktree_path"
   else
-    echo "Error: Failed to create git worktree"
+    error "Error: Failed to create git worktree"
     return 1
   fi
 }
