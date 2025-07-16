@@ -1,56 +1,67 @@
 [include]
-  # local/private config goes in the include
-  path = ~/.gitconfig.local
-  path = ~/.gitconfig.aliases
+# local/private config goes in the include
+path = ~/.gitconfig.local
+path = ~/.gitconfig.aliases
 
 [gpg]
-  format = ssh
+format = ssh
 
 [gpg "ssh"]
-  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 
 [commit]
-  gpgsign = true
+gpgsign = true
 
 [init]
-	defaultBranch = main
+defaultBranch = main
 
 [core]
-	editor = code --wait
-	excludesfile = ~/.gitignore_global
+editor = code --wait
+excludesfile = ~/.gitignore_global
 
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+clean = git-lfs clean -- %f
+smudge = git-lfs smudge -- %f
+process = git-lfs filter-process
+required = true
 
 [pager]
-  branch = false
+branch = false
 
 [color]
-  diff = auto
-  status = auto
-  branch = auto
-  ui = true
+diff = auto
+status = auto
+branch = auto
+ui = true
 
 [pull]
-  rebase = false
+rebase = false
 
 [push]
-  # Setting to git 2.0 default to suppress warning message
-  # default = simple
-  
-  autoSetupRemote = true
+# Setting to git 2.0 default to suppress warning message
+# default = simple
+
+autoSetupRemote = true
 
 [rebase]
-	autosquash = true
+autosquash = true
 
 [rerere]
-  enabled = true
+enabled = true
 
-[mergetool]
-  keepBackup = false
+[diff]
+tool = Kaleidoscope
+
+[merge]
+tool = Kaleidoscope
 
 [difftool]
-  prompt = false
+prompt = false
+trustExitCode = true
+
+[difftool "Kaleidoscope"]
+cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+
+[mergetool "Kaleidoscope"]
+cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+trustExitCode = true
