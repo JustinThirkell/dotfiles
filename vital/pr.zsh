@@ -4,7 +4,7 @@ git_pr() {
   # PR title should be: [JT-32] "Issue title"
 
   # Default options
-  local SKIP_LLM=true
+  local SKIP_LLM=false
   local DEBUG=false
 
   # Process command line arguments
@@ -45,8 +45,8 @@ git_pr() {
   branch=$(git branch --show-current)
   [[ "$DEBUG" == "true" ]] && echo "branch: $branch"
 
-  # Extract the issue identifier
-  issue_id_from_branch="$(echo $current_branch | grep -o -E '[a-zA-Z]+-[0-9]+')"
+  # Extract the issue identifier (only take the first match)
+  issue_id_from_branch="$(echo $current_branch | grep -o -E '[a-zA-Z]+-[0-9]+' | head -1)"
   [[ "$DEBUG" == "true" ]] && debug "Extracted issue_id_from_branch: $issue_id_from_branch"
 
   if [[ -z $issue_id_from_branch ]]; then
@@ -177,10 +177,10 @@ Only return the PR description, don't return anything else."
     if [[ "$SKIP_LLM" == "true" ]]; then
       info "🆕 Creating new PR (without description)"
       info "gh pr create --title \"$pr_title\" --web"
-      gh pr create --title "$pr_title" --web
+      gh pr create --title "$pr_title" --web --preview
     else
       info "🆕 Creating new PR"
-      gh pr create --title "$pr_title" --body "$pr_description" --web
+      gh pr create --title "$pr_title" --body "$pr_description" --web --preview
     fi
     echo "🎉 Successfully created PR"
   fi
