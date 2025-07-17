@@ -57,5 +57,6 @@
 	"[properties]": {
 		"editor.defaultFormatter": "foxundermoon.shell-format"
 	},
-	"cursor.composer.shouldChimeAfterChatFinishes": true
+	"cursor.composer.shouldChimeAfterChatFinishes": true,
+	"git.confirmEmptyCommits": false
 }
