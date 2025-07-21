@@ -2,11 +2,11 @@
 # https://docs.commonfate.io/granted/usage/assuming-roles
 
 function aws-sso() {
-  granted sso login --sso-region us-west-2 --sso-start-url 'https://d-92670a7627.awsapps.com/start/#'
+  granted sso login --sso-region us-west-2 --sso-start-url "https://${AWS_APPS_IDENTIFIER}.awsapps.com/start/#"
 }
 
 function aws-sso-refresh-roles() {
-  granted sso populate --sso-region us-west-2 'https://d-92670a7627.awsapps.com/start/#'
+  granted sso populate --sso-region us-west-2 "https://${AWS_APPS_IDENTIFIER}.awsapps.com/start/#"
 }
 
 function aws-dev() {
@@ -21,4 +21,8 @@ function aws-daily() {
 function aws-creds-clear() {
   granted cache clear --storage=sso-token
   granted cache clear --storage=session-credentials
+}
+
+function aws-check-session() {
+  aws sts get-caller-identity
 }

@@ -4,3 +4,5 @@ Brewfile.lock.json
 dotfiles.initialized
 *.local
 .DS_Store
+node_modules
+dist
