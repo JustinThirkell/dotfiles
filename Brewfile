@@ -40,7 +40,7 @@ cask "kaleidoscope"
 cask "keycue"
 cask "maccy"
 cask "obsidian"
-cask "p4v"
+cask "ollama"
 cask "raycast"
 cask "session-manager-plugin"
 cask "shortcat"
@@ -103,9 +103,6 @@ mas "Shareful", id: 1522267256
 # Insomnia
 # Linear
 # Loom
-# Ollama
-# p4admin
-# p4merge
 # Slack
 # Spotify
 # superwhisper
