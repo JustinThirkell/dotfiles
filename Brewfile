@@ -41,7 +41,7 @@ cask "kaleidoscope"
 cask "keycue"
 cask "maccy"
 cask "obsidian"
-cask "p4v"
+cask "ollama"
 cask "raycast"
 cask "session-manager-plugin"
 cask "shortcat"
@@ -67,35 +67,11 @@ mas "MKV2MP4", id: 585396074
 mas "Pandan", id: 1569600264
 mas "Shareful", id: 1522267256
 
-# cursor "bradlc.vscode-tailwindcss"
-# cursor "eamodio.gitlens"
-# cursor "vitest.explorer"
-# cursor "davidanson.vscode-markdownlint"
-# cursor "nrwl.angular-console"
-# cursor "vscode-icons-team.vscode-icons"
-# cursor "ctf0.save-editors-layout"
-# cursor "yoavbls.pretty-ts-errors"
-# cursor "mxsdev.typescript-explorer"
-# cursor "bierner.markdown-mermaid"
-# cursor "jasonnutter.vscode-codeowners"
-# cursor "chdsbd.github-code-owners"
-# cursor "ms-playwright.playwright"
-# cursor "nicoespeon.abracadabra"
-# cursor "bpruitt-goddard.mermaid-markdown-syntax-highlighting"
-# cursor "ciarant.vscode-structurizr"
-# cursor "gruntfuggly.todo-tree"
-# cursor "graphql.vscode-graphql"
-# cursor "graphql.vscode-graphql-syntax"
-# cursor "tomoyukim.vscode-mermaid-editor"
-
-
-
 # Manual installs
 # 1Password
 # Arc
 # Cursor
 # Docker
-# GitHub Desktop
 # GitKraken
 # Google Chrome
 # Google Docs
@@ -106,9 +82,6 @@ mas "Shareful", id: 1522267256
 # Loom
 # Slack
 # Spotify
-# superwhisper
 # Tower
-# Typinator
 # Visual Studio Code
-# Wispr Flow
 # zoom.us
