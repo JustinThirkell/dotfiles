@@ -177,10 +177,10 @@ Only return the PR description, don't return anything else."
     if [[ "$SKIP_LLM" == "true" ]]; then
       info "🆕 Creating new PR (without description)"
       info "gh pr create --title \"$pr_title\" --web"
-      gh pr create --title "$pr_title" --web --preview
+      gh pr create --title "$pr_title" --web
     else
       info "🆕 Creating new PR"
-      gh pr create --title "$pr_title" --body "$pr_description" --web --preview
+      gh pr create --title "$pr_title" --body "$pr_description" --web
     fi
     echo "🎉 Successfully created PR"
   fi
