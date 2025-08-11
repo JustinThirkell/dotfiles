@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+kill-node-vitest() {
+    local pids=$(pgrep -f "node.*vitest")
+    
+    if [[ -z "$pids" ]]; then
+        echo "No Vitest Node.js processes found."
+        return 0
+    fi
+    
+    echo "Found Vitest Node.js processes:"
+    ps -p $pids -o pid,ppid,command
+    
+    echo $pids | xargs kill
+    echo "Killed Vitest Node.js processes: $pids"
+}

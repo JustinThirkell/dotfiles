@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+kill-node-high-cpu() {
+    # Find node processes with CPU > 80%
+    local high_cpu_pids=$(ps -eo pid,pcpu,command | awk '/node/ && $2 > 80 {print $1}' | tr '\n' ' ')
+    
+    if [[ -z "$high_cpu_pids" ]]; then
+        echo "No Node.js processes with CPU > 80% found."
+        return 0
+    fi
+    
+    echo "Found high-CPU Node.js processes (>80%):"
+    ps -p $high_cpu_pids -o pid,pcpu,command
+    
+    echo $high_cpu_pids | xargs kill
+    echo "Killed high-CPU Node.js processes: $high_cpu_pids"
+}
