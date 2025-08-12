@@ -26,7 +26,6 @@ brew "uv"
 brew "ollama"
 
 cask "1password-cli"
-cask "alt-tab"
 cask "claude"
 cask "disk-drill"
 cask "fluor"
