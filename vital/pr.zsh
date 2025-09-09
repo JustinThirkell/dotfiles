@@ -111,13 +111,15 @@ git_pr() {
     local linear_issue_context="Linear Issue ID: $id\nTitle: $title\nURL: $url\nDescription: $description"
     [[ "$DEBUG" == "true" ]] && debug "linear_issue_context for LLM: $linear_issue_context"
 
+    local ollama_model="qwen3:8b"  # Gemma3
+    [[ "$DEBUG" == "true" ]] && debug "ollama_model: $ollama_model"
+
     ollama_prompt="Based on the following git diff and the branch name '$current_branch', write a \
 concise, informative, and detailed PR description that summarizes the changes. \
 Here is the Linear issue context for this PR:\n\n${linear_issue_context}. \
 \nUse sections that are correctly formatted markdown:\
 # Purpose -> concise overview of why the PR has been created.  Try to use the issue title if available.\
-## Context -> background information about the PR. USE issue context if available, particularly the issue description. \
-# Approach -> how the PR achieves the goal. IMPORTANT: in this section, only mention files that actually appear in the git diff. DO NOT invent or fabricate any file names. First EXTRACT the exact file names from the git diff, then only reference those specific files. If you're unsure about a file name, do not mention it at all. DOUBLE CHECK that each file you mention is present in the git diff before including it. If you list file names, use EXACT file paths from the git diff, not made-up ones or shortened versions. If no files are modified in the git diff, then describe the changes without referencing specific files. \
+## Context -> background information about the PR. USE issue context if available, particularly the issue description. 
 \nUse line breaks to ensure they are correctly formatted markdown. \
 Do not use emojis. \
 At the end, include a note in italics stating that this summary was written by an LLM, and to tag Justin if you're not happy with it. \
@@ -132,7 +134,7 @@ Only return the PR description, don't return anything else."
 
     info "⏳ Now running Ollama... (this might take a while)"
 
-    raw_description=$(git diff main | ollama run gemma3 "$ollama_prompt" | sed "s/\"//g")
+    raw_description=$(git diff main | ollama run $ollama_model "$ollama_prompt" | sed "s/\"//g")
     [[ "$DEBUG" == "true" ]] && debug "raw_description: $raw_description"
 
     if [[ "$DEBUG" == "true" ]]; then
