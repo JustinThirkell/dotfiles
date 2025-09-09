@@ -52,6 +52,7 @@ cask "grandperspective"
 cask "github"
 cask "linear-linear"
 cask "claude"
+cask "zed"
 
 mas "Actions", id: 1586435171
 mas "Battery Indicator", id: 1206020918
