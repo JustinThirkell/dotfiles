@@ -13,6 +13,7 @@
 # fi
 
 export EDITOR='cursor'
+export VISUAL='cursor'
 
 # Enable persistent REPL history for `node`.
 export NODE_REPL_HISTORY=~/.node_history
