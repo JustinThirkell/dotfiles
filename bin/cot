@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# Open files in CotEditor
+#
+# CotEditor is a lightweight text editor for macOS.
+#
+# USAGE:
+#
+#   $ cot filename.json
+#   # => opens filename.json in CotEditor
+#
+exec open -a CotEditor "${1:-.}"

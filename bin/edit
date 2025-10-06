@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# Quick shortcut to an editor.
+# It's the same as the `e` command but sometimes I forget about that one.  🤦🏼
+#
+# USAGE:
+#
+#   $ edit filename.json
+#   # => opens filename.json in your editor
+#
+#   $ edit ~/Documents/file.txt
+#   # => opens the specified file in your editor
+#
+#   $ edit .
+#   # => opens the current directory in your editor
+#
+exec "$EDITOR" "${1:-.}"
