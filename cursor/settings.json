@@ -57,5 +57,7 @@
 		"editor.defaultFormatter": "foxundermoon.shell-format"
 	},
 	"cursor.composer.shouldChimeAfterChatFinishes": true,
-	"git.confirmEmptyCommits": false
+	"git.confirmEmptyCommits": false,
+	"typescriptExplorer.typeTree.meta.typeArguments.includeInFunctions": true,
+	"typescriptExplorer.typeTree.readonly.enable": true
 }
