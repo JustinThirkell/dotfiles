@@ -52,6 +52,7 @@ brew "oven-sh/bun/bun"
 brew "simonw/llm/ttok"
 
 cask "1password-cli"
+cask "audacity"
 cask "claude"
 cask "disk-drill"
 cask "fluor"
