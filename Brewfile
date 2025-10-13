@@ -4,6 +4,7 @@ tap "auth0/auth0-cli"
 tap "aws/tap"
 tap "common-fate/granted"
 tap 'github/gh'
+tap 'hashicorp/tap'
 tap 'homebrew/bundle'
 tap "oven-sh/bun"
 tap "powershell/tap"
@@ -20,6 +21,7 @@ brew "gh"
 brew "git"
 brew "gnu-tar"
 brew "grep"
+brew 'hashicorp/tap/terraform'
 brew "jq"
 brew "libassuan"
 brew "libgit2"
