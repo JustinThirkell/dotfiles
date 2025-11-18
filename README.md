@@ -77,6 +77,7 @@ To keep your dotfiles installation up-to-date across multiple machines, you'll n
 If you've added new applications or tools to the `Brewfile`, you can install them by running:
 
 ```sh
+cd ~/.dotfiles
 dot
 ```
 
@@ -90,22 +91,21 @@ Run `dot -f` to force install scripts to run.
 
 The `dot` command is your main tool for keeping things fresh. Running `dot` will:
 
--   Pull the latest changes from your dotfiles git repository.
--   Run `brew update`, `brew upgrade`, and `brew bundle` to manage your Homebrew packages.
--   Set your macOS hostname.
+- Pull the latest changes from your dotfiles git repository.
+- Run `brew update`, `brew upgrade`, and `brew bundle` to manage your Homebrew packages.
+- Set your macOS hostname.
 
 On a fresh installation, or when run with the `-f` flag (`dot -f`), it will also:
 
--   Install Homebrew if it's not present.
--   Set macOS defaults (from `macos/set-defaults.sh`).
--   Run all `install.sh` scripts via `script/install`.
+- Install Homebrew if it's not present.
+- Set macOS defaults (from `macos/set-defaults.sh`).
+- Run all `install.sh` scripts via `script/install`.
 
 You should run `dot` periodically to keep everything in sync.
 
 #### 4. Changes to `.zsh` files or functions
 
 Any files ending in `.zsh` are automatically loaded when you start a new shell session. If you make changes to these files (e.g., in the `zsh/` or `functions/` directories), you just need to pull the latest changes from your git repository. The `dot` command does this for you. The changes will be available in any new terminal session you start.
-
 
 ## bugs
 
