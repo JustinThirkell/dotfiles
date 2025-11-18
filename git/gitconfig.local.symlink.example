@@ -1,7 +1,7 @@
 [user]
 	name = AUTHORNAME
   email = AUTHOREMAIL
-  signingkey = SIGNINGKEY
+  signingkey = PUBLICKEY (eg ssh-ed25519 abcdefg)
 
 [credential]
   helper = GIT_CREDENTIAL_HELPER
