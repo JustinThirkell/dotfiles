@@ -59,5 +59,6 @@
 	"cursor.composer.shouldChimeAfterChatFinishes": true,
 	"git.confirmEmptyCommits": false,
 	"typescriptExplorer.typeTree.meta.typeArguments.includeInFunctions": true,
-	"typescriptExplorer.typeTree.readonly.enable": true
+	"typescriptExplorer.typeTree.readonly.enable": true,
+	"specstory.cloudSync.enabled": "never"
 }
