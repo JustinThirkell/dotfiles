@@ -55,7 +55,6 @@ brew "simonw/llm/ttok"
 
 cask "1password-cli"
 cask "audacity"
-cask "betterdisplay"
 cask "claude"
 cask "claude-code"
 cask "chatgpt"
