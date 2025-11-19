@@ -85,3 +85,7 @@ if [ ${freshInstall} = 'true' ]; then
   $DOTZSH/script/install
   touch "${dotfilesDirectory}/dotfiles.initialized"
 fi
+
+# Generate package manifests
+echo "› generate package manifests"
+$DOTZSH/script/generate-manifests

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#
+# Generate all package manager manifests
+
+set -e
+
+cd "$(dirname $0)"/..
+
+echo "Generating package manifests..."
+echo ""
+
+# Find all generate-manifest.sh scripts and run them
+find . -name generate-manifest.sh | while read generator; do
+  sh -c "${generator}"
+done
+
+echo ""
+echo "All manifests generated successfully"

@@ -107,6 +107,43 @@ You should run `dot` periodically to keep everything in sync.
 
 Any files ending in `.zsh` are automatically loaded when you start a new shell session. If you make changes to these files (e.g., in the `zsh/` or `functions/` directories), you just need to pull the latest changes from your git repository. The `dot` command does this for you. The changes will be available in any new terminal session you start.
 
+## Package Manifests
+
+This dotfiles repo automatically tracks globally installed packages from various package managers. This ensures you don't lose track of tools you've installed when setting up a new machine.
+
+### Supported Package Managers
+
+- **uv** - Python tools (manifest: `uv/manifest.txt`)
+- **npm** - Node.js global packages (manifest: `node/npm-manifest.txt`)
+- **yarn** - Yarn global packages (manifest: `node/yarn-manifest.txt`)
+- **cargo** - Rust packages (manifest: `rust/manifest.txt`)
+- **go** - Go packages (manifest: `go/manifest.txt`)
+
+### How it works
+
+**Automatic snapshots:**
+When you run `dot`, it automatically generates manifests for all installed packages from each package manager. These manifests are saved in the appropriate topic directories and should be committed to your dotfiles repo.
+
+**Restoring packages:**
+When you run `dot -f` (e.g., on a fresh machine), it automatically installs all packages from the manifests via the topic `install.sh` scripts.
+
+**Manual operations:**
+
+```sh
+# Generate all manifests manually
+script/generate-manifests
+
+# Install packages from manifests manually
+script/install
+```
+
+### Notes
+
+- Package manifests track package names only, not versions
+- Installation is idempotent - running install scripts won't reinstall existing packages
+- If a package manager isn't installed, its manifest generation/installation is skipped
+- Remember to commit manifest changes to keep them synced across machines
+
 ## bugs
 
 I want this to work for everyone; that means when you clone it down it should
