@@ -60,5 +60,6 @@
 	"git.confirmEmptyCommits": false,
 	"typescriptExplorer.typeTree.meta.typeArguments.includeInFunctions": true,
 	"typescriptExplorer.typeTree.readonly.enable": true,
-	"specstory.cloudSync.enabled": "never"
+	"specstory.cloudSync.enabled": "never",
+	"explorer.confirmPasteNative": false
 }
