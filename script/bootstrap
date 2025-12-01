@@ -67,6 +67,7 @@ link_file() {
         skip=true
 
       else
+        info "symlinking $dst from $src"
 
         user "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
         [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
@@ -133,13 +134,37 @@ link_file() {
   fi
 }
 
-install_dotfiles() {
-  info 'installing dotfiles'
+install_dotfile_home_dir_symlinks() {
+  info 'installing dotfile home dir symlinks'
 
-  local overwrite_all=false backup_all=false skip_all=false
+  local overwrite_all=false backup_all=true skip_all=false
 
   for src in $(find -H "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -not -path '*.git*'); do
     dst="$HOME/.$(basename "${src%.*}")"
+    link_file "$src" "$dst"
+  done
+}
+
+install_dotfile_app_settings_symlinks() {
+  info 'installing dotfile app settings symlinks'
+
+  local overwrite_all=false backup_all=true skip_all=false
+  local app_settings_dir="$DOTFILES_ROOT/app_settings"
+
+  if [ ! -d "$app_settings_dir" ]; then
+    success "app_settings directory does not exist, skipping"
+    return
+  fi
+
+  for src in $(find -H "$app_settings_dir" -type f); do
+    # Get the relative path from app_settings_dir
+    local relative_path="${src#$app_settings_dir/}"
+    local dst="$HOME/$relative_path"
+    
+    # Ensure parent directory exists
+    local dst_dir=$(dirname "$dst")
+    mkdir -p "$dst_dir"
+    
     link_file "$src" "$dst"
   done
 }
@@ -156,7 +181,8 @@ setup_oh_my_zsh() {
 
 setup_gitconfig
 setup_oh_my_zsh
-install_dotfiles
+install_dotfile_home_dir_symlinks
+install_dotfile_app_settings_symlinks
 
 prefix_output() {
   while IFS= read -r line; do
