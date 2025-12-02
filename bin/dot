@@ -7,8 +7,6 @@
 
 set -e
 
-force=false
-freshInstall=false
 parentDirectory="$(cd "$(dirname "$0")" && pwd -P)"
 dotfilesDirectory="$(cd "$(dirname "${parentDirectory}")" && pwd -P)"
 
@@ -18,7 +16,6 @@ displayUsageAndExit() {
   echo "Usage: dot [options]"
   echo ""
   echo "Options:"
-  echo "  -f, --force   Force initialization (not skipping setup)"
   echo "  -e, --edit    Open dotfiles directory for editing"
   echo "  -h, --help    Show this help message and exit"
   exit
@@ -33,9 +30,6 @@ while test $# -gt 0; do
     exec "${EDITOR}" "${dotfilesDirectory}"
     exit
     ;;
-  "-f" | "--force")
-    force=true
-    ;;
   *)
     echo "Invalid option: $1"
     displayUsageAndExit
@@ -43,11 +37,6 @@ while test $# -gt 0; do
   esac
   shift
 done
-
-if [ ! -f "${dotfilesDirectory}/dotfiles.initialized" ] || [ ${force} = "true" ]; then
-  freshInstall=true
-fi
-echo "freshInstall: ${freshInstall}"
 
 export DOTZSH=$HOME/.dotfiles
 
@@ -59,15 +48,13 @@ git -C $DOTZSH pull
 echo "› setup-hostname"
 $DOTZSH/macos/set-hostname.sh
 
-if [ ${freshInstall} = 'true' ]; then
-  # Install homebrew
-  echo "› install homebrew"
-  $DOTZSH/homebrew/ensure-homebrew-installed.sh 2>&1
+# # Install homebrew
+# echo "› install homebrew"
+# $DOTZSH/homebrew/ensure-homebrew-installed.sh 2>&1
 
-  # Set macOS defaults
-  echo "› set mac defaults"
-  $DOTZSH/macos/set-defaults.sh
-fi
+# Set macOS defaults
+echo "› set mac defaults"
+$DOTZSH/macos/set-defaults.sh
 
 # Upgrade homebrew
 echo "› brew update"
@@ -79,12 +66,9 @@ brew upgrade
 echo "› brew bundle"
 brew bundle --file $DOTZSH/Brewfile
 
-if [ ${freshInstall} = 'true' ]; then
-  # Install software
-  echo "› script/install"
-  $DOTZSH/script/install
-  touch "${dotfilesDirectory}/dotfiles.initialized"
-fi
+# Install software
+echo "› script/install"
+$DOTZSH/script/install
 
 # Generate package manifests
 echo "› generate package manifests"
