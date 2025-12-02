@@ -96,8 +96,8 @@ defaults write com.apple.spaces "spans-displays" -bool "true"
 
 # Disable the “Are you sure you want to open this application?” dialog
 defaults write com.apple.LaunchServices LSQuarantine -bool false
-# Remove duplicates in the “Open With” menu (also see `lscleanup` alias)
-/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user
+# Remove duplicates in the "Open With" menu (also see `lscleanup` alias)
+/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -r -domain local -domain system -domain user
 # Disable the crash reporter
 defaults write com.apple.CrashReporter DialogType -string "none"
 # Set Help Viewer windows to non-floating mode
@@ -122,14 +122,18 @@ defaults write com.apple.dock wvous-bl-modifier -int 0
 # FireWall Settings                                                           #
 ###############################################################################
 
-echo " Enable Firewall"
-sudo /usr/libexec/ApplicationFirewall/socketfilterfw \
-  --setblockall off \
-  --setallowsigned on \
-  --setallowsignedapp on \
-  --setloggingmode on \
-  --setstealthmode on \
-  --setglobalstate on
+# NOTE: Disabled because Little Snitch is installed.
+# Little Snitch handles outbound connections, and on macOS 15 Sequoia,
+# the built-in firewall can interfere with Little Snitch's functionality.
+# See: https://obdev.at/blog/apples-built-in-macos-firewall-breaks-third-party-firewalls/
+
+# echo " Enable Firewall"
+# sudo /usr/libexec/ApplicationFirewall/socketfilterfw \
+#   --setblockall off \
+#   --setallowsigned on \
+#   --setallowsignedapp on \
+#   --setstealthmode on \
+#   --setglobalstate on
 
 ###############################################################################
 # Trackpad, mouse, keyboard, Bluetooth accessories, and input                 #
