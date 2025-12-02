@@ -108,19 +108,12 @@ link_file() {
       success "removed $dst"
     fi
 
-    if [ "$backup" == "true" ]; then
+    if [ "$backup" == "true" ]
+    then
       timestamp=$(date +%Y%m%d-%H%M%S)
       backup_file="${dst}.backup.${timestamp}"
-
-      if [ -L "$dst" ]; then
-        # For symlinks, copy the content it points to
-        cp "$(readlink -f "$dst")" "$backup_file"
-        success "copied content of $dst to $backup_file"
-      else
-        # For regular files, move the file
-        mv "$dst" "$backup_file"
-        success "moved $dst to $backup_file"
-      fi
+      mv "$dst" "$backup_file"
+      success "moved $dst to $backup_file"
     fi
 
     if [ "$skip" == "true" ]; then
@@ -130,7 +123,7 @@ link_file() {
 
   if [ "$skip" != "true" ]; then # "false" or empty
     ln -s "$1" "$2"
-    success "linked $1 to $2"
+    success "linked $2 to point to $1"
   fi
 }
 
@@ -152,11 +145,17 @@ install_dotfile_app_settings_symlinks() {
   local app_settings_dir="$DOTFILES_ROOT/app_settings"
 
   if [ ! -d "$app_settings_dir" ]; then
-    success "app_settings directory does not exist, skipping"
+    success "dotfiles app_settings directory does not exist, skipping"
     return
   fi
 
-  for src in $(find -H "$app_settings_dir" -type f); do
+  while IFS= read -r -d '' src; do
+    # Skip system files like .DS_Store and ._* (AppleDouble files)
+    local basename=$(basename "$src")
+    if [[ "$basename" == ".DS_Store" ]] || [[ "$basename" =~ ^\._ ]]; then
+      continue
+    fi
+    
     # Get the relative path from app_settings_dir
     local relative_path="${src#$app_settings_dir/}"
     local dst="$HOME/$relative_path"
@@ -166,7 +165,7 @@ install_dotfile_app_settings_symlinks() {
     mkdir -p "$dst_dir"
     
     link_file "$src" "$dst"
-  done
+  done < <(find -H "$app_settings_dir" -type f -print0)
 }
 
 setup_oh_my_zsh() {
