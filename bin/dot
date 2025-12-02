@@ -55,6 +55,7 @@ $DOTZSH/macos/set-hostname.sh
 # Set macOS defaults
 echo "› set mac defaults"
 $DOTZSH/macos/set-defaults.sh
+$DOTZSH/macos/set-default-file-editors.sh
 
 # Upgrade homebrew
 echo "› brew update"
