@@ -23,6 +23,7 @@ export PROJECTS=$HOME/dev
 
 # Source local, non-versioned configurations
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+[[ -f ~/.secrets.local ]] && source ~/.secrets.local
 
 # ------------------------------------------------------------------------------
 # Oh My Zsh (OMZ) and Powerlevel10k (P10k) Theme Setup
