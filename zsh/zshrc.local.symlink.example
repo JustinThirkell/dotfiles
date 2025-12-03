@@ -1,5 +1,4 @@
 # Linear
-export LINEAR_API_KEY="lin_api_123456"
 export LINEAR_USER_ID="uuid goes here"
 export LINEAR_DEFAULT_TEAM_ID="uuid goes here"
 export LINEAR_DEFAULT_PROJECT_ID="uuid goes here"
