@@ -3,7 +3,7 @@
 # bootstrap installs things.
 
 # Make sure .sh files are executable.
-find . -type f -iname "*" -exec chmod +x {} \;
+find . -type f -iname "*.sh" -exec chmod +x {} \;
 
 cd "$(dirname "$0")/.."
 DOTFILES_ROOT=$(pwd -P)
@@ -141,7 +141,7 @@ install_dotfile_home_dir_symlinks() {
 install_dotfile_app_settings_symlinks() {
   info 'installing dotfile app settings symlinks'
 
-  local overwrite_all=false backup_all=true skip_all=false
+  local overwrite_all=false backup_all=false skip_all=false
   local app_settings_dir="$DOTFILES_ROOT/app_settings"
 
   if [ ! -d "$app_settings_dir" ]; then
