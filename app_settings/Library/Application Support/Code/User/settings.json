@@ -1,0 +1,77 @@
+{
+	"workbench.colorTheme": "Monokai Pro",
+	"workbench.iconTheme": "vscode-icons",
+	"redhat.telemetry.enabled": false,
+	"totalTypeScript.hideAllTips": false,
+	"totalTypeScript.hideBasicTips": false,
+	"git.openRepositoryInParentFolders": "never",
+	"security.promptForLocalFileProtocolHandling": false,
+	"github.copilot.enable": {
+		"*": false,
+		"plaintext": false,
+		"markdown": false,
+		"scminput": false
+	},
+	"explorer.confirmDelete": false,
+	"explorer.confirmDragAndDrop": false,
+	"explorer.autoReveal": "focusNoScroll",
+	"editor.fontLigatures": true,
+	"editor.fontSize": 14,
+	"editor.fontFamily": "MesloLGS NF, CaskaydiaCove Nerd Font, FireCode Nerd Font, Menlo, Monaco, 'Courier New', monospace",
+	"terminal.integrated.fontSize": 14,
+	"totalTypeScript.hiddenTips": [
+		"ts-object-type",
+		"typing-function-parameters",
+		"basic-types",
+		"optional-object-property",
+		"array-type",
+		"type-alias-declaration",
+		"passing-generics-to-types",
+		"tuple-type",
+		"any-type",
+		"typeof",
+		"variable-type-annotation",
+		"as-assertion",
+		"function-return-type",
+		"union-type",
+		"null-keyword",
+		"literal-type",
+		"non-null-expression",
+		"in-operator-narrowing",
+		"never-keyword",
+		"undefined-keyword",
+		"interface-declaration",
+		"record-utility-type",
+		"pick-utility-type",
+		"keyof",
+		"omit-utility-type",
+		"partial-utility-type",
+		"type-alias-with-generics",
+		"type-alias-with-multiple-generics",
+		"type-predicate",
+		"generic-slots-in-functions"
+	],
+	"editor.defaultFormatter": "biomejs.biome",
+	"editor.formatOnSave": true,
+	"typescript.updateImportsOnFileMove.enabled": "always",
+	"workbench.startupEditor": "none",
+	"vsicons.dontShowNewVersionMessage": true,
+	"git.confirmSync": false,
+	"git.autofetch": true,
+	"diffEditor.renderSideBySide": false,
+	// this must be explicitly set to true in your settings.json file or
+	// the auto-deduplication logic will programmatically set the value to
+	// false if it detects that Red Hat's YAML extension is installed
+	"docker.extension.enableComposeLanguageServer": true,
+	"yaml.schemas": {
+		// this tells Red Hat's YAML extension to consider Compose YAML
+		// files as not having a schema so it will stop suggesting code
+		// completion items, hover tooltips, and so on
+		"https://raw.githubusercontent.com/docker/vscode-extension/6a88caada42b57090df7ce91ec2a6561b422afe1/misc/empty.json": [
+			"compose*y*ml",
+			"docker-compose*y*ml"
+		]
+	},
+	"explorer.confirmPasteNative": false,
+	"claudeCode.preferredLocation": "panel"
+}
