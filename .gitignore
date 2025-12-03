@@ -1,7 +1,6 @@
 git/gitconfig.local.symlink
 zsh/zshrc.local.symlink
-Brewfile.lock.json
-dotfiles.initialized
+secrets.local.symlink
 *.local
 .DS_Store
 node_modules

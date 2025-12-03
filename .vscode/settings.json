@@ -1,5 +1,6 @@
 {
   "files.associations": {
+    "secrets*": "properties",
     "gitconfig*": "properties",
     "zshrc*": "shellscript",
     "ohmyzsh*": "shellscript",
