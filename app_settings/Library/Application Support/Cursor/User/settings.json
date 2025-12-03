@@ -65,5 +65,8 @@
   "typescriptExplorer.typeTree.meta.typeArguments.includeInFunctions": true,
   "typescriptExplorer.typeTree.readonly.enable": true,
   "specstory.cloudSync.enabled": "never",
-  "explorer.confirmPasteNative": false
+  "explorer.confirmPasteNative": false,
+  "aws.cloudformation.telemetry.enabled": false,
+  "aws.telemetry": false,
+  "docker.extension.enableComposeLanguageServer": false
 }
