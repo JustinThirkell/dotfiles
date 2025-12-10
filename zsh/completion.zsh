@@ -12,7 +12,7 @@ zstyle ':completion:*' menu no
 LISTMAX=0 # 0 means never ask, always show all completions
 
 # Show completions immediately without pressing tab twice
-setopt AUTO_LIST
+# setopt AUTO_LIST  # Disabled to prevent automatic completion popups
 setopt LIST_AMBIGUOUS
 
 # Show completions in a more compact format
