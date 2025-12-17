@@ -1,3 +1,5 @@
+# Secrets do not go in here.  They go in ~/.secrets.local
+
 # Linear
 export LINEAR_USER_ID="uuid goes here"
 export LINEAR_DEFAULT_TEAM_ID="uuid goes here"
