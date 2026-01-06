@@ -95,6 +95,7 @@ cask "google-chrome"
 cask "raindropio"
 cask "warp"
 cask "slack"
+cask "clickup"
 
 mas "Actions", id: 1586435171
 mas "Battery Indicator", id: 1206020918
