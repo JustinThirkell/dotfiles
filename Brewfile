@@ -94,6 +94,7 @@ cask "duckduckgo"
 cask "google-chrome"
 cask "raindropio"
 cask "warp"
+cask "slack"
 
 mas "Actions", id: 1586435171
 mas "Battery Indicator", id: 1206020918
@@ -119,7 +120,6 @@ mas "Shareful", id: 1522267256
 # Google Slides
 # Insomnia
 # Loom
-# Slack
 # Spotify
 # Tower
 # Visual Studio Code
