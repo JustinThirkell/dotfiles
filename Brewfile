@@ -96,6 +96,8 @@ cask "raindropio"
 cask "warp"
 cask "slack"
 cask "clickup"
+cask "speedtest-cli"
+cask "pgadmin4"
 
 mas "Actions", id: 1586435171
 mas "Battery Indicator", id: 1206020918
