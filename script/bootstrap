@@ -149,7 +149,7 @@ install_dotfile_app_settings_symlinks() {
     return
   fi
 
-  for src in $(find -H "$app_settings_dir" -type f); do
+  while IFS= read -r -d '' src; do
     # Skip system files like .DS_Store and ._* (AppleDouble files)
     local basename=$(basename "$src")
     if [[ "$basename" == ".DS_Store" ]] || [[ "$basename" =~ ^\._ ]]; then
@@ -165,7 +165,7 @@ install_dotfile_app_settings_symlinks() {
     mkdir -p "$dst_dir"
 
     link_file "$src" "$dst"
-  done
+  done < <(find -H "$app_settings_dir" -type f -print0)
 }
 
 setup_oh_my_zsh() {
