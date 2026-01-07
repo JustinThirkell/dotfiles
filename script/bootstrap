@@ -60,7 +60,7 @@ link_file() {
 
     if [ "$overwrite_all" == "false" ] && [ "$backup_all" == "false" ] && [ "$skip_all" == "false" ]; then
 
-      local currentSrc="$(readlink $dst)"
+      local currentSrc="$(readlink "$dst" 2>/dev/null || echo "")"
 
       if [ "$currentSrc" == "$src" ]; then
 
@@ -103,17 +103,16 @@ link_file() {
     backup=${backup:-$backup_all}
     skip=${skip:-$skip_all}
 
-    if [ "$overwrite" == "true" ]; then
-      rm -rf "$dst"
-      success "removed $dst"
-    fi
-
-    if [ "$backup" == "true" ]
-    then
+    # Backup first (if enabled), which moves the file out of the way
+    if [ "$backup" == "true" ]; then
       timestamp=$(date +%Y%m%d-%H%M%S)
       backup_file="${dst}.backup.${timestamp}"
       mv "$dst" "$backup_file"
       success "moved $dst to $backup_file"
+    # If overwrite is true but backup is false, remove the file
+    elif [ "$overwrite" == "true" ]; then
+      rm -rf "$dst"
+      success "removed $dst"
     fi
 
     if [ "$skip" == "true" ]; then
