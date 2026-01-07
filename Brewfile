@@ -107,6 +107,7 @@ mas "Lungo", id: 1263070803
 mas "MKV2MP4", id: 585396074
 mas "Pandan", id: 1569600264
 mas "Shareful", id: 1522267256
+mas "Speedtest", id: 1153157709
 
 # Manual installs
 # 1Password
