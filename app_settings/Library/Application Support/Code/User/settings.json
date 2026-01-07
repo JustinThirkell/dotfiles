@@ -73,5 +73,6 @@
 		]
 	},
 	"explorer.confirmPasteNative": false,
-	"claudeCode.preferredLocation": "panel"
+	"claudeCode.preferredLocation": "panel",
+	"terminal.integrated.fontLigatures.enabled": true
 }
