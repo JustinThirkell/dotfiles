@@ -1,4 +1,11 @@
 {
-  "alwaysThinkingEnabled": false,
-  "cleanupPeriodDays": 99999
+  "$schema": "https://raw.githubusercontent.com/anthropics/claude-settings/main/schema.json",
+  "cleanupPeriodDays": 99999,
+  "includeCoAuthoredBy": false,
+  "gitAttribution": false,
+  "defaultMode": "bypassPermissions",
+  "statusLine": {
+    "type": "command",
+    "command": "npx ccusage@latest statusline"
+  }
 }
