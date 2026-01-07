@@ -12,8 +12,5 @@ export LOG_TO_LOCAL_FILE=false
 # Git
 export ISSUE_BRANCH_PREFIX="linearname/vit"
 
-# AWS
-export AWS_APPS_IDENTIFIER="d-123456789"
-
 # User Email
 export USER_EMAIL="user@example.com"
