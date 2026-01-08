@@ -69,5 +69,7 @@
   "aws.cloudformation.telemetry.enabled": false,
   "aws.telemetry": false,
   "docker.extension.enableComposeLanguageServer": false,
-  "cursor.composer.usageSummaryDisplay": "always"
+	"cursor.composer.usageSummaryDisplay": "always",
+	"gitlens.ai.model": "gitkraken",
+	"gitlens.ai.gitkraken.model": "gemini:gemini-2.0-flash"
 }
