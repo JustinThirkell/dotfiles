@@ -19,6 +19,18 @@
     },
     "microsoft.docs.mcp": {
       "url": "https://learn.microsoft.com/api/mcp"
+    },
+    "GitKraken": {
+      "command": "/Users/justin/Library/Application Support/Cursor/User/globalStorage/eamodio.gitlens/gk",
+      "type": "stdio",
+      "name": "GitKraken",
+      "args": [
+        "mcp",
+        "--host=cursor",
+        "--source=gitlens",
+        "--scheme=cursor"
+      ],
+      "env": {}
     }
   }
 }
