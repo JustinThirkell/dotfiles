@@ -1,7 +1,5 @@
-git/gitconfig.local.symlink
-zsh/zshrc.local.symlink
-secrets.local.symlink
-*.local
+*.local*
+!*.local.*.example
 .DS_Store
 node_modules
 dist
