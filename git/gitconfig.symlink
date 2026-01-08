@@ -1,16 +1,20 @@
 [include]
 # local/private config goes in the include
-path = ~/.gitconfig.local
+path = ~/.gitconfig.local.personal
 path = ~/.gitconfig.aliases
+
+# Work repos use work email
+[includeIf "gitdir:~/dev/cp/"]
+path = ~/.gitconfig.local.work
 
 [gpg]
 format = ssh
 
 [gpg "ssh"]
-program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
-
+program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+	
 [commit]
-gpgsign = true
+gpgSign = true
 
 [init]
 defaultBranch = main
