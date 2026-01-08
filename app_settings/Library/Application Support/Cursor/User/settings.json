@@ -68,5 +68,6 @@
   "explorer.confirmPasteNative": false,
   "aws.cloudformation.telemetry.enabled": false,
   "aws.telemetry": false,
-  "docker.extension.enableComposeLanguageServer": false
+  "docker.extension.enableComposeLanguageServer": false,
+  "cursor.composer.usageSummaryDisplay": "always"
 }
