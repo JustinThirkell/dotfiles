@@ -6,11 +6,11 @@ import stringify from 'safe-stable-stringify'
   ClickUp CLI – read-only utilities
   ------------------------------------------------------------------------------------
   Commands implemented (only READ-type operations for now):
-    • issue <task-id>                      – detailed info for a single issue/task
+    • get-task <task-id>                  – detailed info for a single task
 
   Usage examples:
-    npx tsx clickup.ts issue 86ew4x0vz
-    npx tsx clickup.ts issue 86ew4x0vz --debug
+    npx tsx clickup.ts get-task 86ew4x0vz
+    npx tsx clickup.ts get-task 86ew4x0vz --debug
 
   Notes:
   • All output is JSON so that shell scripts/zsh functions can parse it easily.
@@ -44,10 +44,10 @@ async function main(): Promise<void> {
 
   try {
     switch (command) {
-      case 'issue': {
-        // Accept issue ID as positional argument or --id flag
-        const issueId = rest[0] && !rest[0].startsWith('--') ? rest[0] : (params.id as string)
-        const json = stringify(await getIssue(issueId), null, 2)
+      case 'get-task': {
+        // Accept task ID as positional argument or --id flag
+        const taskId = rest[0] && !rest[0].startsWith('--') ? rest[0] : (params.id as string)
+        const json = stringify(await getTask(taskId), null, 2)
         console.log(json)
         return
       }
@@ -55,7 +55,7 @@ async function main(): Promise<void> {
         console.error(
           JSON.stringify({
             error: `Unknown command: ${command}`,
-            supported: ['issue'],
+            supported: ['get-task'],
           }),
         )
         process.exit(1)
@@ -115,7 +115,7 @@ function info(message: unknown, ...optional: unknown[]): void {
 // Remove global flags (like --debug) from argv before command dispatch
 function stripGlobalFlags(argv: string[]): string[] {
   const copy = [...argv]
-  return copy.filter((token, idx) => {
+  return copy.filter((token) => {
     if (!token.startsWith('--')) return true
     const key = token.slice(2)
     if (key === 'debug') {
@@ -129,11 +129,10 @@ function stripGlobalFlags(argv: string[]): string[] {
 // -------------------------------------------------------------------------------------------------
 // Command implementations (READ-only)
 // -------------------------------------------------------------------------------------------------
-async function getIssue(issueId: string): Promise<unknown> {
-  if (!issueId) throw new Error("Issue ID is required for issue (e.g., '86ew4x0vz' or '--id 86ew4x0vz')")
-  info(`Fetching issue ${issueId}…`)
-  const task = await clickUp.getTask(issueId)
-  debug('Issue fetched:', task)
+async function getTask(taskId: string): Promise<unknown> {
+  if (!taskId) throw new Error("Task ID is required for get-task (e.g., '86ew4x0vz' or '--id 86ew4x0vz')")
+  info(`Fetching task ${taskId}…`)
+  const task = await clickUp.getTask(taskId)
+  debug('Task fetched:', task)
   return task
 }
-

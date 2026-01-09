@@ -11,11 +11,11 @@ clickup() {
     echo "Usage: clickup <command> [options]"
     echo ""
     echo "Available commands:"
-    echo "  issue <task-id>                 - Get detailed info for an issue"
+    echo "  get-task <task-id>              - Get detailed info for a task"
     echo ""
     echo "Examples:"
-    echo "  clickup issue 86ew4x0vz"
-    echo "  clickup issue 86ew4x0vz --debug"
+    echo "  clickup get-task 86ew4x0vz"
+    echo "  clickup get-task 86ew4x0vz --debug"
     return 1
   fi
 
@@ -30,7 +30,7 @@ clickup() {
 }
 
 # Individual command functions for direct access
-clickup_issue() {
-  clickup issue "$@"
+clickup_get-task() {
+  clickup get-task "$@"
 }
 
