@@ -12,10 +12,14 @@ clickup() {
     echo ""
     echo "Available commands:"
     echo "  get-task <task-id>              - Get detailed info for a task"
+    echo "  start-task <task-id>            - Update task status to \"IN PROGRESS\""
+    echo "  pr-task <task-id>               - Update task status to \"IN REVIEW\""
     echo ""
     echo "Examples:"
     echo "  clickup get-task 86ew4x0vz"
     echo "  clickup get-task 86ew4x0vz --debug"
+    echo "  clickup start-task 86ew4x0vz"
+    echo "  clickup pr-task 86ew4x0vz"
     return 1
   fi
 
@@ -32,5 +36,13 @@ clickup() {
 # Individual command functions for direct access
 clickup_get-task() {
   clickup get-task "$@"
+}
+
+clickup_start-task() {
+  clickup start-task "$@"
+}
+
+clickup_pr-task() {
+  clickup pr-task "$@"
 }
 

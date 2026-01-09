@@ -4,6 +4,7 @@
   ------------------------------------------------------------------------------------
   Simple client for interacting with ClickUp API v2
   Based on: https://developer.clickup.com/reference/gettask
+  Based on: https://developer.clickup.com/reference/updatetask
 */
 
 const CLICKUP_API_BASE = 'https://api.clickup.com/api/v2'
@@ -21,11 +22,11 @@ export class ClickUpClient {
 
   async getTask(taskId: string): Promise<unknown> {
     const url = `${CLICKUP_API_BASE}/task/${taskId}`
-    
+
     const response = await fetch(url, {
       method: 'GET',
       headers: {
-        'Authorization': this.apiKey,
+        Authorization: this.apiKey,
         'Content-Type': 'application/json',
       },
     })
@@ -51,5 +52,38 @@ export class ClickUpClient {
 
     return await response.json()
   }
-}
 
+  async updateTask(taskId: string, updates: { status?: string; [key: string]: unknown }): Promise<unknown> {
+    const url = `${CLICKUP_API_BASE}/task/${taskId}`
+
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        Authorization: this.apiKey,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updates),
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      let errorMessage = `HTTP ${response.status}: ${response.statusText}`
+      try {
+        const errorJson = JSON.parse(errorText)
+        if (errorJson.err) {
+          errorMessage = errorJson.err
+        } else if (errorJson.message) {
+          errorMessage = errorJson.message
+        }
+      } catch {
+        // If parsing fails, use the raw error text if available
+        if (errorText) {
+          errorMessage = `${errorMessage} - ${errorText}`
+        }
+      }
+      throw new Error(errorMessage)
+    }
+
+    return await response.json()
+  }
+}

@@ -5,12 +5,16 @@ import stringify from 'safe-stable-stringify'
   ------------------------------------------------------------------------------------
   ClickUp CLI – read-only utilities
   ------------------------------------------------------------------------------------
-  Commands implemented (only READ-type operations for now):
+  Commands implemented:
     • get-task <task-id>                  – detailed info for a single task
+    • start-task <task-id>               – update task status to "IN PROGRESS"
+    • pr-task <task-id>                  – update task status to "IN REVIEW"
 
   Usage examples:
     npx tsx clickup.ts get-task 86ew4x0vz
     npx tsx clickup.ts get-task 86ew4x0vz --debug
+    npx tsx clickup.ts start-task 86ew4x0vz
+    npx tsx clickup.ts pr-task 86ew4x0vz
 
   Notes:
   • All output is JSON so that shell scripts/zsh functions can parse it easily.
@@ -51,11 +55,25 @@ async function main(): Promise<void> {
         console.log(json)
         return
       }
+      case 'start-task': {
+        // Accept task ID as positional argument or --id flag
+        const taskId = rest[0] && !rest[0].startsWith('--') ? rest[0] : (params.id as string)
+        const json = stringify(await startTask(taskId), null, 2)
+        console.log(json)
+        return
+      }
+      case 'pr-task': {
+        // Accept task ID as positional argument or --id flag
+        const taskId = rest[0] && !rest[0].startsWith('--') ? rest[0] : (params.id as string)
+        const json = stringify(await prTask(taskId), null, 2)
+        console.log(json)
+        return
+      }
       default:
         console.error(
           JSON.stringify({
             error: `Unknown command: ${command}`,
-            supported: ['get-task'],
+            supported: ['get-task', 'start-task', 'pr-task'],
           }),
         )
         process.exit(1)
@@ -127,12 +145,28 @@ function stripGlobalFlags(argv: string[]): string[] {
 }
 
 // -------------------------------------------------------------------------------------------------
-// Command implementations (READ-only)
+// Command implementations
 // -------------------------------------------------------------------------------------------------
 async function getTask(taskId: string): Promise<unknown> {
   if (!taskId) throw new Error("Task ID is required for get-task (e.g., '86ew4x0vz' or '--id 86ew4x0vz')")
   info(`Fetching task ${taskId}…`)
   const task = await clickUp.getTask(taskId)
   debug('Task fetched:', task)
+  return task
+}
+
+async function startTask(taskId: string): Promise<unknown> {
+  if (!taskId) throw new Error("Task ID is required for start-task (e.g., '86ew4x0vz' or '--id 86ew4x0vz')")
+  info(`Updating task ${taskId} status to "IN PROGRESS"…`)
+  const task = await clickUp.updateTask(taskId, { status: 'IN PROGRESS' })
+  debug('Task updated:', task)
+  return task
+}
+
+async function prTask(taskId: string): Promise<unknown> {
+  if (!taskId) throw new Error("Task ID is required for pr-task (e.g., '86ew4x0vz' or '--id 86ew4x0vz')")
+  info(`Updating task ${taskId} status to "IN REVIEW"…`)
+  const task = await clickUp.updateTask(taskId, { status: 'IN REVIEW' })
+  debug('Task updated:', task)
   return task
 }
