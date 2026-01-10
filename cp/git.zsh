@@ -112,11 +112,11 @@ git_checkout_task_branch() {
   fi
 }
 
-git_pr() {
+git_pr_task_branch() {
 
   # Default options
   local SKIP_LLM=true
-  local DEBUG=false
+  local DEBUG=true
 
   # Process command line arguments
   while [[ $# -gt 0 ]]; do
@@ -185,13 +185,13 @@ git_pr() {
   local sanitized_task
   sanitized_task=$(echo "$task" | tr -d '\000-\037')
 
-  # Extract all task fields in a single jq call
-  local task_name task_description task_url
-  {
-    read -r task_name
-    read -r task_description
-    read -r task_url
-  } <<<"$(echo "$sanitized_task" | jq -r '.name, (.text_content // ""), .url')"
+  # Extract task fields - extract description separately to preserve newlines
+  local task_name task_url
+  task_name=$(echo "$sanitized_task" | jq -r '.name')
+  task_url=$(echo "$sanitized_task" | jq -r '.url')
+  # Extract description with newlines preserved (jq -r outputs raw, including \n)
+  local task_description
+  task_description=$(echo "$sanitized_task" | jq -r '.text_content // ""')
 
   if [[ -z "$task_name" || "$task_name" == "null" ]]; then
     error "Could not extract task name from ClickUp response for task ID: $task_id_from_branch"
@@ -270,11 +270,11 @@ Only return the PR description, don't return anything else."
     # Create simple PR description with ClickUp task link and description
     if [[ -n "$task_url" && "$task_url" != "null" ]]; then
       if [[ -n "$task_description" && "$task_description" != "null" && "$task_description" != "" ]]; then
-        pr_description="[ClickUp task]($task_url)
+        pr_description="Task linked: [$id $title_capitalized]($task_url)
 
 $task_description"
       else
-        pr_description="[ClickUp task]($task_url)"
+        pr_description="Task linked: [$id $title_capitalized]($task_url)"
       fi
     else
       pr_description=""
@@ -322,4 +322,3 @@ $task_description"
     echo "🎉 Successfully created PR"
   fi
 }
-alias pr=git_pr

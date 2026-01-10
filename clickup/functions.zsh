@@ -2,8 +2,11 @@
 # ClickUp CLI Wrapper
 ##############################################################################################
 
-# Path to the clickup.ts script (relative to this file)
-_CLICKUP_SCRIPT_PATH="${0:A:h}/clickup.ts"
+# Get the directory where this file is located (works when file is sourced)
+_CLICKUP_DIR="${${(%):-%x}:A:h}"
+
+# Path to the clickup.ts script
+_CLICKUP_SCRIPT_PATH="$_CLICKUP_DIR/clickup.ts"
 
 # Main clickup function that dispatches to subcommands
 clickup() {
@@ -29,8 +32,17 @@ clickup() {
     return 1
   fi
 
-  # Pass all arguments directly to the clickup.ts script
-  npx tsx "$_CLICKUP_SCRIPT_PATH" "$@"
+  # Use the pre-computed clickup directory
+  local tsx_path="$_CLICKUP_DIR/node_modules/.bin/tsx"
+  
+  # Check if tsx exists
+  if [[ ! -f "$tsx_path" ]]; then
+    echo "Error: tsx not found at $tsx_path. Please run 'npm install' in $_CLICKUP_DIR" >&2
+    return 1
+  fi
+  
+  # Use the absolute path to tsx to ensure it works from any directory
+  "$tsx_path" "$_CLICKUP_SCRIPT_PATH" "$@"
 }
 
 # Individual command functions for direct access

@@ -68,3 +68,81 @@ cp_start_task() {
   info "✅ Task $task_id is now ready for work!"
 }
 
+cp_pr_task() {
+  # Default options
+  local DEBUG=true
+
+  # Process command line arguments
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+    --debug)
+      DEBUG=true
+      shift
+      ;;
+    *)
+      echo "Unknown option: $1"
+      echo "Usage: cp_pr_task [--debug]"
+      return 1
+      ;;
+    esac
+  done
+
+  [[ "$DEBUG" == "true" ]] && echo "Debug mode enabled"
+
+  # Get current branch name
+  local current_branch
+  current_branch=$(git branch --show-current)
+
+  if [[ -z "$current_branch" ]]; then
+    error "Not on a git branch"
+    return 1
+  fi
+
+  # Extract the task ID from branch format: username/{taskid}-{slug}
+  # Example: justin/86ew4x0vz-update-canvas-dependency -> 86ew4x0vz
+  local task_id
+  task_id=$(echo "$current_branch" | sed 's|.*/||' | sed 's/-.*//')
+
+  if [[ -z "$task_id" ]]; then
+    error "No task ID detected in branch name. Expected format: username/{taskid}-{slug} (e.g. justin/86ew4x0vz-fix-the-bug)"
+    info "Please use a branch with a valid task identifier."
+    return 1
+  fi
+
+  [[ "$DEBUG" == "true" ]] && debug "Extracted task ID from branch: $task_id"
+
+  # First, create/update the PR
+  info "📝 Creating/updating PR for task $task_id"
+  if [[ "$DEBUG" == "true" ]]; then
+    git_pr_task_branch --debug
+  else
+    git_pr_task_branch
+  fi
+
+  local pr_exit_code=$?
+
+  if [[ $pr_exit_code -ne 0 ]]; then
+    error "Failed to create/update PR for task $task_id"
+    return 1
+  fi
+
+  # Then, mark the task as in review in ClickUp
+  info "🚀 Marking task $task_id as IN REVIEW in ClickUp"
+  local pr_task_result
+  pr_task_result=$(clickup pr-task "$task_id" 2>&1)
+  local pr_task_exit_code=$?
+
+  if [[ $pr_task_exit_code -ne 0 ]]; then
+    error "Failed to mark task $task_id as IN REVIEW"
+    [[ "$DEBUG" == "true" ]] && debug "pr-task output: $pr_task_result"
+    info "PR creation/update was successful, but task status update failed."
+    info "You may want to manually update the task status in ClickUp."
+    return 1
+  fi
+
+  [[ "$DEBUG" == "true" ]] && debug "pr-task result: $pr_task_result"
+  info "✅ Successfully marked task $task_id as IN REVIEW"
+  info "✅ PR created/updated and task $task_id is now in review!"
+}
+
+alias pr=cp_pr_task

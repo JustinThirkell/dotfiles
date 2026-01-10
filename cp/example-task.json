@@ -1,0 +1,800 @@
+{
+  "archived": false,
+  "assignees": [
+    {
+      "color": "#afb42b",
+      "email": "justin@carepatron.com",
+      "id": 107553007,
+      "initials": "J",
+      "profilePicture": "https://attachments.clickup.com/profilePictures/107553007_TjW.jpg",
+      "username": "Justin"
+    }
+  ],
+  "attachments": [],
+  "checklists": [],
+  "creator": {
+    "color": "#afb42b",
+    "email": "justin@carepatron.com",
+    "id": 107553007,
+    "profilePicture": "https://attachments.clickup.com/profilePictures/107553007_TjW.jpg",
+    "username": "Justin"
+  },
+  "custom_fields": [
+    {
+      "date_created": "1675987948252",
+      "hide_from_guests": false,
+      "id": "7e638122-29f5-4561-86ce-8e0b39ecd28b",
+      "name": "Epic",
+      "required": false,
+      "type": "drop_down",
+      "type_config": {
+        "new_drop_down": true,
+        "options": [
+          {
+            "color": null,
+            "id": "97f75817-b3e0-49bb-8116-26fb239abbcb",
+            "name": "Online Scheduling MLP",
+            "orderindex": 0
+          },
+          {
+            "color": null,
+            "id": "c40c2856-aa5b-4f0f-bb41-0e7740547f5f",
+            "name": "Notes Redesign MVP",
+            "orderindex": 1
+          },
+          {
+            "color": null,
+            "id": "954ff1e8-3ef2-47b6-b7de-4b00a9caee30",
+            "name": "Forms MVP",
+            "orderindex": 2
+          },
+          {
+            "color": null,
+            "id": "53bfca2a-365e-40f5-b9fe-372bfc01f425",
+            "name": "Improve Client Profile",
+            "orderindex": 3
+          },
+          {
+            "color": null,
+            "id": "4a52d922-0b0a-4fc1-93bd-6df20fca6b34",
+            "name": "Forms MLP",
+            "orderindex": 4
+          },
+          {
+            "color": null,
+            "id": "9f9d731c-e377-4b2b-b05b-528da4fbb71c",
+            "name": "Platform & Stability",
+            "orderindex": 5
+          },
+          {
+            "color": null,
+            "id": "0106c9d8-7f6f-4d70-9947-d4f8327ab03d",
+            "name": "Calendar Improvements",
+            "orderindex": 6
+          }
+        ]
+      }
+    },
+    {
+      "date_created": "1712697833978",
+      "hide_from_guests": false,
+      "id": "36bc0567-6d4c-4f3c-a42b-965da97f4a61",
+      "name": "Quarterly goal",
+      "required": false,
+      "type": "drop_down",
+      "type_config": {
+        "new_drop_down": true,
+        "options": [
+          {
+            "color": "#7c4dff",
+            "id": "a1d882d7-79aa-4b76-9c82-aa09df6d9d30",
+            "name": "This quarter",
+            "orderindex": 0
+          },
+          {
+            "color": "#bf55ec",
+            "id": "17b24e42-015b-42d6-bfad-273cfd646e5a",
+            "name": "Next quarter",
+            "orderindex": 1
+          },
+          {
+            "color": "#667684",
+            "id": "1090e145-3c1c-483a-905b-309b966786a9",
+            "name": "Next-next quarter",
+            "orderindex": 2
+          }
+        ]
+      }
+    },
+    {
+      "date_created": "1692867540453",
+      "hide_from_guests": false,
+      "id": "145cb0bd-c95f-44e7-a99f-86a4911ece55",
+      "name": "Release",
+      "required": false,
+      "type": "drop_down",
+      "type_config": {
+        "default": 0,
+        "new_drop_down": true,
+        "options": [
+          {
+            "color": "#b9a1f7",
+            "id": "465ce7fb-5d29-4c20-a6cf-443669d686d8",
+            "name": "v1",
+            "orderindex": 0
+          },
+          {
+            "color": "#9c7bf3",
+            "id": "b3fed752-cf91-44b5-9a04-dd3ca1eb8e60",
+            "name": "v2",
+            "orderindex": 1
+          },
+          {
+            "color": "#7242ee",
+            "id": "f7227f2b-1591-4be3-bbe8-1d0f3238b5ee",
+            "name": "v3",
+            "orderindex": 2
+          },
+          {
+            "color": "#44288f",
+            "id": "8c6997d1-7865-4a09-9fec-e2211650ca77",
+            "name": "v4",
+            "orderindex": 3
+          }
+        ],
+        "placeholder": null
+      }
+    },
+    {
+      "date_created": "1711547685469",
+      "hide_from_guests": false,
+      "id": "f55824c5-0550-427f-8ab0-a99734d8e41c",
+      "name": "Severity",
+      "required": false,
+      "type": "drop_down",
+      "type_config": {
+        "default": 0,
+        "options": [
+          {
+            "color": "#b5bcc2",
+            "id": "3a05e83b-8f33-47f5-a39a-eb2816b04be6",
+            "name": "Low impact",
+            "orderindex": 0
+          },
+          {
+            "color": "#0231E8",
+            "id": "4412446e-1d2e-44e9-80c7-8574143b0796",
+            "name": "Minor annoyance",
+            "orderindex": 1
+          },
+          {
+            "color": "#f9d900",
+            "id": "275f8b24-d8de-4584-8553-fe3a1fb12b05",
+            "name": "Major blocker",
+            "orderindex": 2
+          },
+          {
+            "color": "#E65100",
+            "id": "084d33eb-59f7-4883-81a5-e344eb9ac1a2",
+            "name": "Critical issue",
+            "orderindex": 3
+          }
+        ],
+        "placeholder": null,
+        "sorting": "manual"
+      }
+    },
+    {
+      "date_created": "1722011075429",
+      "hide_from_guests": false,
+      "id": "0a29730f-d6d2-4b43-921c-81b1f48fa5d2",
+      "name": "🚦 Design Status",
+      "required": false,
+      "type": "drop_down",
+      "type_config": {
+        "options": [
+          {
+            "color": "#81B1FF",
+            "id": "0674321c-1855-4a5a-851a-dea0eabd3a4f",
+            "name": "NEED DESIGNS ",
+            "orderindex": 0
+          },
+          {
+            "color": "#bf55ec",
+            "id": "9a3be4a3-5072-4c5d-a278-b3b18125c0c1",
+            "name": "IN-DESIGN",
+            "orderindex": 1
+          },
+          {
+            "color": "#7C4DFF",
+            "id": "b1d14024-0e00-4d25-8674-f2ac7f87fba6",
+            "name": "DESIGN REVIEW",
+            "orderindex": 2
+          },
+          {
+            "color": null,
+            "id": "97cdb280-2f17-46eb-8800-6d003193fca3",
+            "name": "NA",
+            "orderindex": 3
+          },
+          {
+            "color": "#2ecd6f",
+            "id": "76580548-27fe-402a-8114-b0aeb19ff074",
+            "name": "DESIGN DONE",
+            "orderindex": 4
+          }
+        ],
+        "sorting": "manual"
+      }
+    },
+    {
+      "date_created": "1695113035703",
+      "hide_from_guests": false,
+      "id": "56ce1f10-54ca-42b9-a3c4-9e610cc4676f",
+      "name": "Domain",
+      "required": false,
+      "type": "drop_down",
+      "type_config": {
+        "default": 0,
+        "new_drop_down": true,
+        "options": [
+          {
+            "color": "#f9d900",
+            "id": "645549a3-7ccd-4f11-9cb3-e3737af81b76",
+            "name": "Notes, Docs and Templates",
+            "orderindex": 0
+          },
+          {
+            "color": null,
+            "id": "8f0ebc32-ba88-4dc1-b91a-e952e0b76800",
+            "name": "Client Experience",
+            "orderindex": 1
+          },
+          {
+            "color": null,
+            "id": "7dab5e5d-e3c0-4c50-9618-fcaab005f173",
+            "name": "Scheduling and Tasks",
+            "orderindex": 2
+          },
+          {
+            "color": null,
+            "id": "c4e5a7a9-b63b-4d19-9c98-de7eafbf92c9",
+            "name": "Workspaces",
+            "orderindex": 3
+          },
+          {
+            "color": null,
+            "id": "e33bfe76-8a4f-418e-9c2c-4d745c43a896",
+            "name": "Billing and Payments",
+            "orderindex": 4
+          },
+          {
+            "color": "#04A9F4",
+            "id": "a6613ba2-262e-4512-8e5a-b232a3f50511",
+            "name": "Notifications & Communication",
+            "orderindex": 5
+          },
+          {
+            "color": null,
+            "id": "ce2d6159-9a9f-4615-b4e1-9143a74017ca",
+            "name": "Platform",
+            "orderindex": 6
+          },
+          {
+            "color": null,
+            "id": "b80aa7c1-46e2-4891-95c7-76217c0eef9b",
+            "name": "Growth",
+            "orderindex": 7
+          },
+          {
+            "color": null,
+            "id": "bd29c96b-3fe2-44a8-8f6b-ea74e329a024",
+            "name": "Customer",
+            "orderindex": 8
+          },
+          {
+            "color": null,
+            "id": "0b993bf6-2743-4a23-b2a5-1ec0e4f169dc",
+            "name": "Settings",
+            "orderindex": 9
+          }
+        ],
+        "placeholder": null,
+        "sorting": "manual"
+      }
+    },
+    {
+      "date_created": "1676494954847",
+      "hide_from_guests": false,
+      "id": "d01d2d98-d2a4-48a7-81f9-4c34ab402e16",
+      "name": "Estimate",
+      "required": false,
+      "type": "drop_down",
+      "type_config": {
+        "default": 0,
+        "new_drop_down": true,
+        "options": [
+          {
+            "color": null,
+            "id": "0379494a-6921-4dbe-8f74-d508eb33e32f",
+            "name": "0.5",
+            "orderindex": 0
+          },
+          {
+            "color": "#c1e1c1",
+            "id": "f992983b-a37a-45c5-9797-3671a9940e34",
+            "name": "1",
+            "orderindex": 1
+          },
+          {
+            "color": "#c1e1c1",
+            "id": "87bfb807-6720-4974-b021-9002c8998c50",
+            "name": "2",
+            "orderindex": 2
+          },
+          {
+            "color": "#c1e1c1",
+            "id": "92d80cc6-62ef-4d0d-afef-365b1ddb930f",
+            "name": "3",
+            "orderindex": 3
+          },
+          {
+            "color": "#fdf396",
+            "id": "c7406914-f2c7-4553-b1d5-27d70f40c969",
+            "name": "5",
+            "orderindex": 4
+          },
+          {
+            "color": "#fdf396",
+            "id": "c1bebcea-d047-4632-a989-857cc349912b",
+            "name": "8",
+            "orderindex": 5
+          },
+          {
+            "color": "#faa0a0",
+            "id": "6f227302-e06e-4746-ae1d-31e959460970",
+            "name": "13",
+            "orderindex": 6
+          },
+          {
+            "color": "#e50000",
+            "id": "a418dc59-dba1-4fcd-93e2-5889b725e79f",
+            "name": "21",
+            "orderindex": 7
+          },
+          {
+            "color": "#800000",
+            "id": "b7f4b956-1e39-4b5e-a2f0-ea1515a0f1ca",
+            "name": "40",
+            "orderindex": 8
+          },
+          {
+            "color": "#800000",
+            "id": "9b0f9fa9-ec3e-442c-a9d6-5d6edbcc0d69",
+            "name": "70",
+            "orderindex": 9
+          },
+          {
+            "color": "#667684",
+            "id": "472bc7c3-05ea-47bd-85d2-2e4674e2dc7f",
+            "name": "?",
+            "orderindex": 10
+          }
+        ],
+        "placeholder": null,
+        "sorting": "manual"
+      }
+    },
+    {
+      "date_created": "1676286162205",
+      "hide_from_guests": false,
+      "id": "cb4a0b18-20d6-4241-971b-ec88790fafa0",
+      "name": "Feature",
+      "required": false,
+      "type": "labels",
+      "type_config": {
+        "options": [
+          {
+            "color": "#FF7FAB",
+            "id": "9d40af31-3e3d-4c85-b238-e0fe771dc78f",
+            "label": "Notes, Docs & Templates",
+            "orderindex": 0
+          },
+          {
+            "color": "#2ecd6f",
+            "id": "90ea0179-2e04-4129-abcf-f8c433d16842",
+            "label": "Online Scheduling",
+            "orderindex": 1
+          },
+          {
+            "color": "#81B1FF",
+            "id": "c9c92e16-cf13-40d4-a82f-32a45fcd9540",
+            "label": "Client Portal",
+            "orderindex": 2
+          },
+          {
+            "color": "#ff7800",
+            "id": "7472bd01-7c36-4fe7-9d69-c378cdac1929",
+            "label": "Calendar & Scheduling",
+            "orderindex": 3
+          },
+          {
+            "color": "#7C4DFF",
+            "id": "3f981ac4-e78f-45e7-9977-433347c9f376",
+            "label": "Client Record",
+            "orderindex": 4
+          },
+          {
+            "color": "#9b59b6",
+            "id": "97fc339c-8eaa-466b-bdaf-130ffaf5dd27",
+            "label": "Video calls",
+            "orderindex": 5
+          },
+          {
+            "color": "#1bbc9c",
+            "id": "1def0cd0-6de8-4081-b3aa-2beaf3b41b58",
+            "label": "Workspace",
+            "orderindex": 6
+          },
+          {
+            "color": "#800000",
+            "id": "12ab3b2f-e157-40c4-830b-adec93c58fdc",
+            "label": "Onboarding",
+            "orderindex": 7
+          },
+          {
+            "color": "#7C4DFF",
+            "id": "be882f89-ffde-4996-ab3c-13597c0c40a2",
+            "label": "FE Component",
+            "orderindex": 8
+          },
+          {
+            "color": "#b5bcc2",
+            "id": "9415de44-b11a-4e63-9e76-f0a9183ace90",
+            "label": "Platform & stability",
+            "orderindex": 9
+          },
+          {
+            "color": "#fff",
+            "id": "07e48948-72de-43d1-b5f0-2844e29c7945",
+            "label": "Communications",
+            "orderindex": 10
+          },
+          {
+            "color": "#81B1FF",
+            "id": "8bd3f5e9-05dc-4045-9e64-a6f337fe4b98",
+            "label": "Client Intake",
+            "orderindex": 11
+          },
+          {
+            "color": "#667684",
+            "id": "d2d7e42a-7a91-4ed3-9899-e95caf074b7e",
+            "label": "Connected Apps",
+            "orderindex": 12
+          },
+          {
+            "color": "#f9d900",
+            "id": "5846c412-6480-4464-816d-5db99c78a8e5",
+            "label": "Automation",
+            "orderindex": 13
+          },
+          {
+            "color": "#FF4081",
+            "id": "1350c700-49ff-4268-bc66-f2050bf8c55e",
+            "label": "bug",
+            "orderindex": 14
+          },
+          {
+            "color": "#ff7800",
+            "id": "a4450ef4-9458-4294-ada9-21bb550e8de8",
+            "label": "Design ",
+            "orderindex": 15
+          },
+          {
+            "color": "#0231E8",
+            "id": "1f74009d-b4af-48e6-8904-cb4f6ca0ddd3",
+            "label": "Billing & Payments",
+            "orderindex": 16
+          },
+          {
+            "color": "#81B1FF",
+            "id": "ca42d225-31cd-4238-8bb1-fbbbc586bc9f",
+            "label": "Subscriptions",
+            "orderindex": 17
+          },
+          {
+            "color": "#3082B7",
+            "id": "60b0f4cb-a58b-4109-a42b-131071baea90",
+            "label": "Invoicing",
+            "orderindex": 18
+          },
+          {
+            "color": "#04A9F4",
+            "id": "6a245cff-275e-4e22-a2e9-4e2035d1e2e6",
+            "label": "Payments",
+            "orderindex": 19
+          },
+          {
+            "color": "#02BCD4",
+            "id": "36d5c0bb-d150-4005-8d53-d5d8aa26c4d6",
+            "label": "Client Accounts",
+            "orderindex": 20
+          },
+          {
+            "color": "#1bbc9c",
+            "id": "4c5f1794-0eed-448c-8e62-d8680e57fe08",
+            "label": "Insurance Billing",
+            "orderindex": 21
+          },
+          {
+            "color": "#1bbc9c",
+            "id": "fa2728af-b24d-4f34-9757-43e753ca9f0f",
+            "label": "Insurance Eligibility",
+            "orderindex": 22
+          },
+          {
+            "color": "#2ecd6f",
+            "id": "220cc8cb-d20a-486f-babb-36773ce93873",
+            "label": "Superbills",
+            "orderindex": 23
+          },
+          {
+            "color": "#3397dd",
+            "id": "a4c1d33c-cff3-4a0e-a7ea-398456295d58",
+            "label": "Session Tracking",
+            "orderindex": 24
+          },
+          {
+            "color": "#f900ea",
+            "id": "27a23f25-694c-43ff-84e8-6976a5e94946",
+            "label": "Carepatron Internal ",
+            "orderindex": 25
+          }
+        ],
+        "sorting": "manual"
+      }
+    },
+    {
+      "date_created": "1707983243550",
+      "hide_from_guests": false,
+      "id": "c75591ba-0675-4251-9e94-a63778066542",
+      "name": "Progress",
+      "required": false,
+      "type": "automatic_progress",
+      "type_config": {
+        "complete_on": 3,
+        "subtask_rollup": false,
+        "tracking": {
+          "assigned_comments": true,
+          "checklists": true,
+          "subtasks": true
+        }
+      },
+      "value": {
+        "percent_complete": 0
+      }
+    },
+    {
+      "date_created": "1696979643304",
+      "hide_from_guests": true,
+      "id": "250cafbc-1a88-49d5-a243-a9e4e4439cbd",
+      "name": "Strategic Goal",
+      "required": false,
+      "type": "drop_down",
+      "type_config": {
+        "new_drop_down": true,
+        "options": [
+          {
+            "color": null,
+            "id": "f5dc00da-8f1e-4886-baa6-b96fd2213f25",
+            "name": "H1 - Radically Accessibility ",
+            "orderindex": 0
+          },
+          {
+            "color": null,
+            "id": "d403f83f-3651-4ff8-9868-3892e2dddd8e",
+            "name": "H1 - Beautiful Client Experience",
+            "orderindex": 1
+          },
+          {
+            "color": null,
+            "id": "4178d206-57c5-42d8-96ea-a488751df7d7",
+            "name": "H1 - Feature Parity",
+            "orderindex": 2
+          },
+          {
+            "color": null,
+            "id": "e521e23c-24b1-4c24-9276-021541899179",
+            "name": "H1 - Customisation",
+            "orderindex": 3
+          },
+          {
+            "color": null,
+            "id": "9501cda9-1f91-494a-a4fd-db48244fed77",
+            "name": "H1 - Adopting AI",
+            "orderindex": 4
+          },
+          {
+            "color": null,
+            "id": "a8443021-2b94-4d1f-ae49-1baee8feaa23",
+            "name": "H1 - API First",
+            "orderindex": 5
+          },
+          {
+            "color": null,
+            "id": "01b9a02c-cf0b-4ece-be04-330532c2a97c",
+            "name": "H1 - Growth and viral loops",
+            "orderindex": 6
+          },
+          {
+            "color": null,
+            "id": "36583722-104d-4f38-bb4e-808222e0d213",
+            "name": "H2+ - Future ",
+            "orderindex": 7
+          },
+          {
+            "color": null,
+            "id": "ad01a338-1d10-4b8f-a185-f372292ad8ca",
+            "name": "Run the business / Other",
+            "orderindex": 8
+          }
+        ]
+      }
+    },
+    {
+      "date_created": "1695112925345",
+      "hide_from_guests": false,
+      "id": "f9c2c231-1895-4b33-8e59-ebcde534c1d2",
+      "name": "Timeline",
+      "required": false,
+      "type": "drop_down",
+      "type_config": {
+        "default": 0,
+        "new_drop_down": true,
+        "options": [
+          {
+            "color": "#7C4DFF",
+            "id": "9b01f504-411e-494a-b7da-4169b79ed54c",
+            "name": "Now",
+            "orderindex": 0
+          },
+          {
+            "color": "#EA80FC",
+            "id": "e04c4bc5-98ad-4eb6-a4f9-e875bbeca4c9",
+            "name": "Next",
+            "orderindex": 1
+          },
+          {
+            "color": "#b5bcc2",
+            "id": "1c958a2c-f6cc-4d37-a44f-6051b2bef977",
+            "name": "Later",
+            "orderindex": 2
+          }
+        ],
+        "placeholder": null
+      }
+    },
+    {
+      "date_created": "1695113445952",
+      "hide_from_guests": false,
+      "id": "7a89c42b-804f-4306-8b03-feccda50c9c0",
+      "name": "Work Type",
+      "required": false,
+      "type": "drop_down",
+      "type_config": {
+        "default": 0,
+        "options": [
+          {
+            "color": null,
+            "id": "2fc11eef-c917-4935-a690-42a1ac7546b5",
+            "name": "New features",
+            "orderindex": 0
+          },
+          {
+            "color": null,
+            "id": "22428de0-c22e-4f77-97e4-b7e83917228c",
+            "name": "Maintenance",
+            "orderindex": 1
+          },
+          {
+            "color": null,
+            "id": "a36b5671-58a6-4ad3-bb2b-1e6b73be6f34",
+            "name": "Unplanned work",
+            "orderindex": 2
+          },
+          {
+            "color": null,
+            "id": "2b0c6c2f-46ae-4df9-b92c-cc36ff1d65dd",
+            "name": "Manual change",
+            "orderindex": 3
+          }
+        ],
+        "placeholder": null,
+        "sorting": "manual"
+      }
+    }
+  ],
+  "custom_id": null,
+  "custom_item_id": 0,
+  "date_closed": null,
+  "date_created": "1767901940919",
+  "date_done": null,
+  "date_updated": "1767931993324",
+  "dependencies": [],
+  "description": "When starting a fresh install (new hire) I found that\nnpm install failed because of a devdependency that couldn't be built\ninstructions to solve were eventually found further down the file - but only after wasting lots of time\nturns out the fix instructions aren't necessary if we upgrade the dependency to current version\n\nTherefore updating canvas to current latest version.",
+  "due_date": null,
+  "folder": {
+    "access": true,
+    "hidden": false,
+    "id": "90031642828",
+    "name": "Team - Platform"
+  },
+  "group_assignees": [],
+  "id": "86ew4x0vz",
+  "linked_tasks": [],
+  "list": {
+    "access": true,
+    "id": "901814785771",
+    "name": "Sprint 61 (1/5 - 1/18)"
+  },
+  "locations": [],
+  "name": "Update canvas dependency",
+  "orderindex": "120605043.81741208000000000000000000000000",
+  "parent": null,
+  "permission_level": "create",
+  "points": null,
+  "priority": null,
+  "project": {
+    "access": true,
+    "hidden": false,
+    "id": "90031642828",
+    "name": "Team - Platform"
+  },
+  "sharing": {
+    "public": false,
+    "public_fields": [
+      "assignees",
+      "priority",
+      "due_date",
+      "content",
+      "comments",
+      "attachments",
+      "customFields",
+      "subtasks",
+      "tags",
+      "checklists",
+      "coverimage"
+    ],
+    "public_share_expires_on": null,
+    "seo_optimized": false,
+    "token": null
+  },
+  "space": {
+    "id": "90030126542"
+  },
+  "start_date": null,
+  "status": {
+    "color": "#f8ae00",
+    "id": "c90031642828_fDz3Gfrm",
+    "orderindex": 5,
+    "status": "in review",
+    "type": "custom"
+  },
+  "tags": [],
+  "team_id": "9003055735",
+  "text_content": "When starting a fresh install (new hire) I found that\nnpm install failed because of a devdependency that couldn't be built\ninstructions to solve were eventually found further down the file - but only after wasting lots of time\nturns out the fix instructions aren't necessary if we upgrade the dependency to current version\n\nTherefore updating canvas to current latest version.",
+  "time_estimate": null,
+  "time_spent": 0,
+  "top_level_parent": null,
+  "url": "https://app.clickup.com/t/86ew4x0vz",
+  "watchers": [
+    {
+      "color": "#afb42b",
+      "email": "justin@carepatron.com",
+      "id": 107553007,
+      "initials": "J",
+      "profilePicture": "https://attachments.clickup.com/profilePictures/107553007_TjW.jpg",
+      "username": "Justin"
+    }
+  ]
+}
