@@ -1,6 +1,132 @@
-# branch format is username/identifier-title
-# Example: justin/86ew4x0vz-fix-the-bug
-# PR title should be: "[86ew4x0vz] "Fix the bug"
+# branch format is username/CU-identifier-title
+# Example: justin/CU-86ew4x0vz-fix-the-bug
+# PR title should be: "[CU-86ew4x0vz] "Fix the bug"
+
+# Infer branch name from task ID and title
+# Usage: infer_branch_name <task_id> <title> [debug]
+# Returns: branch name in format username/CU-{taskid}-{slug}
+infer_branch_name() {
+  local task_id="$1"
+  local title="$2"
+  local DEBUG="${3:-false}"
+
+  # Validate USER environment variable is set
+  if [[ -z "$USER" ]]; then
+    error "USER environment variable is not set. Cannot infer branch name."
+    return 1
+  fi
+
+  # Validate inputs
+  if [[ -z "$task_id" ]]; then
+    error "Task ID is required for infer_branch_name"
+    return 1
+  fi
+
+  if [[ -z "$title" ]]; then
+    error "Title is required for infer_branch_name"
+    return 1
+  fi
+
+  [[ "$DEBUG" == "true" ]] && debug "infer_branch_name: task_id=$task_id, title=$title"
+
+  # Convert task name to branch-safe format:
+  # - Convert to lowercase
+  # - Replace spaces and special characters with dashes
+  # - Collapse multiple consecutive dashes
+  # - Remove leading/trailing dashes
+  local branch_name_slug
+  branch_name_slug=$(echo "$title" | \
+    tr '[:upper:]' '[:lower:]' | \
+    sed 's/[^a-z0-9]/-/g' | \
+    sed 's/-\+/-/g' | \
+    sed 's/^-\|-$//g')
+
+  [[ "$DEBUG" == "true" ]] && debug "infer_branch_name: branch_name_slug=$branch_name_slug"
+
+  # Construct branch name: username/CU-{taskid}-{slug}
+  local branch_name="${USER}/CU-${task_id}-${branch_name_slug}"
+
+  [[ "$DEBUG" == "true" ]] && debug "infer_branch_name: result=$branch_name"
+  info "Constructed branch name: $branch_name"
+
+  echo "$branch_name"
+}
+
+# Infer PR title from task ID and title
+# Usage: infer_pr_title <task_id> <title> [debug]
+# Returns: PR title in format [CU-{taskid}] {Capitalized Title}
+infer_pr_title() {
+  local task_id="$1"
+  local title="$2"
+  local DEBUG="${3:-false}"
+
+  # Validate inputs
+  if [[ -z "$task_id" ]]; then
+    error "Task ID is required for infer_pr_title"
+    return 1
+  fi
+
+  if [[ -z "$title" ]]; then
+    error "Title is required for infer_pr_title"
+    return 1
+  fi
+
+  [[ "$DEBUG" == "true" ]] && debug "infer_pr_title: task_id=$task_id, title=$title"
+
+  # Keep task ID as-is (no uppercase conversion)
+  local id="$task_id"
+  [[ "$DEBUG" == "true" ]] && debug "infer_pr_title: id=$id"
+
+  # Ensure the first letter of the task title is capitalized
+  local title_capitalized
+  title_capitalized=$(echo "$title" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')
+  [[ "$DEBUG" == "true" ]] && debug "infer_pr_title: title_capitalized=$title_capitalized"
+
+  # Format the PR title with CU- prefix, task ID and capitalized title
+  local pr_title="[CU-$id] $title_capitalized"
+  [[ "$DEBUG" == "true" ]] && debug "infer_pr_title: result=$pr_title"
+  info "Generated PR title: $pr_title"
+
+  echo "$pr_title"
+}
+
+# Infer task ID from branch name
+# Usage: infer_task_id <branch_name> [debug]
+# Returns: task ID extracted from branch name, or empty string if invalid
+infer_task_id() {
+  local branch_name="$1"
+  local DEBUG="${2:-false}"
+
+  # Validate USER environment variable is set
+  if [[ -z "$USER" ]]; then
+    error "USER environment variable is not set. Cannot infer task ID."
+    return 1
+  fi
+
+  # Validate input
+  if [[ -z "$branch_name" ]]; then
+    error "Branch name is required for infer_task_id"
+    return 1
+  fi
+
+  [[ "$DEBUG" == "true" ]] && debug "infer_task_id: branch_name=$branch_name"
+
+  # Extract the task ID from branch format: username/CU-{taskid}-{slug}
+  # Example: justin/CU-86ew4x0vz-update-canvas-dependency -> 86ew4x0vz
+  local task_id
+  task_id=$(echo "$branch_name" | sed 's|.*/||' | sed 's/^CU-//' | sed 's/-.*//')
+
+  [[ "$DEBUG" == "true" ]] && debug "infer_task_id: extracted task_id=$task_id"
+
+  # Validate extracted task ID
+  if [[ -z "$task_id" ]]; then
+    error "No task ID detected in branch name. Expected format: username/CU-{taskid}-{slug} (e.g. ${USER}/CU-86ew4x0vz-fix-the-bug)"
+    info "Please use a branch with a valid task identifier."
+    return 1
+  fi
+
+  echo "$task_id"
+}
 
 git_checkout_task_branch() {
   # Default options
@@ -70,25 +196,14 @@ git_checkout_task_branch() {
   info "Successfully fetched task name for $task_id: '$task_name'"
   [[ "$DEBUG" == "true" ]] && debug "Raw task name: $task_name"
 
-  # Convert task name to branch-safe format:
-  # - Convert to lowercase
-  # - Replace spaces and special characters with dashes
-  # - Collapse multiple consecutive dashes
-  # - Remove leading/trailing dashes
-  local branch_name_slug
-  branch_name_slug=$(echo "$task_name" | \
-    tr '[:upper:]' '[:lower:]' | \
-    sed 's/[^a-z0-9]/-/g' | \
-    sed 's/-\+/-/g' | \
-    sed 's/^-\|-$//g')
+  # Infer branch name from task ID and title
+  local branch_name
+  branch_name=$(infer_branch_name "$task_id" "$task_name" "$DEBUG")
+  if [[ $? -ne 0 ]]; then
+    error "Failed to infer branch name"
+    return 1
+  fi
 
-  [[ "$DEBUG" == "true" ]] && debug "Branch name slug: $branch_name_slug"
-
-  # Construct branch name: justin/{taskid}-{slug}
-  local username="justin"
-  local branch_name="${username}/${task_id}-${branch_name_slug}"
-
-  info "Constructed branch name: $branch_name"
   [[ "$DEBUG" == "true" ]] && debug "Full branch name: $branch_name"
 
   # Check if branch already exists
@@ -156,14 +271,10 @@ git_pr_task_branch() {
   branch=$(git branch --show-current)
   [[ "$DEBUG" == "true" ]] && echo "branch: $branch"
 
-  # Extract the task ID from branch format: username/{taskid}-{slug}
-  # Example: justin/86ew4x0vz-update-canvas-dependency -> 86ew4x0vz
-  task_id_from_branch=$(echo "$current_branch" | sed 's|.*/||' | sed 's/-.*//')
-  [[ "$DEBUG" == "true" ]] && debug "Extracted task_id_from_branch: $task_id_from_branch"
-
-  if [[ -z $task_id_from_branch ]]; then
-    error "No task ID detected in branch name. Expected format: username/{taskid}-{slug} (e.g. justin/86ew4x0vz-fix-the-bug)"
-    info "Please use a branch with a valid task identifier."
+  # Extract the task ID from branch name
+  local task_id_from_branch
+  task_id_from_branch=$(infer_task_id "$current_branch" "$DEBUG")
+  if [[ $? -ne 0 ]]; then
     return 1
   fi
 
@@ -201,19 +312,20 @@ git_pr_task_branch() {
 
   info "Successfully fetched task name for $task_id_from_branch: '$task_name'"
 
-  # Keep task ID in lowercase (no uppercase conversion)
-  local id
-  id="$task_id_from_branch"
-  [[ "$DEBUG" == "true" ]] && debug "id: $id"
+  # Infer PR title from task ID and title
+  local pr_title
+  pr_title=$(infer_pr_title "$task_id_from_branch" "$task_name" "$DEBUG")
+  if [[ $? -ne 0 ]]; then
+    error "Failed to infer PR title"
+    return 1
+  fi
 
-  # Ensure the first letter of the task title is capitalized
+  # Keep task ID for use in description
+  local id="$task_id_from_branch"
+  
+  # Capitalize title for use in description
   local title_capitalized
   title_capitalized=$(echo "$task_name" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')
-  [[ "$DEBUG" == "true" ]] && debug "title_capitalized: $title_capitalized"
-
-  # Format the PR title with lowercase task ID and capitalized title
-  pr_title="[$id] $title_capitalized"
-  info "Generated PR title: $pr_title"
 
   # Generate PR description if LLM is not being skipped
   if [[ "$SKIP_LLM" != "true" ]]; then
