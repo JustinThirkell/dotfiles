@@ -11,8 +11,14 @@ alias git_cheatsheet='code --goto ~/.oh-my-zsh/plugins/git/README.md:1'
 
 # Git
 alias gs='gst'
-alias gpom='git pull --no-rebase --no-edit origin main'
-alias gbrlog='git log --oneline --date=short HEAD ^main -10' # or git log upstream/main..HEAD
+gpom() {
+  local default_branch=$(git default 2>/dev/null || echo "main")
+  git pull --no-rebase --no-edit origin "$default_branch"
+}
+gbrlog() {
+  local default_branch=$(git default 2>/dev/null || echo "main")
+  git log --oneline --date=short HEAD ^"$default_branch" -10
+}
 # alias g="git"
 # alias gc="git commit -S"
 # alias gm="git commit -S -m"dz
