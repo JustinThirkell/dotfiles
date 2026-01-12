@@ -3,7 +3,7 @@
   "assignees": [
     {
       "color": "#afb42b",
-      "email": "justin@carepatron.com",
+      "email": "justin@example.com",
       "id": 107553007,
       "initials": "J",
       "profilePicture": "https://attachments.clickup.com/profilePictures/107553007_TjW.jpg",
@@ -14,7 +14,7 @@
   "checklists": [],
   "creator": {
     "color": "#afb42b",
-    "email": "justin@carepatron.com",
+    "email": "justin@example.com",
     "id": 107553007,
     "profilePicture": "https://attachments.clickup.com/profilePictures/107553007_TjW.jpg",
     "username": "Justin"
@@ -547,7 +547,7 @@
           {
             "color": "#f900ea",
             "id": "27a23f25-694c-43ff-84e8-6976a5e94946",
-            "label": "Carepatron Internal ",
+            "label": "CP Internal ",
             "orderindex": 25
           }
         ],
@@ -790,7 +790,7 @@
   "watchers": [
     {
       "color": "#afb42b",
-      "email": "justin@carepatron.com",
+      "email": "justin@example.com",
       "id": 107553007,
       "initials": "J",
       "profilePicture": "https://attachments.clickup.com/profilePictures/107553007_TjW.jpg",

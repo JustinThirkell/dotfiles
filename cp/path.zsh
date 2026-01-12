@@ -1,4 +1,4 @@
-# https://carepatron.slack.com/archives/C01C0A5FDB4/p1722377791183649?thread_ts=1710826453.643409&cid=C01C0A5FDB4
+# https://cp.slack.com/archives/C01C0A5FDB4/p1722377791183649?thread_ts=1710826453.643409&cid=C01C0A5FDB4
 # ==> jpeg
 # jpeg is keg-only, which means it was not symlinked into /opt/homebrew,
 # because it conflicts with `jpeg-turbo`.
