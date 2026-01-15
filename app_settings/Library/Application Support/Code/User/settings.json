@@ -74,5 +74,6 @@
 	},
 	"explorer.confirmPasteNative": false,
 	"claudeCode.preferredLocation": "panel",
-	"terminal.integrated.fontLigatures.enabled": true
+	"terminal.integrated.fontLigatures.enabled": true,
+	"github.copilot.nextEditSuggestions.enabled": true
 }
