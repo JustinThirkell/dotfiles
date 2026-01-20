@@ -1,5 +1,10 @@
 cask_args appdir: '/Applications'
 
+# If it’s a GUI app (like Visual Studio Code, Chrome, Slack) → it’s a cask
+# If it’s a command-line tool (like git, jq, gh) → it’s usually a brew (formula)
+# If the package name has a / in it (like common-fate/granted/granted) → you need the tap first, then the brew
+
+# Tap: A repository of formulas/casks. Adds a source (e.g., homebrew/cask-fonts). You can install from taps, but the tap itself is separate.
 tap "auth0/auth0-cli"
 tap "aws/tap"
 tap "common-fate/granted"
@@ -11,6 +16,7 @@ tap "powershell/tap"
 tap "simonw/llm"
 tap "withgraphite/graphite"
 
+# Brew: A formula (command-line tool or library)
 brew "abseil"
 brew "autoconf"
 brew "awscli"
@@ -54,6 +60,7 @@ brew "common-fate/granted/granted"
 brew "oven-sh/bun/bun"
 brew "simonw/llm/ttok"
 
+# Cask: A macOS application (GUI app).
 cask "1password-cli"
 cask "audacity"
 cask "claude"
