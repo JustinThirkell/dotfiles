@@ -98,14 +98,12 @@ cp_pr_task() {
     return 1
   fi
 
-  # Extract the task ID from branch format: username/{taskid}-{slug}
-  # Example: justin/86ew4x0vz-update-canvas-dependency -> 86ew4x0vz
+  # Extract the task ID from branch using infer_task_id function
   local task_id
-  task_id=$(echo "$current_branch" | sed 's|.*/||' | sed 's/-.*//')
+  task_id=$(infer_task_id "$current_branch" "$DEBUG")
 
   if [[ -z "$task_id" ]]; then
-    error "No task ID detected in branch name. Expected format: username/{taskid}-{slug} (e.g. justin/86ew4x0vz-fix-the-bug)"
-    info "Please use a branch with a valid task identifier."
+    error "Failed to extract task ID from branch name"
     return 1
   fi
 
