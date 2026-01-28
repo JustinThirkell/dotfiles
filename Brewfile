@@ -15,6 +15,7 @@ tap "oven-sh/bun"
 tap "powershell/tap"
 tap "simonw/llm"
 tap "withgraphite/graphite"
+tap "pb33f/taps/openapi-changes"
 
 # Brew: A formula (command-line tool or library)
 brew "abseil"
@@ -59,6 +60,7 @@ brew "zstd"
 brew "common-fate/granted/granted"
 brew "oven-sh/bun/bun"
 brew "simonw/llm/ttok"
+brew "daveshanley/vacuum/vacuum"
 
 # Cask: A macOS application (GUI app).
 cask "1password-cli"
