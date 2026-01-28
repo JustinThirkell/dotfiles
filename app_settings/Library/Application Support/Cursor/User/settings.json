@@ -65,6 +65,7 @@
 	"cursor.composer.usageSummaryDisplay": "always",
 	"gitlens.ai.model": "gitkraken",
 	"gitlens.ai.gitkraken.model": "gemini:gemini-2.0-flash",
-	"claudeCode.preferredLocation": "sidebar",
-	"totalTypeScript.hideBasicTips": true
+	"claudeCode.preferredLocation": "panel",
+	"totalTypeScript.hideBasicTips": true,
+	"totalTypeScript.hideAllTips": true
 }
