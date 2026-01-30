@@ -9,7 +9,7 @@ import stringify from 'safe-stable-stringify'
     • get-task <task-id>                  – detailed info for a single task
     • start-task <task-id>               – update task status to "IN PROGRESS"
     • pr-task <task-id>                  – update task status to "IN REVIEW"
-    • create-task <title> <description>    – create a new task (requires CLICKUP_LIST_ID)
+    • create-task <title> <description>    – create a new task (requires CLICKUP_DEFAULT_LIST_ID)
 
   Usage examples:
     npx tsx clickup.ts get-task 86ew4x0vz
@@ -36,11 +36,11 @@ if (!apiKey) {
   process.exit(1)
 }
 
-const listIdRaw = process.env.CLICKUP_LIST_ID
+const listIdRaw = process.env.CLICKUP_DEFAULT_LIST_ID
 if (!listIdRaw) {
   console.error(
     JSON.stringify({
-      error: 'CLICKUP_LIST_ID environment variable is not set.',
+      error: 'CLICKUP_DEFAULT_LIST_ID environment variable is not set.',
     }),
   )
   process.exit(1)
