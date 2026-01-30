@@ -91,9 +91,9 @@ infer_pr_title() {
 }
 
 # Infer task ID from branch name
-# Usage: infer_task_id <branch_name> [debug]
+# Usage: git_infer_task_id <branch_name> [debug]
 # Returns: task ID extracted from branch name, or empty string if invalid
-infer_task_id() {
+git_infer_task_id() {
   local branch_name="$1"
   local DEBUG="${2:-false}"
 
@@ -105,18 +105,18 @@ infer_task_id() {
 
   # Validate input
   if [[ -z "$branch_name" ]]; then
-    error "Branch name is required for infer_task_id"
+    error "Branch name is required for git_infer_task_id"
     return 1
   fi
 
-  [[ "$DEBUG" == "true" ]] && debug "infer_task_id: branch_name=$branch_name"
+  [[ "$DEBUG" == "true" ]] && debug "git_infer_task_id: branch_name=$branch_name"
 
   # Extract the task ID from branch format: username/CU-{taskid}-{slug}
   # Example: justin/CU-86ew4x0vz-update-canvas-dependency -> 86ew4x0vz
   local task_id
   task_id=$(echo "$branch_name" | sed 's|.*/||' | sed 's/^CU-//' | sed 's/-.*//')
 
-  [[ "$DEBUG" == "true" ]] && debug "infer_task_id: extracted task_id=$task_id"
+  [[ "$DEBUG" == "true" ]] && debug "git_infer_task_id: extracted task_id=$task_id"
 
   # Validate extracted task ID
   if [[ -z "$task_id" ]]; then
@@ -273,7 +273,7 @@ git_pr_task_branch() {
 
   # Extract the task ID from branch name
   local task_id_from_branch
-  task_id_from_branch=$(infer_task_id "$current_branch" "$DEBUG")
+  task_id_from_branch=$(git_infer_task_id "$current_branch" "$DEBUG")
   if [[ $? -ne 0 ]]; then
     return 1
   fi
@@ -379,15 +379,9 @@ Only return the PR description, don't return anything else."
       perl -0777 -pe 's/\n\n---\n\n\*Note: This PR description is concise.*?instructions\.\*//gs')
   else
     info "⏭️ Skipping PR description generation (--skip-llm flag set)"
-    # Create simple PR description with ClickUp task link and description
-    if [[ -n "$task_url" && "$task_url" != "null" ]]; then
-      if [[ -n "$task_description" && "$task_description" != "null" && "$task_description" != "" ]]; then
-        pr_description="Task linked: [$id $title_capitalized]($task_url)
-
-$task_description"
-      else
-        pr_description="Task linked: [$id $title_capitalized]($task_url)"
-      fi
+    # Use task description as-is for PR body
+    if [[ -n "$task_description" && "$task_description" != "null" && "$task_description" != "" ]]; then
+      pr_description="$task_description"
     else
       pr_description=""
     fi

@@ -45,6 +45,21 @@ clickup() {
   "$tsx_path" "$_CLICKUP_SCRIPT_PATH" "$@"
 }
 
+# Extract task ID from a ClickUp task URL (e.g. https://app.clickup.com/t/86ewdbtbh -> 86ewdbtbh)
+clickup_infer-task-id() {
+  local url="$1"
+  if [[ -z "$url" ]]; then
+    echo "" >&2
+    return 1
+  fi
+  if [[ "$url" =~ /t/([a-zA-Z0-9]+) ]]; then
+    echo "$match[1]"
+    return 0
+  fi
+  echo "" >&2
+  return 1
+}
+
 # Individual command functions for direct access
 clickup_get-task() {
   clickup get-task "$@"

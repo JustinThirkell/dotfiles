@@ -31,7 +31,20 @@ cp_start_task() {
     error "Task ID is required"
     echo "Usage: cp_start_task <task-id> [--debug]"
     echo "Example: cp_start_task 86ew4x0vz"
+    echo "Example: cp_start_task https://app.clickup.com/t/86ewdbtbh"
     return 1
+  fi
+
+  # If task_id looks like a ClickUp URL, extract the task ID
+  if [[ "$task_id" == *"/t/"* ]]; then
+    local resolved_id
+    resolved_id=$(clickup_infer-task-id "$task_id")
+    if [[ -z "$resolved_id" ]]; then
+      error "Could not extract task ID from URL: $task_id"
+      return 1
+    fi
+    [[ "$DEBUG" == "true" ]] && debug "Resolved URL to task ID: $resolved_id"
+    task_id="$resolved_id"
   fi
 
   # First, checkout the git branch
@@ -98,9 +111,9 @@ cp_pr_task() {
     return 1
   fi
 
-  # Extract the task ID from branch using infer_task_id function
+  # Extract the task ID from branch using git_infer_task_id function
   local task_id
-  task_id=$(infer_task_id "$current_branch" "$DEBUG")
+  task_id=$(git_infer_task_id "$current_branch" "$DEBUG")
 
   if [[ -z "$task_id" ]]; then
     error "Failed to extract task ID from branch name"
