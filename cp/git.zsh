@@ -232,6 +232,7 @@ git_pr_task_branch() {
   # Default options
   local SKIP_LLM=true
   local DEBUG=false
+  local reviewer="${GITHUB_DEFAULT_PR_REVIEWER:-}"
 
   # Process command line arguments
   while [[ $# -gt 0 ]]; do
@@ -415,15 +416,14 @@ Only return the PR description, don't return anything else."
     if [[ "$SKIP_LLM" == "true" ]]; then
       if [[ -n "$pr_description" && "$pr_description" != "" ]]; then
         info "🆕 Creating new PR (with description)"
-        gh pr create --title "$pr_title" --body "$pr_description" --web
+        gh pr create --title "$pr_title" --body "$pr_description" ${reviewer:+--reviewer "$reviewer"} --web
       else
         info "🆕 Creating new PR (without description)"
-        info "gh pr create --title \"$pr_title\" --web"
-        gh pr create --title "$pr_title" --web
+        gh pr create --title "$pr_title" ${reviewer:+--reviewer "$reviewer"} --web
       fi
     else
       info "🆕 Creating new PR"
-      gh pr create --title "$pr_title" --body "$pr_description" --web
+      gh pr create --title "$pr_title" --body "$pr_description" ${reviewer:+--reviewer "$reviewer"} --web
     fi
     echo "🎉 Successfully created PR"
   fi
