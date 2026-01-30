@@ -6,17 +6,20 @@ import stringify from 'safe-stable-stringify'
   ClickUp CLI – read-only utilities
   ------------------------------------------------------------------------------------
   Commands implemented:
+    • whoami                             – get authorized user info (shows your user ID)
     • get-task <task-id>                  – detailed info for a single task
     • start-task <task-id>               – update task status to "IN PROGRESS"
     • pr-task <task-id>                  – update task status to "IN REVIEW"
-    • create-task <title> <description>    – create a new task (requires CLICKUP_DEFAULT_LIST_ID)
+    • create-task <title> <description>    – create a new task (requires CLICKUP_DEFAULT_LIST_ID and CLICKUP_USER_ID)
 
   Usage examples:
+    npx tsx clickup.ts whoami
     npx tsx clickup.ts get-task 86ew4x0vz
     npx tsx clickup.ts get-task 86ew4x0vz --debug
     npx tsx clickup.ts start-task 86ew4x0vz
     npx tsx clickup.ts pr-task 86ew4x0vz
     npx tsx clickup.ts create-task "My title" "My description"
+    npx tsx clickup.ts create-task "My title" "My description" --no-assignment
 
   Notes:
   • All output is JSON so that shell scripts/zsh functions can parse it easily.
@@ -36,16 +39,9 @@ if (!apiKey) {
   process.exit(1)
 }
 
+// List ID and User ID are only validated when needed (for create-task command)
 const listIdRaw = process.env.CLICKUP_DEFAULT_LIST_ID
-if (!listIdRaw) {
-  console.error(
-    JSON.stringify({
-      error: 'CLICKUP_DEFAULT_LIST_ID environment variable is not set.',
-    }),
-  )
-  process.exit(1)
-}
-const listId: string = listIdRaw
+const userIdRaw = process.env.CLICKUP_USER_ID
 
 const clickUp = new ClickUpClient({ apiKey })
 
@@ -61,6 +57,11 @@ async function main(): Promise<void> {
 
   try {
     switch (command) {
+      case 'whoami': {
+        const json = stringify(await whoami(), null, 2)
+        console.log(json)
+        return
+      }
       case 'get-task': {
         // Accept task ID as positional argument or --id flag
         const taskId = rest[0] && !rest[0].startsWith('--') ? rest[0] : (params.id as string)
@@ -85,7 +86,8 @@ async function main(): Promise<void> {
       case 'create-task': {
         const title = rest[0] && !rest[0].startsWith('--') ? rest[0] : (params.title as string)
         const description = rest[1] && !rest[1].startsWith('--') ? rest[1] : (params.description as string)
-        const json = stringify(await createTask(title, description), null, 2)
+        const noAssignment = params['no-assignment'] === true
+        const json = stringify(await createTask(title, description, noAssignment), null, 2)
         console.log(json)
         return
       }
@@ -93,7 +95,7 @@ async function main(): Promise<void> {
         console.error(
           JSON.stringify({
             error: `Unknown command: ${command}`,
-            supported: ['get-task', 'start-task', 'pr-task', 'create-task'],
+            supported: ['whoami', 'get-task', 'start-task', 'pr-task', 'create-task'],
           }),
         )
         process.exit(1)
@@ -167,6 +169,13 @@ function stripGlobalFlags(argv: string[]): string[] {
 // -------------------------------------------------------------------------------------------------
 // Command implementations
 // -------------------------------------------------------------------------------------------------
+async function whoami(): Promise<unknown> {
+  info('Fetching authorized user info…')
+  const user = await clickUp.getAuthorizedUser()
+  debug('User fetched:', user)
+  return user
+}
+
 async function getTask(taskId: string): Promise<unknown> {
   if (!taskId) throw new Error("Task ID is required for get-task (e.g., '86ew4x0vz' or '--id 86ew4x0vz')")
   info(`Fetching task ${taskId}…`)
@@ -191,10 +200,31 @@ async function prTask(taskId: string): Promise<unknown> {
   return task
 }
 
-async function createTask(title: string, description: string): Promise<unknown> {
+async function createTask(title: string, description: string, noAssignment: boolean): Promise<unknown> {
   if (!title) throw new Error("Title is required for create-task (e.g., 'My title' or --title 'My title')")
-  info(`Creating task "${title}"…`)
-  const task = await clickUp.createTask(listId, { name: title, description: description || undefined })
-  debug('Task created:', task)
-  return task
+
+  // Validate required environment variables for create-task
+  if (!listIdRaw) {
+    throw new Error('CLICKUP_DEFAULT_LIST_ID environment variable is not set. Required for create-task.')
+  }
+
+  if (!noAssignment) {
+    if (!userIdRaw) {
+      throw new Error('CLICKUP_USER_ID environment variable is not set. Required for task assignment (use --no-assignment to skip).')
+    }
+    const userId = parseInt(userIdRaw, 10)
+    if (Number.isNaN(userId)) {
+      throw new Error('CLICKUP_USER_ID must be a valid integer.')
+    }
+    const assignees = [userId]
+    info(`Creating task "${title}" (assigning to user ${userId})…`)
+    const task = await clickUp.createTask(listIdRaw, { name: title, description: description || undefined, assignees })
+    debug('Task created:', task)
+    return task
+  } else {
+    info(`Creating task "${title}" (no assignment)…`)
+    const task = await clickUp.createTask(listIdRaw, { name: title, description: description || undefined })
+    debug('Task created:', task)
+    return task
+  }
 }

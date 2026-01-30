@@ -14,17 +14,20 @@ clickup() {
     echo "Usage: clickup <command> [options]"
     echo ""
     echo "Available commands:"
+    echo "  whoami                            - Get your ClickUp user info (shows user ID)"
     echo "  get-task <task-id>                - Get detailed info for a task"
     echo "  start-task <task-id>              - Update task status to \"IN PROGRESS\""
     echo "  pr-task <task-id>                 - Update task status to \"IN REVIEW\""
-    echo "  create-task <title> <description> - Create a new task"
+    echo "  create-task <title> <description> - Create a new task (requires CLICKUP_DEFAULT_LIST_ID and CLICKUP_USER_ID)"
     echo ""
     echo "Examples:"
+    echo "  clickup whoami"
     echo "  clickup get-task 86ew4x0vz"
     echo "  clickup get-task 86ew4x0vz --debug"
     echo "  clickup start-task 86ew4x0vz"
     echo "  clickup pr-task 86ew4x0vz"
     echo "  clickup create-task \"My title\" \"My description\""
+    echo "  clickup create-task \"My title\" \"My description\" --no-assignment"
     return 1
   fi
 
@@ -77,5 +80,9 @@ clickup_pr-task() {
 
 clickup_create-task() {
   clickup create-task "$@"
+}
+
+clickup_whoami() {
+  clickup whoami "$@"
 }
 

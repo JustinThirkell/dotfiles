@@ -1,10 +1,15 @@
 cp_new_task() {
   local title=""
   local description=""
+  local no_assignment=false
   local DEBUG=false
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
+    --no-assignment)
+      no_assignment=true
+      shift
+      ;;
     --debug)
       DEBUG=true
       shift
@@ -16,7 +21,7 @@ cp_new_task() {
         description="$1"
       else
         error "Unknown option or too many arguments: $1"
-        echo "Usage: cp_new_task <title> <description> [--debug]"
+        echo "Usage: cp_new_task <title> <description> [--no-assignment] [--debug]"
         return 1
       fi
       shift
@@ -26,21 +31,25 @@ cp_new_task() {
 
   if [[ -z "$title" ]]; then
     error "Title is required"
-    echo "Usage: cp_new_task <title> <description> [--debug]"
+    echo "Usage: cp_new_task <title> <description> [--no-assignment] [--debug]"
     echo "Example: cp_new_task \"Fix login bug\" \"Description of the fix\""
     return 1
   fi
 
   if [[ -z "$description" ]]; then
     error "Description is required"
-    echo "Usage: cp_new_task <title> <description> [--debug]"
+    echo "Usage: cp_new_task <title> <description> [--no-assignment] [--debug]"
     return 1
   fi
 
   # Create new ClickUp task with title and description
   info "📝 Creating ClickUp task: $title"
   local create_result
-  create_result=$(clickup create-task "$title" "$description")
+  if [[ "$no_assignment" == "true" ]]; then
+    create_result=$(clickup create-task "$title" "$description" --no-assignment)
+  else
+    create_result=$(clickup create-task "$title" "$description")
+  fi
   local create_exit=$?
 
   if [[ $create_exit -ne 0 ]]; then

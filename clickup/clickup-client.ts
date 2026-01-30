@@ -20,6 +20,38 @@ export class ClickUpClient {
     this.apiKey = options.apiKey
   }
 
+  async getAuthorizedUser(): Promise<unknown> {
+    const url = `${CLICKUP_API_BASE}/user`
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: this.apiKey,
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      let errorMessage = `HTTP ${response.status}: ${response.statusText}`
+      try {
+        const errorJson = JSON.parse(errorText)
+        if (errorJson.err) {
+          errorMessage = errorJson.err
+        } else if (errorJson.message) {
+          errorMessage = errorJson.message
+        }
+      } catch {
+        if (errorText) {
+          errorMessage = `${errorMessage} - ${errorText}`
+        }
+      }
+      throw new Error(errorMessage)
+    }
+
+    return await response.json()
+  }
+
   async getTask(taskId: string): Promise<unknown> {
     const url = `${CLICKUP_API_BASE}/task/${taskId}`
 
@@ -87,12 +119,15 @@ export class ClickUpClient {
     return await response.json()
   }
 
-  async createTask(listId: string, task: { name: string; description?: string }): Promise<unknown> {
+  async createTask(listId: string, task: { name: string; description?: string; assignees?: number[] }): Promise<unknown> {
     const url = `${CLICKUP_API_BASE}/list/${listId}/task`
 
-    const body: { name: string; description?: string } = { name: task.name }
+    const body: { name: string; description?: string; assignees?: number[] } = { name: task.name }
     if (task.description !== undefined && task.description !== '') {
       body.description = task.description
+    }
+    if (task.assignees !== undefined && task.assignees.length > 0) {
+      body.assignees = task.assignees
     }
 
     const response = await fetch(url, {
