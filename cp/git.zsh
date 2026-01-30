@@ -231,7 +231,7 @@ git_pr_task_branch() {
 
   # Default options
   local SKIP_LLM=true
-  local DEBUG=true
+  local DEBUG=false
 
   # Process command line arguments
   while [[ $# -gt 0 ]]; do
