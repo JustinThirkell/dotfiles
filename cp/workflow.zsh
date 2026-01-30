@@ -1,15 +1,10 @@
 cp_new_task() {
   local title=""
   local description=""
-  local start=false
   local DEBUG=false
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
-    --start|-s)
-      start=true
-      shift
-      ;;
     --debug)
       DEBUG=true
       shift
@@ -21,7 +16,7 @@ cp_new_task() {
         description="$1"
       else
         error "Unknown option or too many arguments: $1"
-        echo "Usage: cp_new_task <title> <description> [--start|-s] [--debug]"
+        echo "Usage: cp_new_task <title> <description> [--debug]"
         return 1
       fi
       shift
@@ -31,19 +26,18 @@ cp_new_task() {
 
   if [[ -z "$title" ]]; then
     error "Title is required"
-    echo "Usage: cp_new_task <title> <description> [--start|-s] [--debug]"
+    echo "Usage: cp_new_task <title> <description> [--debug]"
     echo "Example: cp_new_task \"Fix login bug\" \"Description of the fix\""
-    echo "Example: cp_new_task \"Fix login bug\" \"Description\" --start"
     return 1
   fi
 
   if [[ -z "$description" ]]; then
     error "Description is required"
-    echo "Usage: cp_new_task <title> <description> [--start|-s] [--debug]"
+    echo "Usage: cp_new_task <title> <description> [--debug]"
     return 1
   fi
 
-  # 1) Create new ClickUp task with title and description
+  # Create new ClickUp task with title and description
   info "📝 Creating ClickUp task: $title"
   local create_result
   create_result=$(clickup create-task "$title" "$description")
@@ -68,38 +62,11 @@ cp_new_task() {
     return 1
   fi
 
-  info "✅ Created ClickUp task: $task_id"
+  # Copy task ID to clipboard
+  echo -n "$task_id" | pbcopy
 
-  if [[ "$start" != "true" ]]; then
-    info "Task $task_id created. Use cp_new_task \"$title\" \"$description\" --start to create and start working on it."
-    return 0
-  fi
-
-  # 2) Verify branch is clean (no unmerged or new files)
-  if [[ -n $(git status --porcelain) ]]; then
-    error "Working tree is not clean. Commit or stash changes before using --start."
-    git status --short
-    return 1
-  fi
-
-  if [[ -f $(git rev-parse --git-dir)/MERGE_HEAD ]]; then
-    error "Merge in progress. Finish or abort the merge before using --start."
-    return 1
-  fi
-
-  # 3) Checkout default branch and pull
-  local default_branch
-  default_branch=$(git default 2>/dev/null || echo "main")
-  info "📦 Checking out default branch: $default_branch"
-  git checkout "$default_branch" || { error "Failed to checkout $default_branch"; return 1; }
-  git pull origin "$default_branch" || { error "Failed to pull $default_branch"; return 1; }
-
-  # 4) Run cp_start_task
-  if [[ "$DEBUG" == "true" ]]; then
-    cp_start_task "$task_id" --debug
-  else
-    cp_start_task "$task_id"
-  fi
+  info "✅ Created ClickUp task: $task_id (copied to clipboard)"
+  info "💡 Run: cp_start_task $task_id"
 }
 
 cp_start_task() {
@@ -187,7 +154,7 @@ cp_start_task() {
 
 cp_pr_task() {
   # Default options
-  local DEBUG=true
+  local DEBUG=false
 
   # Process command line arguments
   while [[ $# -gt 0 ]]; do
