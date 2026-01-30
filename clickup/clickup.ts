@@ -9,12 +9,14 @@ import stringify from 'safe-stable-stringify'
     • get-task <task-id>                  – detailed info for a single task
     • start-task <task-id>               – update task status to "IN PROGRESS"
     • pr-task <task-id>                  – update task status to "IN REVIEW"
+    • create-task <title> <description>    – create a new task (requires CLICKUP_LIST_ID)
 
   Usage examples:
     npx tsx clickup.ts get-task 86ew4x0vz
     npx tsx clickup.ts get-task 86ew4x0vz --debug
     npx tsx clickup.ts start-task 86ew4x0vz
     npx tsx clickup.ts pr-task 86ew4x0vz
+    npx tsx clickup.ts create-task "My title" "My description"
 
   Notes:
   • All output is JSON so that shell scripts/zsh functions can parse it easily.
@@ -33,6 +35,17 @@ if (!apiKey) {
   )
   process.exit(1)
 }
+
+const listIdRaw = process.env.CLICKUP_LIST_ID
+if (!listIdRaw) {
+  console.error(
+    JSON.stringify({
+      error: 'CLICKUP_LIST_ID environment variable is not set.',
+    }),
+  )
+  process.exit(1)
+}
+const listId: string = listIdRaw
 
 const clickUp = new ClickUpClient({ apiKey })
 
@@ -69,11 +82,18 @@ async function main(): Promise<void> {
         console.log(json)
         return
       }
+      case 'create-task': {
+        const title = rest[0] && !rest[0].startsWith('--') ? rest[0] : (params.title as string)
+        const description = rest[1] && !rest[1].startsWith('--') ? rest[1] : (params.description as string)
+        const json = stringify(await createTask(title, description), null, 2)
+        console.log(json)
+        return
+      }
       default:
         console.error(
           JSON.stringify({
             error: `Unknown command: ${command}`,
-            supported: ['get-task', 'start-task', 'pr-task'],
+            supported: ['get-task', 'start-task', 'pr-task', 'create-task'],
           }),
         )
         process.exit(1)
@@ -168,5 +188,13 @@ async function prTask(taskId: string): Promise<unknown> {
   info(`Updating task ${taskId} status to "IN REVIEW"…`)
   const task = await clickUp.updateTask(taskId, { status: 'IN REVIEW' })
   debug('Task updated:', task)
+  return task
+}
+
+async function createTask(title: string, description: string): Promise<unknown> {
+  if (!title) throw new Error("Title is required for create-task (e.g., 'My title' or --title 'My title')")
+  info(`Creating task "${title}"…`)
+  const task = await clickUp.createTask(listId, { name: title, description: description || undefined })
+  debug('Task created:', task)
   return task
 }

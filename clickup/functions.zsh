@@ -14,15 +14,17 @@ clickup() {
     echo "Usage: clickup <command> [options]"
     echo ""
     echo "Available commands:"
-    echo "  get-task <task-id>              - Get detailed info for a task"
-    echo "  start-task <task-id>            - Update task status to \"IN PROGRESS\""
-    echo "  pr-task <task-id>               - Update task status to \"IN REVIEW\""
+    echo "  get-task <task-id>                - Get detailed info for a task"
+    echo "  start-task <task-id>              - Update task status to \"IN PROGRESS\""
+    echo "  pr-task <task-id>                 - Update task status to \"IN REVIEW\""
+    echo "  create-task <title> <description> - Create a new task"
     echo ""
     echo "Examples:"
     echo "  clickup get-task 86ew4x0vz"
     echo "  clickup get-task 86ew4x0vz --debug"
     echo "  clickup start-task 86ew4x0vz"
     echo "  clickup pr-task 86ew4x0vz"
+    echo "  clickup create-task \"My title\" \"My description\""
     return 1
   fi
 
@@ -71,5 +73,9 @@ clickup_start-task() {
 
 clickup_pr-task() {
   clickup pr-task "$@"
+}
+
+clickup_create-task() {
+  clickup create-task "$@"
 }
 

@@ -86,4 +86,42 @@ export class ClickUpClient {
 
     return await response.json()
   }
+
+  async createTask(listId: string, task: { name: string; description?: string }): Promise<unknown> {
+    const url = `${CLICKUP_API_BASE}/list/${listId}/task`
+
+    const body: { name: string; description?: string } = { name: task.name }
+    if (task.description !== undefined && task.description !== '') {
+      body.description = task.description
+    }
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: this.apiKey,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      let errorMessage = `HTTP ${response.status}: ${response.statusText}`
+      try {
+        const errorJson = JSON.parse(errorText)
+        if (errorJson.err) {
+          errorMessage = errorJson.err
+        } else if (errorJson.message) {
+          errorMessage = errorJson.message
+        }
+      } catch {
+        if (errorText) {
+          errorMessage = `${errorMessage} - ${errorText}`
+        }
+      }
+      throw new Error(errorMessage)
+    }
+
+    return await response.json()
+  }
 }
