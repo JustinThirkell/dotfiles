@@ -413,18 +413,27 @@ Only return the PR description, don't return anything else."
     echo "🎉 Successfully updated PR"
   else
     # Create new PR
-    if [[ "$SKIP_LLM" == "true" ]]; then
-      if [[ -n "$pr_description" && "$pr_description" != "" ]]; then
-        info "🆕 Creating new PR (with description)"
-        gh pr create --title "$pr_title" --body "$pr_description" ${reviewer:+--reviewer "$reviewer"} --web
-      else
-        info "🆕 Creating new PR (without description)"
-        gh pr create --title "$pr_title" ${reviewer:+--reviewer "$reviewer"} --web
-      fi
+    local pr_args=(--title "$pr_title" --web)
+    
+    # Add optional flags
+    if [[ "$SKIP_LLM" != "true" || (-n "$pr_description" && "$pr_description" != "") ]]; then
+      pr_args+=(--body "$pr_description")
+    fi
+    
+    if [[ -n "$reviewer" ]]; then
+      pr_args+=(--reviewer "$reviewer")
+    fi
+    
+    if [[ "$SKIP_LLM" == "true" && (-n "$pr_description" && "$pr_description" != "") ]]; then
+      info "🆕 Creating new PR (with description)"
+    elif [[ "$SKIP_LLM" == "true" ]]; then
+      info "🆕 Creating new PR (without description)"
     else
       info "🆕 Creating new PR"
-      gh pr create --title "$pr_title" --body "$pr_description" ${reviewer:+--reviewer "$reviewer"} --web
     fi
+    
+    debug "Executing: gh pr create ${pr_args[*]}"
+    gh pr create "${pr_args[@]}"
     echo "🎉 Successfully created PR"
   fi
 }
