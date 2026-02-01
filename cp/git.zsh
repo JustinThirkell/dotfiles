@@ -412,8 +412,9 @@ Only return the PR description, don't return anything else."
     fi
     echo "🎉 Successfully updated PR"
   else
-    # Create new PR
-    local pr_args=(--title "$pr_title" --web)
+    # Create new PR via CLI (so we can set reviewer); then open in browser.
+    # --web is not used because it doesn't support --reviewer.
+    local pr_args=(--title "$pr_title")
     
     # Add optional flags
     if [[ "$SKIP_LLM" != "true" || (-n "$pr_description" && "$pr_description" != "") ]]; then
@@ -435,5 +436,7 @@ Only return the PR description, don't return anything else."
     debug "Executing: gh pr create ${pr_args[*]}"
     gh pr create "${pr_args[@]}"
     echo "🎉 Successfully created PR"
+    # Open the new PR in the browser so you can review it
+    gh pr view --web
   fi
 }
