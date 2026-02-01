@@ -414,7 +414,7 @@ Only return the PR description, don't return anything else."
   else
     # Create new PR via CLI (so we can set reviewer); then open in browser.
     # --web is not used because it doesn't support --reviewer.
-    local pr_args=(--title "$pr_title")
+    local pr_args=(--title "$pr_title" --draft)
     
     # Add optional flags
     if [[ "$SKIP_LLM" != "true" || (-n "$pr_description" && "$pr_description" != "") ]]; then
