@@ -158,6 +158,20 @@ cp_start_task() {
 
   [[ "$DEBUG" == "true" ]] && debug "start-task result: $start_result"
   info "✅ Successfully marked task $task_id as IN PROGRESS"
+
+  # add task to current sprint 
+  info "📋 Adding task $task_id to current sprint (Team - Platform)"
+  local sprint_result
+  sprint_result=$(clickup add-task-to-current-sprint "$task_id" 2>&1)
+  local sprint_exit_code=$?
+
+  if [[ $sprint_exit_code -ne 0 ]]; then
+    error "Failed to add task $task_id to current sprint"
+    [[ "$DEBUG" == "true" ]] && debug "add-task-to-current-sprint output: $sprint_result"
+    return 1
+  fi
+
+  info "✅ Task $task_id added to current sprint"
   info "✅ Task $task_id is now ready for work!"
 }
 

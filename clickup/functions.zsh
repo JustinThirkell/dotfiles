@@ -19,6 +19,7 @@ clickup() {
     echo "  start-task <task-id>              - Update task status to \"IN PROGRESS\""
     echo "  pr-task <task-id>                 - Update task status to \"IN REVIEW\""
     echo "  create-task <title> <description> - Create a new task (requires CLICKUP_DEFAULT_LIST_ID and CLICKUP_USER_ID)"
+    echo "  add-task-to-current-sprint <task-id> - Move task to current sprint (requires CLICKUP_TEAM_PLATFORM_FOLDER_ID)"
     echo ""
     echo "Examples:"
     echo "  clickup whoami"
@@ -28,6 +29,7 @@ clickup() {
     echo "  clickup pr-task 86ew4x0vz"
     echo "  clickup create-task \"My title\" \"My description\""
     echo "  clickup create-task \"My title\" \"My description\" --no-assignment"
+    echo "  clickup add-task-to-current-sprint 86ew4x0vz"
     return 1
   fi
 
@@ -80,6 +82,10 @@ clickup_pr-task() {
 
 clickup_create-task() {
   clickup create-task "$@"
+}
+
+clickup_add-task-to-current-sprint() {
+  clickup add-task-to-current-sprint "$@"
 }
 
 clickup_whoami() {

@@ -7,6 +7,8 @@ export LINEAR_DEFAULT_PROJECT_ID="uuid goes here"
 
 # ClickUp
 export CLICKUP_DEFAULT_LIST_ID="12345678"
+export CLICKUP_USER_ID="12345678"
+export CLICKUP_TEAM_PLATFORM_FOLDER_ID="12345678"
 
 # Github
 export GITHUB_DEFAULT_PR_REVIEWER="github-org/team-name"

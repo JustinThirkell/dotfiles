@@ -11,6 +11,7 @@ import stringify from 'safe-stable-stringify'
     • start-task <task-id>               – update task status to "IN PROGRESS"
     • pr-task <task-id>                  – update task status to "IN REVIEW"
     • create-task <title> <description>    – create a new task (requires CLICKUP_DEFAULT_LIST_ID and CLICKUP_USER_ID)
+    • add-task-to-current-sprint <task-id> – move task to current sprint (requires CLICKUP_TEAM_PLATFORM_FOLDER_ID)
 
   Usage examples:
     npx tsx clickup.ts whoami
@@ -20,6 +21,7 @@ import stringify from 'safe-stable-stringify'
     npx tsx clickup.ts pr-task 86ew4x0vz
     npx tsx clickup.ts create-task "My title" "My description"
     npx tsx clickup.ts create-task "My title" "My description" --no-assignment
+    npx tsx clickup.ts add-task-to-current-sprint 86ew4x0vz
 
   Notes:
   • All output is JSON so that shell scripts/zsh functions can parse it easily.
@@ -42,6 +44,7 @@ if (!apiKey) {
 // List ID and User ID are only validated when needed (for create-task command)
 const listIdRaw = process.env.CLICKUP_DEFAULT_LIST_ID
 const userIdRaw = process.env.CLICKUP_USER_ID
+const teamPlatformFolderIdRaw = process.env.CLICKUP_TEAM_PLATFORM_FOLDER_ID
 
 const clickUp = new ClickUpClient({ apiKey })
 
@@ -91,11 +94,17 @@ async function main(): Promise<void> {
         console.log(json)
         return
       }
+      case 'add-task-to-current-sprint': {
+        const taskId = rest[0] && !rest[0].startsWith('--') ? rest[0] : (params.id as string)
+        const json = stringify(await addTaskToCurrentSprint(taskId), null, 2)
+        console.log(json)
+        return
+      }
       default:
         console.error(
           JSON.stringify({
             error: `Unknown command: ${command}`,
-            supported: ['whoami', 'get-task', 'start-task', 'pr-task', 'create-task'],
+            supported: ['whoami', 'get-task', 'start-task', 'pr-task', 'create-task', 'add-task-to-current-sprint'],
           }),
         )
         process.exit(1)
@@ -227,4 +236,47 @@ async function createTask(title: string, description: string, noAssignment: bool
     debug('Task created:', task)
     return task
   }
+}
+
+async function addTaskToCurrentSprint(taskId: string): Promise<unknown> {
+  if (!taskId) throw new Error("Task ID is required for add-task-to-current-sprint (e.g., '86ew4x0vz' or --id 86ew4x0vz)")
+
+  if (!teamPlatformFolderIdRaw) {
+    throw new Error('CLICKUP_TEAM_PLATFORM_FOLDER_ID environment variable is not set. Required for add-task-to-current-sprint (Team - Platform folder ID).')
+  }
+
+  info(`Fetching task ${taskId} to get workspace…`)
+  const task = (await clickUp.getTask(taskId)) as { team_id?: string; list?: { id?: string } }
+  const workspaceId = task?.team_id
+  if (!workspaceId) {
+    throw new Error('Could not determine workspace (team_id) from task.')
+  }
+  debug('Workspace ID:', workspaceId)
+
+  info(`Fetching lists in folder ${teamPlatformFolderIdRaw} (Team - Platform)…`)
+  const { lists } = await clickUp.getFolderLists(teamPlatformFolderIdRaw)
+  if (!lists || lists.length === 0) {
+    throw new Error('No lists found in Team - Platform folder.')
+  }
+  debug(
+    'Lists:',
+    lists.map((l) => ({ id: l.id, name: l.name })),
+  )
+
+  // API returns lists with current sprint first (Sprint 63, then 62, …)
+  const currentSprint = lists[0]
+  info(`Current sprint: ${currentSprint.name} (list id: ${currentSprint.id})`)
+
+  const taskListId = (task as { list?: { id?: string } })?.list?.id
+  if (taskListId === currentSprint.id) {
+    info(`Task ${taskId} is already in current sprint "${currentSprint.name}"; skipping move (idempotent).`)
+    debug('Task list id matches current sprint list id:', taskListId)
+    return task
+  }
+  debug(`Task list id: ${taskListId}, current sprint list id: ${currentSprint.id}; moving task.`)
+
+  info(`Moving task ${taskId} to ${currentSprint.name}…`)
+  const result = await clickUp.moveTaskToList(String(workspaceId), taskId, currentSprint.id)
+  debug('Move result:', result)
+  return result
 }
