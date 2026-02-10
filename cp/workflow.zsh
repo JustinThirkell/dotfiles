@@ -2,12 +2,17 @@ cp_new_task() {
   local title=""
   local description=""
   local no_assignment=false
+  local start=false
   local DEBUG=false
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
     --no-assignment)
       no_assignment=true
+      shift
+      ;;
+    --start)
+      start=true
       shift
       ;;
     --debug)
@@ -21,7 +26,7 @@ cp_new_task() {
         description="$1"
       else
         error "Unknown option or too many arguments: $1"
-        echo "Usage: cp_new_task <title> <description> [--no-assignment] [--debug]"
+        echo "Usage: cp_new_task <title> <description> [--no-assignment] [--start] [--debug]"
         return 1
       fi
       shift
@@ -31,14 +36,14 @@ cp_new_task() {
 
   if [[ -z "$title" ]]; then
     error "Title is required"
-    echo "Usage: cp_new_task <title> <description> [--no-assignment] [--debug]"
+    echo "Usage: cp_new_task <title> <description> [--no-assignment] [--start] [--debug]"
     echo "Example: cp_new_task \"Fix login bug\" \"Description of the fix\""
     return 1
   fi
 
   if [[ -z "$description" ]]; then
     error "Description is required"
-    echo "Usage: cp_new_task <title> <description> [--no-assignment] [--debug]"
+    echo "Usage: cp_new_task <title> <description> [--no-assignment] [--start] [--debug]"
     return 1
   fi
 
@@ -71,12 +76,18 @@ cp_new_task() {
     return 1
   fi
 
-  # Copy task ID to clipboard
-  echo -n "$task_id" | pbcopy
+  if [[ "$start" == "true" ]]; then
+    cp_start_task "$task_id"
+  else
+    # Copy task ID to clipboard
+    echo -n "$task_id" | pbcopy
 
-  info "✅ Created ClickUp task: $task_id (copied to clipboard)"
-  info "💡 Run: cp_start_task $task_id"
+    info "✅ Created ClickUp task: $task_id (copied to clipboard)"
+    info "💡 Run: cp_start_task $task_id"
+  fi
 }
+
+alias new=cp_new_task
 
 cp_start_task() {
   # Default options
@@ -175,6 +186,8 @@ cp_start_task() {
   info "✅ Task $task_id is now ready for work!"
 }
 
+alias start=cp_start_task
+
 cp_pr_task() {
   # Default options
   local DEBUG=false
@@ -251,3 +264,63 @@ cp_pr_task() {
 }
 
 alias pr=cp_pr_task
+
+# Clean up Git branches that have been merged (upstream gone) and mark related ClickUp tasks as DONE.
+# 1. Determine which branches would be removed by "git bclean" (git gone).
+# 2. For each branch, infer the ClickUp task ID and mark that task complete (DONE).
+# 3. Run "git bclean" to delete the branches.
+cp_cleanup_branches() {
+  local DEBUG=false
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+    --debug)
+      DEBUG=true
+      shift
+      ;;
+    *)
+      error "Unknown option: $1"
+      echo "Usage: cp_cleanup_branches [--debug]"
+      return 1
+      ;;
+    esac
+  done
+
+  local gone_branches
+  gone_branches=("${(f)$(git gone 2>/dev/null)}")
+  if [[ ${#gone_branches[@]} -eq 0 ]]; then
+    info "No branches to clean up (git gone is empty)."
+    return 0
+  fi
+
+  [[ "$DEBUG" == "true" ]] && debug "Branches to clean: ${gone_branches[*]}"
+
+  local current_branch
+  current_branch=$(git branch --show-current)
+  if [[ -n "$current_branch" ]] && [[ -n "${gone_branches[(r)$current_branch]}" ]]; then
+    info "Current branch '$current_branch' is in gone list; switching to default before cleanup."
+    git checkout "$(git default)" || return 1
+  fi
+
+  local branch task_id failed=0
+  for branch in "${gone_branches[@]}"; do
+    branch="${branch//[$'\r\n']}"
+    [[ -z "$branch" ]] && continue
+    task_id=$(git_infer_task_id "$branch" "$DEBUG" 2>/dev/null)
+    if [[ -n "$task_id" ]]; then
+      info "Marking ClickUp task $task_id (branch $branch) as DONE."
+      if ! cp_complete_task "$task_id"; then
+        error "Failed to complete task $task_id for branch $branch"
+        failed=1
+      fi
+    else
+      [[ "$DEBUG" == "true" ]] && debug "No task ID for branch $branch; skipping ClickUp."
+    fi
+  done
+
+  info "Running git bclean to delete gone branches."
+  git bclean
+
+  [[ $failed -eq 1 ]] && return 1
+  return 0
+}
+

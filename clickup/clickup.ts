@@ -10,6 +10,7 @@ import stringify from 'safe-stable-stringify'
     • get-task <task-id>                  – detailed info for a single task
     • start-task <task-id>               – update task status to "IN PROGRESS"
     • pr-task <task-id>                  – update task status to "IN REVIEW"
+    • complete-task <task-id>            – update task status to "DONE"
     • create-task <title> <description>    – create a new task (requires CLICKUP_DEFAULT_LIST_ID and CLICKUP_USER_ID)
     • add-task-to-current-sprint <task-id> – move task to current sprint (requires CLICKUP_TEAM_PLATFORM_FOLDER_ID)
 
@@ -19,6 +20,7 @@ import stringify from 'safe-stable-stringify'
     npx tsx clickup.ts get-task 86ew4x0vz --debug
     npx tsx clickup.ts start-task 86ew4x0vz
     npx tsx clickup.ts pr-task 86ew4x0vz
+    npx tsx clickup.ts complete-task 86ew4x0vz
     npx tsx clickup.ts create-task "My title" "My description"
     npx tsx clickup.ts create-task "My title" "My description" --no-assignment
     npx tsx clickup.ts add-task-to-current-sprint 86ew4x0vz
@@ -86,6 +88,13 @@ async function main(): Promise<void> {
         console.log(json)
         return
       }
+      case 'complete-task': {
+        // Accept task ID as positional argument or --id flag
+        const taskId = rest[0] && !rest[0].startsWith('--') ? rest[0] : (params.id as string)
+        const json = stringify(await completeTask(taskId), null, 2)
+        console.log(json)
+        return
+      }
       case 'create-task': {
         const title = rest[0] && !rest[0].startsWith('--') ? rest[0] : (params.title as string)
         const description = rest[1] && !rest[1].startsWith('--') ? rest[1] : (params.description as string)
@@ -104,7 +113,7 @@ async function main(): Promise<void> {
         console.error(
           JSON.stringify({
             error: `Unknown command: ${command}`,
-            supported: ['whoami', 'get-task', 'start-task', 'pr-task', 'create-task', 'add-task-to-current-sprint'],
+            supported: ['whoami', 'get-task', 'start-task', 'pr-task', 'complete-task', 'create-task', 'add-task-to-current-sprint'],
           }),
         )
         process.exit(1)
@@ -205,6 +214,14 @@ async function prTask(taskId: string): Promise<unknown> {
   if (!taskId) throw new Error("Task ID is required for pr-task (e.g., '86ew4x0vz' or '--id 86ew4x0vz')")
   info(`Updating task ${taskId} status to "IN REVIEW"…`)
   const task = await clickUp.updateTask(taskId, { status: 'IN REVIEW' })
+  debug('Task updated:', task)
+  return task
+}
+
+async function completeTask(taskId: string): Promise<unknown> {
+  if (!taskId) throw new Error("Task ID is required for complete-task (e.g., '86ew4x0vz' or '--id 86ew4x0vz')")
+  info(`Updating task ${taskId} status to "DONE"…`)
+  const task = await clickUp.updateTask(taskId, { status: 'DONE' })
   debug('Task updated:', task)
   return task
 }
