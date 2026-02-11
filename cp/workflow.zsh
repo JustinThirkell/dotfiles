@@ -2,7 +2,7 @@ cp_new_task() {
   local title=""
   local description=""
   local no_assignment=false
-  local start=false
+  local start=true
   local DEBUG=false
 
   while [[ $# -gt 0 ]]; do
@@ -11,8 +11,8 @@ cp_new_task() {
       no_assignment=true
       shift
       ;;
-    --start)
-      start=true
+    --no-start)
+      start=false
       shift
       ;;
     --debug)
@@ -26,7 +26,7 @@ cp_new_task() {
         description="$1"
       else
         error "Unknown option or too many arguments: $1"
-        echo "Usage: cp_new_task <title> <description> [--no-assignment] [--start] [--debug]"
+        echo "Usage: cp_new_task <title> <description> [--no-assignment] [--no-start] [--debug]"
         return 1
       fi
       shift
@@ -36,14 +36,14 @@ cp_new_task() {
 
   if [[ -z "$title" ]]; then
     error "Title is required"
-    echo "Usage: cp_new_task <title> <description> [--no-assignment] [--start] [--debug]"
+    echo "Usage: cp_new_task <title> <description> [--no-assignment] [--no-start] [--debug]"
     echo "Example: cp_new_task \"Fix login bug\" \"Description of the fix\""
     return 1
   fi
 
   if [[ -z "$description" ]]; then
     error "Description is required"
-    echo "Usage: cp_new_task <title> <description> [--no-assignment] [--start] [--debug]"
+    echo "Usage: cp_new_task <title> <description> [--no-assignment] [--no-start] [--debug]"
     return 1
   fi
 
