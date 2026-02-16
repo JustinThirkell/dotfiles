@@ -44,10 +44,7 @@
   "javascript.updateImportsOnFileMove.enabled": "always",
   "security.promptForLocalFileProtocolHandling": false,
   "cursor.cpp.enablePartialAccepts": true,
-  "cursor.cpp.disabledLanguages": [
-    "plaintext",
-    "terraform"
-  ],
+  "cursor.cpp.disabledLanguages": ["plaintext", "terraform"],
   "vsicons.dontShowNewVersionMessage": true,
   "[shellscript]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
@@ -72,5 +69,7 @@
   "claudeCode.preferredLocation": "sidebar",
   "totalTypeScript.hideBasicTips": true,
   "totalTypeScript.hideAllTips": true,
-  "claudeCode.selectedModel": "default"
+  "claudeCode.selectedModel": "default",
+  "diffEditor.renderSideBySide": true,
+  "diffEditor.experimental.showMoves": true
 }
