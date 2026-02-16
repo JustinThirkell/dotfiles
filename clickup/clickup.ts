@@ -26,7 +26,8 @@ import stringify from 'safe-stable-stringify'
     npx tsx clickup.ts add-task-to-current-sprint 86ew4x0vz
 
   Notes:
-  • All output is JSON so that shell scripts/zsh functions can parse it easily.
+  • Commands that return data (whoami, get-task, create-task, add-task-to-current-sprint) output JSON to stdout.
+  • Status-update commands (start-task, pr-task, complete-task) write only to stderr on success; use exit code for success/failure.
   • Use the --debug flag for verbose logging to stderr.
 */
 
@@ -75,24 +76,21 @@ async function main(): Promise<void> {
         return
       }
       case 'start-task': {
-        // Accept task ID as positional argument or --id flag
+        // Accept task ID as positional argument or --id flag. No stdout on success (exit code + stderr only).
         const taskId = rest[0] && !rest[0].startsWith('--') ? rest[0] : (params.id as string)
-        const json = stringify(await startTask(taskId), null, 2)
-        console.log(json)
+        await startTask(taskId)
         return
       }
       case 'pr-task': {
-        // Accept task ID as positional argument or --id flag
+        // Accept task ID as positional argument or --id flag. No stdout on success (exit code + stderr only).
         const taskId = rest[0] && !rest[0].startsWith('--') ? rest[0] : (params.id as string)
-        const json = stringify(await prTask(taskId), null, 2)
-        console.log(json)
+        await prTask(taskId)
         return
       }
       case 'complete-task': {
-        // Accept task ID as positional argument or --id flag
+        // Accept task ID as positional argument or --id flag. No stdout on success (exit code + stderr only).
         const taskId = rest[0] && !rest[0].startsWith('--') ? rest[0] : (params.id as string)
-        const json = stringify(await completeTask(taskId), null, 2)
-        console.log(json)
+        await completeTask(taskId)
         return
       }
       case 'create-task': {
