@@ -40,12 +40,13 @@
   "javascript": {
     "formatter": {
       "quoteStyle": "single",
-      "semicolons": "asNeeded"
+      "semicolons": "asNeeded",
+      "trailingCommas": "all"
     }
   },
   "json": {
     "formatter": {
-      "expand": "always"
+      "trailingCommas": "none"
     }
   },
   "assist": {
