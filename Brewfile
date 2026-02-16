@@ -61,6 +61,7 @@ brew "common-fate/granted/granted"
 brew "oven-sh/bun/bun"
 brew "simonw/llm/ttok"
 brew "daveshanley/vacuum/vacuum"
+brew "prek"
 
 # Cask: A macOS application (GUI app).
 cask "1password-cli"
@@ -105,6 +106,7 @@ cask "slack"
 cask "clickup"
 cask "speedtest-cli"
 cask "pgadmin4"
+cask "ghostty"
 
 mas "Actions", id: 1586435171
 mas "Battery Indicator", id: 1206020918
