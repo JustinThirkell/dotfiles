@@ -1,9 +1,23 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "cleanupPeriodDays": 99999,
+  "attribution": {
+    "commit": "Co-Authored-By: Claude",
+    "pr": ""
+  },
   "permissions": {
     "allow": ["WebSearch", "WebFetch", "Bash(vacuum *)"],
-    "deny": ["Read(.envrc)", "Read(~/*.local)", "Read(~/.aws/**)"]
+    "deny": [
+      "Read(~/.ssh/**)",
+      "Read(~/.gnupg/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.envrc)",
+      "Read(~/*.local)",
+      "Read(~/.config/op/**)",
+      "Write(~/.ssh/**)",
+      "Write(~/.gnupg/**)",
+      "Write(~/.aws/**)"
+    ]
   },
   "statusLine": {
     "type": "command",
@@ -11,16 +25,10 @@
   },
   "sandbox": {
     "enabled": true,
-    "autoAllowBashIfSandboxed": true,
-    "excludedCommands": ["docker"],
+    "autoAllowBashIfSandboxed": false,
     "network": {
-      "allowedDomains": ["github.com", "*.npmjs.org", "registry.yarnpkg.com"],
-      "allowUnixSockets": ["/var/run/docker.sock"],
-      "allowLocalBinding": true
+      "allowedDomains": ["github.com", "api.github.com", "*.npmjs.org", "registry.yarnpkg.com"]
     }
   },
-  "attribution": {
-    "commit": "Co-Authored-By: Claude",
-    "pr": ""
-  }
+  "model": "opus"
 }
