@@ -18,7 +18,7 @@
   "editor.fontFamily": "MesloLGMDZ Nerd Font Mono, CaskaydiaCove Nerd Font, FireCode Nerd Font, Menlo, Monaco, 'Courier New', monospace",
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "biomejs.biome",
-  "diffEditor.ignoreTrimWhitespace": false,
+  "diffEditor.ignoreTrimWhitespace": true,
   "git.suggestSmartCommit": false,
   "git.autofetch": true,
   "git.confirmSync": false,
@@ -70,6 +70,5 @@
   "totalTypeScript.hideBasicTips": true,
   "totalTypeScript.hideAllTips": true,
   "claudeCode.selectedModel": "default",
-  "diffEditor.renderSideBySide": true,
-  "diffEditor.experimental.showMoves": true
+
 }
