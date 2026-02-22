@@ -14,8 +14,9 @@ tap 'homebrew/bundle'
 tap "oven-sh/bun"
 tap "powershell/tap"
 tap "simonw/llm"
-tap "withgraphite/graphite"
-tap "pb33f/taps/openapi-changes"
+tap "withgraphite/tap"
+tap "pb33f/taps"
+tap "teamookla/speedtest"
 
 # Brew: A formula (command-line tool or library)
 brew "abseil"
@@ -59,8 +60,11 @@ brew "zsh-syntax-highlighting"
 brew "zstd"
 brew "common-fate/granted/granted"
 brew "oven-sh/bun/bun"
+brew "withgraphite/tap/graphite"
 brew "simonw/llm/ttok"
 brew "daveshanley/vacuum/vacuum"
+brew "pb33f/taps/openapi-changes"
+brew "speedtest"
 brew "prek"
 
 # Cask: A macOS application (GUI app).
@@ -104,7 +108,6 @@ cask "raindropio"
 cask "warp"
 cask "slack"
 cask "clickup"
-cask "speedtest-cli"
 cask "pgadmin4"
 cask "ghostty"
 
