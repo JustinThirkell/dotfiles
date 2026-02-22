@@ -6,7 +6,11 @@
     "pr": ""
   },
   "permissions": {
-    "allow": ["WebSearch", "WebFetch", "Bash(vacuum *)"],
+    "allow": [
+      "WebSearch",
+      "WebFetch",
+      "Bash(vacuum *)"
+    ],
     "deny": [
       "Read(~/.ssh/**)",
       "Read(~/.gnupg/**)",
@@ -19,6 +23,7 @@
       "Write(~/.aws/**)"
     ]
   },
+  "model": "opus",
   "statusLine": {
     "type": "command",
     "command": "npx ccusage@latest statusline"
@@ -27,8 +32,12 @@
     "enabled": true,
     "autoAllowBashIfSandboxed": false,
     "network": {
-      "allowedDomains": ["github.com", "api.github.com", "*.npmjs.org", "registry.yarnpkg.com"]
+      "allowedDomains": [
+        "github.com",
+        "api.github.com",
+        "*.npmjs.org",
+        "registry.yarnpkg.com"
+      ]
     }
-  },
-  "model": "opus"
+  }
 }
