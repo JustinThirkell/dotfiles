@@ -71,7 +71,8 @@ link_file() {
 
         user "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
         [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
-        read -n 1 action
+        # Read from TTY so we get input even when stdin is not attached (e.g. IDE run)
+        [ -e /dev/tty ] && read -n 1 action </dev/tty 2>/dev/null || true
 
         case "$action" in
         o)
@@ -92,7 +93,14 @@ link_file() {
         S)
           skip_all=true
           ;;
-        *) ;;
+        *)
+        
+          # Empty or invalid input (e.g. EOF when stdin not a TTY) -> skip to avoid ln failure
+          if [ "$overwrite" != "true" ] && [ "$backup" != "true" ] && [ "$skip" != "true" ]; then
+            skip=true
+            user "No valid choice, skipping."
+          fi
+          ;;
         esac
 
       fi
@@ -140,7 +148,6 @@ install_dotfile_home_dir_symlinks() {
 install_dotfile_app_settings_symlinks() {
   info 'installing dotfile app settings symlinks'
 
-  local overwrite_all=false backup_all=false skip_all=false
   local app_settings_dir="$DOTFILES_ROOT/app_settings"
 
   if [ ! -d "$app_settings_dir" ]; then
@@ -163,7 +170,7 @@ install_dotfile_app_settings_symlinks() {
     local dst_dir=$(dirname "$dst")
     mkdir -p "$dst_dir"
 
-    link_file "$src" "$dst"
+    link_file "$src" "$dst" "auto_replace"
   done < <(find -H "$app_settings_dir" -type f -print0)
 }
 
