@@ -94,7 +94,6 @@ link_file() {
           skip_all=true
           ;;
         *)
-        
           # Empty or invalid input (e.g. EOF when stdin not a TTY) -> skip to avoid ln failure
           if [ "$overwrite" != "true" ] && [ "$backup" != "true" ] && [ "$skip" != "true" ]; then
             skip=true
@@ -148,6 +147,7 @@ install_dotfile_home_dir_symlinks() {
 install_dotfile_app_settings_symlinks() {
   info 'installing dotfile app settings symlinks'
 
+  local overwrite_all=false backup_all=false skip_all=false
   local app_settings_dir="$DOTFILES_ROOT/app_settings"
 
   if [ ! -d "$app_settings_dir" ]; then
@@ -170,7 +170,7 @@ install_dotfile_app_settings_symlinks() {
     local dst_dir=$(dirname "$dst")
     mkdir -p "$dst_dir"
 
-    link_file "$src" "$dst" "auto_replace"
+    link_file "$src" "$dst"
   done < <(find -H "$app_settings_dir" -type f -print0)
 }
 
