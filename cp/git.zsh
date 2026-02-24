@@ -233,6 +233,7 @@ git_pr_task_branch() {
   local SKIP_LLM=true
   local DEBUG=false
   local reviewer="${GITHUB_DEFAULT_PR_REVIEWER:-}"
+  local custom_body=""
 
   # Process command line arguments
   while [[ $# -gt 0 ]]; do
@@ -245,9 +246,19 @@ git_pr_task_branch() {
       DEBUG=true
       shift
       ;;
+    --body)
+      shift
+      if [[ $# -lt 1 ]]; then
+        echo "Missing value for --body"
+        echo "Usage: git_pr_task_branch [--skip-llm] [--debug] [--body DESCRIPTION]"
+        return 1
+      fi
+      custom_body="$1"
+      shift
+      ;;
     *)
       echo "Unknown option: $1"
-      echo "Usage: git_pr [--skip-llm] [--debug]"
+      echo "Usage: git_pr_task_branch [--skip-llm] [--debug] [--body DESCRIPTION]"
       return 1
       ;;
     esac
@@ -328,8 +339,13 @@ git_pr_task_branch() {
   local title_capitalized
   title_capitalized=$(echo "$task_name" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')
 
+  # PR description: custom body overrides ClickUp/LLM
+  local pr_description
+  if [[ -n "$custom_body" ]]; then
+    pr_description="$custom_body"
+    [[ "$DEBUG" == "true" ]] && debug "Using provided --body as PR description"
   # Generate PR description if LLM is not being skipped
-  if [[ "$SKIP_LLM" != "true" ]]; then
+  elif [[ "$SKIP_LLM" != "true" ]]; then
     info "📝 Generating PR description (LLM step)"
 
     # Construct a more detailed task context string for the LLM
@@ -389,7 +405,7 @@ Only return the PR description, don't return anything else."
     [[ "$DEBUG" == "true" ]] && debug "Generated PR description: $pr_description"
   fi
 
-  # Check if a PR already exists for the current branch
+  # Check if a PR already exists
   existing_pr=$(gh pr view --json number,title,body)
 
   if [ $? -eq 0 ]; then

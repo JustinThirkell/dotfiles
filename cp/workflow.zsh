@@ -191,6 +191,7 @@ alias start=cp_start_task
 cp_pr_task() {
   # Default options
   local DEBUG=false
+  local pr_body=""
 
   # Process command line arguments
   while [[ $# -gt 0 ]]; do
@@ -199,9 +200,19 @@ cp_pr_task() {
       DEBUG=true
       shift
       ;;
+    --body)
+      shift
+      if [[ $# -lt 1 ]]; then
+        echo "Missing value for --body"
+        echo "Usage: cp_pr_task [--debug] [--body DESCRIPTION]"
+        return 1
+      fi
+      pr_body="$1"
+      shift
+      ;;
     *)
       echo "Unknown option: $1"
-      echo "Usage: cp_pr_task [--debug]"
+      echo "Usage: cp_pr_task [--debug] [--body DESCRIPTION]"
       return 1
       ;;
     esac
@@ -231,7 +242,13 @@ cp_pr_task() {
 
   # First, create/update the PR
   info "📝 Creating/updating PR for task $task_id"
-  if [[ "$DEBUG" == "true" ]]; then
+  if [[ -n "$pr_body" ]]; then
+    if [[ "$DEBUG" == "true" ]]; then
+      git_pr_task_branch --body "$pr_body" --debug
+    else
+      git_pr_task_branch --body "$pr_body"
+    fi
+  elif [[ "$DEBUG" == "true" ]]; then
     git_pr_task_branch --debug
   else
     git_pr_task_branch
