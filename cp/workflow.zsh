@@ -341,3 +341,4 @@ cp_cleanup_branches() {
   return 0
 }
 
+alias cleanup=cp_cleanup_branches
