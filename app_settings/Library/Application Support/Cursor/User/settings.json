@@ -70,5 +70,6 @@
   "totalTypeScript.hideBasicTips": true,
   "totalTypeScript.hideAllTips": true,
   "claudeCode.selectedModel": "default",
-
+  "biome.lsp.trace.server": "messages",
+  "python.terminal.activateEnvironment": false
 }
