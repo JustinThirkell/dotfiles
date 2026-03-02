@@ -31,6 +31,11 @@
   "sandbox": {
     "enabled": true,
     "autoAllowBashIfSandboxed": false,
+    "filesystem": {
+      "allowWrite": [
+        "~/.claude/hooks/peon-ping"
+      ]
+    },
     "network": {
       "allowedDomains": [
         "github.com",
