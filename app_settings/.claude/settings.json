@@ -16,7 +16,8 @@
       "Read(~/.config/op/**)",
       "Write(~/.ssh/**)",
       "Write(~/.gnupg/**)",
-      "Write(~/.aws/**)"
+      "Write(~/.aws/**)",
+      "Read(./.entire/metadata/**)"
     ]
   },
   "model": "opus",
