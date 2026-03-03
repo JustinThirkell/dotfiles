@@ -6,11 +6,7 @@
     "pr": ""
   },
   "permissions": {
-    "allow": [
-      "WebSearch",
-      "WebFetch",
-      "Bash(vacuum *)"
-    ],
+    "allow": ["WebSearch", "WebFetch", "Bash(vacuum *)", "Read(//Users/justin/.claude/hooks/peon-ping/**)"],
     "deny": [
       "Read(~/.ssh/**)",
       "Read(~/.gnupg/**)",
@@ -32,17 +28,10 @@
     "enabled": true,
     "autoAllowBashIfSandboxed": false,
     "filesystem": {
-      "allowWrite": [
-        "~/.claude/hooks/peon-ping"
-      ]
+      "allowWrite": ["~/.claude/hooks/peon-ping"]
     },
     "network": {
-      "allowedDomains": [
-        "github.com",
-        "api.github.com",
-        "*.npmjs.org",
-        "registry.yarnpkg.com"
-      ]
+      "allowedDomains": ["github.com", "api.github.com", "*.npmjs.org", "registry.yarnpkg.com"]
     }
   },
   "hooks": {
