@@ -45,6 +45,15 @@
             "timeout": 10
           }
         ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "entire hooks claude-code session-start"
+          }
+        ]
       }
     ],
     "SessionEnd": [
@@ -56,6 +65,15 @@
             "command": "/Users/justin/.claude/hooks/peon-ping/peon.sh",
             "timeout": 10,
             "async": true
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "entire hooks claude-code session-end"
           }
         ]
       }
@@ -84,6 +102,15 @@
             "async": true
           }
         ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "entire hooks claude-code user-prompt-submit"
+          }
+        ]
       }
     ],
     "Stop": [
@@ -95,6 +122,15 @@
             "command": "/Users/justin/.claude/hooks/peon-ping/peon.sh",
             "timeout": 10,
             "async": true
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "entire hooks claude-code stop"
           }
         ]
       }
@@ -125,6 +161,26 @@
         ]
       }
     ],
+    "PostToolUse": [
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "entire hooks claude-code post-task"
+          }
+        ]
+      },
+      {
+        "matcher": "TodoWrite",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "entire hooks claude-code post-todo"
+          }
+        ]
+      }
+    ],
     "PostToolUseFailure": [
       {
         "matcher": "Bash",
@@ -134,6 +190,17 @@
             "command": "/Users/justin/.claude/hooks/peon-ping/peon.sh",
             "timeout": 10,
             "async": true
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "entire hooks claude-code pre-task"
           }
         ]
       }
