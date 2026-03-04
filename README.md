@@ -159,6 +159,8 @@ and I'd love to get it fixed for you!
 
 This repo includes a dev container configuration (`.devcontainer/`) for a consistent, reproducible development environment using Docker.
 
+The dev container is configured with Claude Code, Cursor, and other development tools pre-installed.
+
 ## thanks
 
 I copied Lutz Lengemann's excellent [dotfiles](https://github.com/mobilutz/dotfiles) which are based on [Zack Holman](https://github.com/holman)'s [dotfiles](https://github.com/holman/dotfiles) which are based on [Ryan Bates](https://github.com/ryanb) [dotfiles](https://github.com/ryanb/dotfiles).
