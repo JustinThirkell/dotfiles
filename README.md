@@ -155,6 +155,10 @@ If you're brand-new to the project and run into any blockers, please
 [open an issue](https://github.com/thirkcircus/dotfiles/issues) on this repository
 and I'd love to get it fixed for you!
 
+## dev container
+
+This repo includes a dev container configuration (`.devcontainer/`) for a consistent, reproducible development environment using Docker.
+
 ## thanks
 
 I copied Lutz Lengemann's excellent [dotfiles](https://github.com/mobilutz/dotfiles) which are based on [Zack Holman](https://github.com/holman)'s [dotfiles](https://github.com/holman/dotfiles) which are based on [Ryan Bates](https://github.com/ryanb) [dotfiles](https://github.com/ryanb/dotfiles).
