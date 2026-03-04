@@ -65,17 +65,17 @@ _read_config_value() {
     fi
 }
 
-# Get the devcontainer mode from config.local
-# Returns: "locked-down" or "standard" (default)
-get_devcontainer_mode() {
-    local mode
-    mode=$(_read_config_value "MODE")
-    if [ -n "$mode" ]; then
-        debug_log "Mode from config.local: $mode"
-        echo "$mode"
+# Get the Claude auth mode from config.local
+# Returns: "browser" or "api-key"
+get_claude_auth_mode() {
+    local auth_mode
+    auth_mode=$(_read_config_value "CLAUDE_AUTH_MODE")
+    if [ -n "$auth_mode" ]; then
+        debug_log "Claude auth mode from config.local: $auth_mode"
+        echo "$auth_mode"
     else
-        debug_log "No MODE in config.local — defaulting to standard"
-        echo "standard"
+        debug_log "No CLAUDE_AUTH_MODE in config.local — defaulting to browser"
+        echo "browser"
     fi
 }
 

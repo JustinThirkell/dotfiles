@@ -31,8 +31,8 @@ if [ ! -f "$PERSONAL_FILE" ]; then
     error_log ""
     error_log "Create this file with your git identity:"
     error_log "  [user]"
-    error_log "      name = Claude Sonnet 4.5"
-    error_log "      email = you+claudecode@example.com"
+    error_log "      name = Claude (for Justin Thirkell)"
+    error_log "      email = justin+claude@carepatron.com"
     error_log ""
     error_log "This file is gitignored — it stays local to your machine."
     exit 1
@@ -48,8 +48,8 @@ if [ -z "$PERSONAL_NAME" ] || [ -z "$PERSONAL_EMAIL" ]; then
     error_log ""
     error_log "gitconfig.personal must contain:"
     error_log "  [user]"
-    error_log "      name = Claude Sonnet 4.5"
-    error_log "      email = you+claudecode@example.com"
+    error_log "      name = Claude (for Justin Thirkell)"
+    error_log "      email = justin+claude@carepatron.com"
     exit 1
 fi
 

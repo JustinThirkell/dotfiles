@@ -4,7 +4,7 @@
 # Source Shared Utilities
 # ============================================================================
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-COMMON_FILE="$SCRIPT_DIR/../common.sh"
+COMMON_FILE="$SCRIPT_DIR/../scripts/common.sh"
 if [ ! -f "$COMMON_FILE" ]; then
     echo "ERROR: Could not find common.sh at expected location: $COMMON_FILE" >&2
     exit 1

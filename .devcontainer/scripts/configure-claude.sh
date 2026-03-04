@@ -17,8 +17,8 @@ source "$COMMON_FILE"
 # ============================================================================
 info_log "Configuring Claude Code settings..."
 
-MODE=$(get_devcontainer_mode)
-debug_log "Devcontainer mode: $MODE"
+CLAUDE_AUTH_MODE=$(get_claude_auth_mode)
+debug_log "Claude auth mode: $CLAUDE_AUTH_MODE"
 
 CLAUDE_SETTINGS_FILE="/workspace/.devcontainer/claude-settings.json"
 CLAUDE_CONFIG_DIR="$HOME/.claude"
@@ -42,9 +42,9 @@ if [ -f "$CLAUDE_SETTINGS_FILE" ]; then
     debug_log "Overwriting Claude settings from version-controlled config..."
     cp -f "$CLAUDE_SETTINGS_FILE" "$CLAUDE_CONFIG_DIR/settings.json"
 
-    if [ "$MODE" = "standard" ]; then
-        # Standard mode: remove apiKeyHelper so Claude prompts for browser login
-        info_log "Standard mode: removing apiKeyHelper (browser login)"
+    if [ "$CLAUDE_AUTH_MODE" = "browser" ]; then
+        # Browser auth: remove apiKeyHelper so Claude prompts for browser login
+        info_log "Browser auth: removing apiKeyHelper (browser login)"
         if command -v jq &>/dev/null; then
             jq 'del(.apiKeyHelper)' "$CLAUDE_CONFIG_DIR/settings.json" > "$CLAUDE_CONFIG_DIR/settings.json.tmp"
             mv "$CLAUDE_CONFIG_DIR/settings.json.tmp" "$CLAUDE_CONFIG_DIR/settings.json"
@@ -53,7 +53,7 @@ if [ -f "$CLAUDE_SETTINGS_FILE" ]; then
             sed -i '/^\s*"apiKeyHelper"/d' "$CLAUDE_CONFIG_DIR/settings.json"
         fi
     else
-        info_log "Locked-down mode: apiKeyHelper active (1Password retrieves API key)"
+        info_log "API key auth: apiKeyHelper active (1Password retrieves API key)"
     fi
 
     chmod 600 "$CLAUDE_CONFIG_DIR/settings.json"

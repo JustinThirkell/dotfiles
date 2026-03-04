@@ -18,16 +18,16 @@ source "$COMMON_FILE"
 # Orchestrator for postStartCommand / postCreateCommand.
 # Runs shared infrastructure setup then delegates to a profile script.
 
-MODE=$(get_devcontainer_mode)
+CLAUDE_AUTH_MODE=$(get_claude_auth_mode)
 PROFILE=$(get_devcontainer_profile)
-export DEVCONTAINER_MODE="$MODE"
+export DEVCONTAINER_CLAUDE_AUTH_MODE="$CLAUDE_AUTH_MODE"
 
-info_log "Configuring shared environment (mode: $MODE, profile: $PROFILE)..."
+info_log "Configuring shared environment (claude_auth: $CLAUDE_AUTH_MODE, profile: $PROFILE)..."
 
 /workspace/.devcontainer/scripts/configure-git-user.sh
 /workspace/.devcontainer/scripts/configure-claude.sh
 
-PROFILE_SCRIPT="/workspace/.devcontainer/scripts/profiles/${PROFILE}.sh"
+PROFILE_SCRIPT="/workspace/.devcontainer/profiles/${PROFILE}.sh"
 debug_log "Profile script: $PROFILE_SCRIPT"
 info_log "Configuring ${PROFILE} profile..."
 
@@ -36,5 +36,5 @@ if [ -f "$PROFILE_SCRIPT" ]; then
     bash "$PROFILE_SCRIPT"
 else
     info_log "Profile '${PROFILE}' not found, using default"
-    bash "/workspace/.devcontainer/scripts/profiles/default.sh"
+    bash "/workspace/.devcontainer/profiles/default.sh"
 fi
