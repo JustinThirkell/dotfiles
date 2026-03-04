@@ -74,5 +74,6 @@
 	"python.terminal.activateEnvironment": false,
 	"files.exclude": {
 		"**/.git": false
-	}
+	},
+	"remote.autoForwardPortsFallback": 30
 }
