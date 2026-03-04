@@ -18,54 +18,43 @@ source "$COMMON_FILE"
 info_log "Configuring git identity for AI agent..."
 
 GITCONFIG_FILE="/workspace/.devcontainer/gitconfig"
-PERSONAL_FILE="/workspace/.devcontainer/gitconfig.personal"
 
 if [ ! -f "$GITCONFIG_FILE" ]; then
   error_log "Git configuration file not found: $GITCONFIG_FILE"
   exit 1
 fi
 
-# Validate gitconfig.personal exists and has required fields
-if [ ! -f "$PERSONAL_FILE" ]; then
-  error_log "gitconfig.personal not found: $PERSONAL_FILE"
-  error_log ""
-  error_log "Create this file with your git identity:"
-  error_log "  [user]"
-  error_log "      name = Claude (for Justin Thirkell)"
-  error_log "      email = justin+claude@carepatron.com"
-  error_log ""
-  error_log "This file is gitignored — it stays local to your machine."
-  exit 1
-fi
+# Read git identity from config.local
+GIT_USER_NAME=$(get_git_user_name)
+GIT_USER_EMAIL=$(get_git_user_email)
 
-# Check that name and email are set in gitconfig.personal
-PERSONAL_NAME=$(git config --file "$PERSONAL_FILE" user.name 2>/dev/null || echo "")
-PERSONAL_EMAIL=$(git config --file "$PERSONAL_FILE" user.email 2>/dev/null || echo "")
-
-if [ -z "$PERSONAL_NAME" ] || [ -z "$PERSONAL_EMAIL" ]; then
-  error_log "gitconfig.personal is missing required fields"
-  error_log "Found: name='${PERSONAL_NAME}' email='${PERSONAL_EMAIL}'"
+if [ -z "$GIT_USER_NAME" ] || [ -z "$GIT_USER_EMAIL" ]; then
+  error_log "Git identity not configured in config.local"
+  error_log "Found: name='${GIT_USER_NAME}' email='${GIT_USER_EMAIL}'"
   error_log ""
-  error_log "gitconfig.personal must contain:"
-  error_log "  [user]"
-  error_log "      name = Claude (for Justin Thirkell)"
-  error_log "      email = justin+claude@carepatron.com"
+  error_log "Add these lines to .devcontainer/config.local:"
+  error_log "  GIT_USER_NAME=Claude (for Your Name)"
+  error_log "  GIT_USER_EMAIL=you+claude@example.com"
   exit 1
 fi
 
 # IMPORTANT: Forcibly overwrite ~/.gitconfig to prevent VS Code's auto-sync
 # VS Code's devcontainer extension automatically copies the host machine's .gitconfig
 # into the container. We want our AI-specific configuration to take precedence.
-# By running this on every container start (postStartCommand), we ensure our
-# configuration always wins.
+# This runs on every attach (postAttachCommand) so our configuration always wins.
 
 debug_log "Overwriting ~/.gitconfig with container-specific configuration..."
 cp -f "$GITCONFIG_FILE" "$HOME/.gitconfig"
 chmod 600 "$HOME/.gitconfig"
 
-# Verify the configured identity
-GIT_USER_NAME=$(git config --global user.name 2>/dev/null || echo "(not set)")
-GIT_USER_EMAIL=$(git config --global user.email 2>/dev/null || echo "(not set)")
+# Directly set user identity — git config --global does not expand [include]
+# by default in Git 2.39+ (requires --includes flag).
+git config --global user.name "$GIT_USER_NAME"
+git config --global user.email "$GIT_USER_EMAIL"
 
-info_log "✓ Git identity configured as: $GIT_USER_NAME <$GIT_USER_EMAIL>"
+# Verify the configured identity
+RESULTING_GIT_USER_NAME=$(git config --global user.name 2>/dev/null || echo "(not set)")
+RESULTING_GIT_USER_EMAIL=$(git config --global user.email 2>/dev/null || echo "(not set)")
+
+info_log "✓ Git identity configured as: $RESULTING_GIT_USER_NAME <$RESULTING_GIT_USER_EMAIL>"
 info_log "Git user configuration complete!"

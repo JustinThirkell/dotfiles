@@ -65,6 +65,37 @@ _read_config_value() {
   fi
 }
 
+# Read a key=value from config.local, preserving internal whitespace
+# Usage: _read_config_value_raw KEY
+_read_config_value_raw() {
+  local key="$1"
+  if [ -f "$CONFIG_LOCAL_FILE" ]; then
+    grep -E "^${key}=" "$CONFIG_LOCAL_FILE" 2>/dev/null | head -1 | cut -d= -f2- | tr -d '"'"'" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
+  fi
+}
+
+# Get the git user name from config.local
+# Returns: user name or empty string
+get_git_user_name() {
+  local name
+  name=$(_read_config_value_raw "GIT_USER_NAME")
+  if [ -n "$name" ]; then
+    debug_log "Git user name from config.local: $name"
+    echo "$name"
+  fi
+}
+
+# Get the git user email from config.local
+# Returns: user email or empty string
+get_git_user_email() {
+  local email
+  email=$(_read_config_value "GIT_USER_EMAIL")
+  if [ -n "$email" ]; then
+    debug_log "Git user email from config.local: $email"
+    echo "$email"
+  fi
+}
+
 # Get the Claude auth mode from config.local
 # Returns: "browser" or "api-key"
 get_claude_auth_mode() {
@@ -87,12 +118,6 @@ get_devcontainer_profile() {
   if [ -n "$profile" ]; then
     debug_log "Profile from config.local: $profile"
     echo "$profile"
-    return
-  fi
-  # Fall back to env var (legacy support)
-  if [ -n "${DEVCONTAINER_PROFILE:-}" ]; then
-    debug_log "Profile from DEVCONTAINER_PROFILE env var: $DEVCONTAINER_PROFILE"
-    echo "$DEVCONTAINER_PROFILE"
     return
   fi
   debug_log "No profile configured — defaulting to default"

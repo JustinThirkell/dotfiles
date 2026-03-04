@@ -1,11 +1,3 @@
-[include]
-	# Personal git identity (name + email) — gitignored, must be created manually
-	# Create .devcontainer/gitconfig.personal with:
-	#   [user]
-	#       name = Claude (for Justin Thirkell)
-	#       email = justin+claude@carepatron.com
-  path = /workspace/.devcontainer/gitconfig.personal
-
 [pull]
   rebase = false
 
