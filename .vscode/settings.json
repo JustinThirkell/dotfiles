@@ -6,6 +6,7 @@
     "ohmyzsh*": "shellscript",
     "p10k*": "shellscript",
     "gitignore_global*": "gitignore",
-    "": "shellscript"
+    "": "shellscript",
+    "config.local": "properties"
   }
 }
