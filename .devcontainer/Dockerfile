@@ -28,6 +28,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   curl \
   ca-certificates \
   locales \
+  zsh-syntax-highlighting \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Configure locale
@@ -100,7 +101,7 @@ ENV SHELL=/bin/zsh
 ENV EDITOR=nano
 ENV VISUAL=nano
 
-# Install zsh theme and configuration
+# Install Oh My Zsh and configure default shell
 ARG ZSH_IN_DOCKER_VERSION=1.2.0
 RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v${ZSH_IN_DOCKER_VERSION}/zsh-in-docker.sh)" -- \
   -p git \
@@ -109,6 +110,10 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
   -a "source /usr/share/doc/fzf/examples/completion.zsh" \
   -a "export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
   -x
+
+# Install Powerlevel10k theme (available for anyone with dotfiles that set ZSH_THEME)
+RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+  "${HOME}/.oh-my-zsh/custom/themes/powerlevel10k"
 
 # Install Claude Code (native installer, replaces deprecated npm method)
 RUN curl -fsSL https://claude.ai/install.sh | bash -s ${CLAUDE_CODE_VERSION}
