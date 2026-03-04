@@ -24,14 +24,14 @@
       }
     }
   },
-  "remoteUser": "containeruser",
+  "remoteUser": "devcontainer",
   "mounts": [
     "source=claude-code-bashhistory-${devcontainerId},target=/commandhistory,type=volume",
-    "source=claude-code-config-${devcontainerId},target=/home/containeruser/.claude,type=volume"
+    "source=claude-code-config-${devcontainerId},target=/home/devcontainer/.claude,type=volume"
   ],
   "containerEnv": {
     "NODE_OPTIONS": "--max-old-space-size=4096",
-    "CLAUDE_CONFIG_DIR": "/home/containeruser/.claude",
+    "CLAUDE_CONFIG_DIR": "/home/devcontainer/.claude",
     "POWERLEVEL9K_DISABLE_GITSTATUS": "true",
     "DEVCONTAINER_USE_GITHUB_DEPLOY_KEY": "${localEnv:DEVCONTAINER_USE_GITHUB_DEPLOY_KEY:}"
   },

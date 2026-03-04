@@ -47,14 +47,14 @@ RUN curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
   apt-get install -y 1password-cli && \
   apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Rename default node user to containeruser for clarity
-ARG USERNAME=containeruser
-RUN usermod -l containeruser -d /home/containeruser -m node && \
-  groupmod -n containeruser node
+# Rename default node user to devcontainer for clarity
+ARG USERNAME=devcontainer
+RUN usermod -l devcontainer -d /home/devcontainer -m node && \
+  groupmod -n devcontainer node
 
-# Ensure containeruser has access to /usr/local/share
+# Ensure devcontainer has access to /usr/local/share
 RUN mkdir -p /usr/local/share/npm-global && \
-  chown -R containeruser:containeruser /usr/local/share
+  chown -R devcontainer:devcontainer /usr/local/share
 
 # Persist bash history
 RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
@@ -62,13 +62,9 @@ RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhisto
   && touch /commandhistory/.bash_history \
   && chown -R $USERNAME /commandhistory
 
-# Set DEVCONTAINER environment variable
-ENV DEVCONTAINER=true
-
 # Create workspace and config directories and set permissions
-RUN mkdir -p /workspace /home/containeruser/.claude && \
-  chown -R containeruser:containeruser /workspace /home/containeruser/.claude
-
+RUN mkdir -p /workspace /home/devcontainer/.claude && \
+  chown -R devcontainer:devcontainer /workspace /home/devcontainer/.claude
 WORKDIR /workspace
 
 # Install git-delta for better diffs
@@ -79,7 +75,7 @@ RUN ARCH=$(dpkg --print-architecture) && \
   rm "git-delta_${GIT_DELTA_VERSION}_${ARCH}.deb"
 
 # Install entire CLI (git-native task tracking for autonomous agents)
-ARG ENTIRE_VERSION=0.4.4
+ARG ENTIRE_VERSION=0.4.9
 RUN ARCH=$(dpkg --print-architecture) && \
   wget "https://github.com/entireio/cli/releases/download/v${ENTIRE_VERSION}/entire_linux_${ARCH}.tar.gz" && \
   tar -xzf "entire_linux_${ARCH}.tar.gz" entire && \
@@ -87,19 +83,13 @@ RUN ARCH=$(dpkg --print-architecture) && \
   chmod +x /usr/local/bin/entire && \
   rm "entire_linux_${ARCH}.tar.gz"
 
-# Set up non-root user
-USER containeruser
-
-# Install global packages
-ENV NPM_CONFIG_PREFIX=/usr/local/share/npm-global
-ENV PATH=$PATH:/usr/local/share/npm-global/bin
-
-# Set the default shell to zsh
-ENV SHELL=/bin/zsh
-
-# Set the default editor
-ENV EDITOR=nano
-ENV VISUAL=nano
+USER devcontainer
+ENV DEVCONTAINER=true \
+  NPM_CONFIG_PREFIX=/usr/local/share/npm-global \
+  PATH="/home/devcontainer/.local/bin:$PATH:/usr/local/share/npm-global/bin" \
+  SHELL=/bin/zsh \
+  EDITOR="code --wait" \
+  VISUAL="code --wait"
 
 # Install Oh My Zsh and configure default shell
 ARG ZSH_IN_DOCKER_VERSION=1.2.0
@@ -111,24 +101,15 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
   -a "export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
   -x
 
-# Install Powerlevel10k theme (available for anyone with dotfiles that set ZSH_THEME)
-RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
-  "${HOME}/.oh-my-zsh/custom/themes/powerlevel10k"
-
 # Install Claude Code (native installer, replaces deprecated npm method)
 RUN curl -fsSL https://claude.ai/install.sh | bash -s ${CLAUDE_CODE_VERSION}
-ENV PATH="/home/containeruser/.local/bin:$PATH"
 
-# Skip the bypass-permissions confirmation prompt (safe inside sandboxed container)
-RUN echo 'alias claude="claude --dangerously-skip-permissions"' >> /home/containeruser/.zshrc
-
-# Create Claude config directory (settings.json will be copied by postStartCommand)
-RUN mkdir -p /home/containeruser/.claude
+RUN echo 'alias claude="claude --dangerously-skip-permissions"' >> /home/devcontainer/.zshrc
 
 # Copy and set up firewall script
 COPY init-firewall.sh /usr/local/bin/
 USER root
 RUN chmod +x /usr/local/bin/init-firewall.sh && \
-  echo "containeruser ALL=(root) NOPASSWD: /usr/local/bin/init-firewall.sh" > /etc/sudoers.d/containeruser-firewall && \
-  chmod 0440 /etc/sudoers.d/containeruser-firewall
-USER containeruser
+  echo "devcontainer ALL=(root) NOPASSWD: /usr/local/bin/init-firewall.sh" > /etc/sudoers.d/devcontainer-firewall && \
+  chmod 0440 /etc/sudoers.d/devcontainer-firewall
+USER devcontainer
