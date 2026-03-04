@@ -1,13 +1,15 @@
 # Devcontainer Configuration
 
-This directory contains shared devcontainer infrastructure. Two files need to be created manually (both are gitignored).
+This directory contains shared devcontainer infrastructure. One file needs to be created manually (it is gitignored).
 
-## 1. `config.local`
+## `config.local`
 
-Per-user configuration. Controls Claude authentication and which profile runs at startup.
+Per-user configuration. Controls git identity, Claude authentication, and which profile runs at startup.
 
 ```bash
 # Required
+GIT_USER_NAME=Claude (for Your Name)
+GIT_USER_EMAIL=you+claude@example.com
 CLAUDE_AUTH_MODE=browser    # "browser" (OAuth login) or "api-key" (from 1Password)
 PROFILE=default             # Profile script to run: profiles/{PROFILE}.sh
 
@@ -19,12 +21,16 @@ PROFILE=default             # Profile script to run: profiles/{PROFILE}.sh
 
 **Browser login + host SSH** (simplest — no 1Password needed):
 ```
+GIT_USER_NAME=Claude (for Your Name)
+GIT_USER_EMAIL=you+claude@example.com
 CLAUDE_AUTH_MODE=browser
 PROFILE=default
 ```
 
 **Browser login + deploy key** (Claude Teams + SSH isolation):
 ```
+GIT_USER_NAME=Claude (for Your Name)
+GIT_USER_EMAIL=you+claude@example.com
 CLAUDE_AUTH_MODE=browser
 PROFILE=yourname
 OP_SERVICE_ACCOUNT_TOKEN=ops_...
@@ -32,19 +38,11 @@ OP_SERVICE_ACCOUNT_TOKEN=ops_...
 
 **API key + deploy key** (full isolation):
 ```
+GIT_USER_NAME=Claude (for Your Name)
+GIT_USER_EMAIL=you+claude@example.com
 CLAUDE_AUTH_MODE=api-key
 PROFILE=yourname
 OP_SERVICE_ACCOUNT_TOKEN=ops_...
-```
-
-## 2. `gitconfig.personal`
-
-Your git identity for commits made inside the container.
-
-```ini
-[user]
-    name = Claude (for Your Name)
-    email = you+claude@example.com
 ```
 
 ## Profiles
