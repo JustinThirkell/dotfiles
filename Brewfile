@@ -17,6 +17,8 @@ tap "simonw/llm"
 tap "withgraphite/tap"
 tap "pb33f/taps"
 tap "teamookla/speedtest"
+tap "entireio/tap"
+tap "peonping/tap"
 
 # Brew: A formula (command-line tool or library)
 brew "abseil"
@@ -64,8 +66,13 @@ brew "withgraphite/tap/graphite"
 brew "simonw/llm/ttok"
 brew "daveshanley/vacuum/vacuum"
 brew "pb33f/taps/openapi-changes"
-brew "speedtest"
 brew "prek"
+brew "speedtest-cli"
+brew "beads"
+brew "aws-cdk"
+brew "peonping/tap/peon-ping"
+brew "yamlfmt"
+brew "ripgrep"
 
 # Cask: A macOS application (GUI app).
 cask "1password-cli"
