@@ -75,23 +75,23 @@ fi
 
 info_log "✓ Wrote private key to: $KEY_FILE"
 
-# Configure SSH config
+# Configure SSH config to use the deploy key for github.com directly.
+# This avoids rewriting the git remote URL, so the same remote works on both
+# the host (using the host's SSH key) and the container (using the deploy key).
 SSH_CONFIG="$SSH_DIR/config"
-HOST_ALIAS="github.com-${REPO_NAME}"
 
 debug_log "Configuring SSH config file: $SSH_CONFIG"
 
-# Remove existing configuration for this host alias if present
+# Remove existing github.com configuration if present
 if [ -f "$SSH_CONFIG" ]; then
-  # Create temp file without the old config block
-  sed "/^Host ${HOST_ALIAS}$/,/^$/d" "$SSH_CONFIG" >"${SSH_CONFIG}.tmp"
+  sed "/^Host github\.com$/,/^$/d" "$SSH_CONFIG" >"${SSH_CONFIG}.tmp"
   mv "${SSH_CONFIG}.tmp" "$SSH_CONFIG"
 fi
 
 # Append new configuration
 cat >>"$SSH_CONFIG" <<EOF
 
-Host ${HOST_ALIAS}
+Host github.com
     HostName github.com
     User git
     IdentityFile ${KEY_FILE}
@@ -100,33 +100,18 @@ Host ${HOST_ALIAS}
 EOF
 
 chmod 600 "$SSH_CONFIG"
-info_log "✓ Updated SSH config with host alias: $HOST_ALIAS"
+info_log "✓ Updated SSH config for github.com with deploy key"
 
-# Update git remote URL to use SSH alias
-debug_log "Updating git remote URL..."
+# Restore git remote to standard github.com URL if it was previously rewritten
+# with an SSH alias (e.g. github.com-dotfiles). This is a one-time migration.
 CURRENT_REMOTE=$(git config --get remote.origin.url)
-debug_log "Current remote: $CURRENT_REMOTE"
-
-# Check if already using our SSH alias
-if [[ "$CURRENT_REMOTE" =~ git@${HOST_ALIAS}: ]]; then
-  info_log "✓ Git remote already configured with SSH alias: $HOST_ALIAS"
+if [[ "$CURRENT_REMOTE" =~ git@github\.com-[^:]+:(.+)$ ]]; then
+  REPO_PATH="${BASH_REMATCH[1]}"
+  NEW_REMOTE="git@github.com:${REPO_PATH}"
+  git remote set-url origin "$NEW_REMOTE"
+  info_log "✓ Migrated git remote from SSH alias back to: $NEW_REMOTE"
 else
-  # Extract owner/repo from current URL (handles both SSH and HTTPS formats)
-  if [[ "$CURRENT_REMOTE" =~ github\.com[:/]([^/]+)/([^/]+)(\.git)?$ ]]; then
-    OWNER="${BASH_REMATCH[1]}"
-    REPO="${BASH_REMATCH[2]}"
-    REPO="${REPO%.git}" # Remove .git if present
-
-    NEW_REMOTE="git@${HOST_ALIAS}:${OWNER}/${REPO}.git"
-    debug_log "New remote: $NEW_REMOTE"
-
-    git remote set-url origin "$NEW_REMOTE"
-    info_log "✓ Updated git remote to: $NEW_REMOTE"
-  else
-    error_log "Could not parse GitHub owner/repo from remote URL: $CURRENT_REMOTE"
-    error_log "Expected format: git@github.com:owner/repo.git or https://github.com/owner/repo.git"
-    exit 1
-  fi
+  debug_log "Git remote already uses standard URL: $CURRENT_REMOTE"
 fi
 
 # ============================================================================
