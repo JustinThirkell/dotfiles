@@ -41,8 +41,8 @@
   },
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
   "workspaceFolder": "/workspace",
-  "postCreateCommand": "echo 'Container created successfully'",
-  "postStartCommand": "bash -c 'sudo /usr/local/bin/init-firewall.sh > /tmp/firewall-setup.log 2>&1 && /workspace/.devcontainer/scripts/setup-environment.sh'",
-  "postAttachCommand": "/workspace/.devcontainer/scripts/configure-git-user.sh",
+  "postCreateCommand": "/workspace/.devcontainer/scripts/post-create-command.sh",
+  "postStartCommand": "/workspace/.devcontainer/scripts/post-start-command.sh",
+  "postAttachCommand": "/workspace/.devcontainer/scripts/post-attach-command.sh",
   "waitFor": "postStartCommand"
 }
