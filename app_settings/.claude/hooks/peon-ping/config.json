@@ -50,7 +50,7 @@
   "overlay_theme": "glass",
   "project_name_map": {},
   "trainer": {
-    "enabled": true,
+    "enabled": false,
     "exercises": {
       "single-leg-sit-to-stand": 30,
       "calf-raises": 15,
