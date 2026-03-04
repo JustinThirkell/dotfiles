@@ -7,8 +7,8 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 COMMON_FILE="$SCRIPT_DIR/common.sh"
 if [ ! -f "$COMMON_FILE" ]; then
-    echo "ERROR: Could not find common.sh at expected location: $COMMON_FILE" >&2
-    exit 1
+  echo "ERROR: Could not find common.sh at expected location: $COMMON_FILE" >&2
+  exit 1
 fi
 source "$COMMON_FILE"
 
@@ -32,9 +32,9 @@ debug_log "Profile script: $PROFILE_SCRIPT"
 info_log "Configuring ${PROFILE} profile..."
 
 if [ -f "$PROFILE_SCRIPT" ]; then
-    info_log "Running profile: ${PROFILE}"
-    bash "$PROFILE_SCRIPT"
+  info_log "Running profile: ${PROFILE}"
+  bash "$PROFILE_SCRIPT"
 else
-    info_log "Profile '${PROFILE}' not found, using default"
-    bash "/workspace/.devcontainer/profiles/default.sh"
+  info_log "Profile '${PROFILE}' not found, using default"
+  bash "/workspace/.devcontainer/profiles/default.sh"
 fi

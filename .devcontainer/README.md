@@ -58,4 +58,4 @@ Profile scripts in `profiles/` run at container startup after shared setup. They
 ## Full Documentation
 
 For security model, troubleshooting, key rotation, and setup scripts:
-https://github.com/AICarePatron/devcontainers
+https://github.com/carepatron/devcontainers

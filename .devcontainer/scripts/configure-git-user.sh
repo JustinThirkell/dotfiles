@@ -7,8 +7,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 COMMON_FILE="$SCRIPT_DIR/common.sh"
 if [ ! -f "$COMMON_FILE" ]; then
-    echo "ERROR: Could not find common.sh at expected location: $COMMON_FILE" >&2
-    exit 1
+  echo "ERROR: Could not find common.sh at expected location: $COMMON_FILE" >&2
+  exit 1
 fi
 source "$COMMON_FILE"
 
@@ -21,21 +21,21 @@ GITCONFIG_FILE="/workspace/.devcontainer/gitconfig"
 PERSONAL_FILE="/workspace/.devcontainer/gitconfig.personal"
 
 if [ ! -f "$GITCONFIG_FILE" ]; then
-    error_log "Git configuration file not found: $GITCONFIG_FILE"
-    exit 1
+  error_log "Git configuration file not found: $GITCONFIG_FILE"
+  exit 1
 fi
 
 # Validate gitconfig.personal exists and has required fields
 if [ ! -f "$PERSONAL_FILE" ]; then
-    error_log "gitconfig.personal not found: $PERSONAL_FILE"
-    error_log ""
-    error_log "Create this file with your git identity:"
-    error_log "  [user]"
-    error_log "      name = Claude (for Justin Thirkell)"
-    error_log "      email = justin+claude@carepatron.com"
-    error_log ""
-    error_log "This file is gitignored — it stays local to your machine."
-    exit 1
+  error_log "gitconfig.personal not found: $PERSONAL_FILE"
+  error_log ""
+  error_log "Create this file with your git identity:"
+  error_log "  [user]"
+  error_log "      name = Claude (for Justin Thirkell)"
+  error_log "      email = justin+claude@carepatron.com"
+  error_log ""
+  error_log "This file is gitignored — it stays local to your machine."
+  exit 1
 fi
 
 # Check that name and email are set in gitconfig.personal
@@ -43,14 +43,14 @@ PERSONAL_NAME=$(git config --file "$PERSONAL_FILE" user.name 2>/dev/null || echo
 PERSONAL_EMAIL=$(git config --file "$PERSONAL_FILE" user.email 2>/dev/null || echo "")
 
 if [ -z "$PERSONAL_NAME" ] || [ -z "$PERSONAL_EMAIL" ]; then
-    error_log "gitconfig.personal is missing required fields"
-    error_log "Found: name='${PERSONAL_NAME}' email='${PERSONAL_EMAIL}'"
-    error_log ""
-    error_log "gitconfig.personal must contain:"
-    error_log "  [user]"
-    error_log "      name = Claude (for Justin Thirkell)"
-    error_log "      email = justin+claude@carepatron.com"
-    exit 1
+  error_log "gitconfig.personal is missing required fields"
+  error_log "Found: name='${PERSONAL_NAME}' email='${PERSONAL_EMAIL}'"
+  error_log ""
+  error_log "gitconfig.personal must contain:"
+  error_log "  [user]"
+  error_log "      name = Claude (for Justin Thirkell)"
+  error_log "      email = justin+claude@carepatron.com"
+  exit 1
 fi
 
 # IMPORTANT: Forcibly overwrite ~/.gitconfig to prevent VS Code's auto-sync

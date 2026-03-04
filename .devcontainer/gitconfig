@@ -4,28 +4,28 @@
 	#   [user]
 	#       name = Claude (for Justin Thirkell)
 	#       email = justin+claude@carepatron.com
-	path = /workspace/.devcontainer/gitconfig.personal
+  path = /workspace/.devcontainer/gitconfig.personal
 
 [pull]
-	rebase = false
+  rebase = false
 
 [init]
-	defaultBranch = main
+  defaultBranch = main
 
 [push]
-	autoSetupRemote = true
-	default = current
+  autoSetupRemote = true
+  default = current
 
 [core]
-	pager = delta
+  pager = delta
 
 [interactive]
-	diffFilter = delta --color-only
+  diffFilter = delta --color-only
 
 [delta]
-	navigate = true
-	line-numbers = true
-	side-by-side = false
+  navigate = true
+  line-numbers = true
+  side-by-side = false
 
 [merge]
-	conflictstyle = diff3
+  conflictstyle = diff3

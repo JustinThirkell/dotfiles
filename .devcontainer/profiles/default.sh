@@ -6,8 +6,8 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 COMMON_FILE="$SCRIPT_DIR/../scripts/common.sh"
 if [ ! -f "$COMMON_FILE" ]; then
-    echo "ERROR: Could not find common.sh at expected location: $COMMON_FILE" >&2
-    exit 1
+  echo "ERROR: Could not find common.sh at expected location: $COMMON_FILE" >&2
+  exit 1
 fi
 source "$COMMON_FILE"
 
