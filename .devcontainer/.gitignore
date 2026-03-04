@@ -1,0 +1,7 @@
+# Local configuration - contains mode, profile, and optional 1Password token
+# Create this file manually (see README for format)
+config.local
+
+# Personal git identity - contains your name and email
+# Create this file manually: [user] name = ... email = ...
+gitconfig.personal

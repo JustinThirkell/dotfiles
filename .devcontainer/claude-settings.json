@@ -1,0 +1,14 @@
+{
+  "apiKeyHelper": "/workspace/.devcontainer/scripts/claude-api-key-retriever.sh",
+  "permissions": {
+    "defaultMode": "bypassPermissions"
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "npx ccusage@latest statusline"
+  }
+}
