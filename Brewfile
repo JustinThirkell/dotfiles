@@ -73,6 +73,7 @@ brew "aws-cdk"
 brew "peonping/tap/peon-ping"
 brew "yamlfmt"
 brew "ripgrep"
+brew "shfmt"
 
 # Cask: A macOS application (GUI app).
 cask "1password-cli"
