@@ -114,6 +114,9 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
 RUN curl -fsSL https://claude.ai/install.sh | bash -s ${CLAUDE_CODE_VERSION}
 ENV PATH="/home/containeruser/.local/bin:$PATH"
 
+# Skip the bypass-permissions confirmation prompt (safe inside sandboxed container)
+RUN echo 'alias claude="claude --dangerously-skip-permissions"' >> /home/containeruser/.zshrc
+
 # Create Claude config directory (settings.json will be copied by postStartCommand)
 RUN mkdir -p /home/containeruser/.claude
 
