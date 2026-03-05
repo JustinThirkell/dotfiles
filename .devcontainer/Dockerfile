@@ -100,6 +100,7 @@ RUN echo 'alias claude="claude --dangerously-skip-permissions"' >> /home/devcont
 
 # Copy and set up firewall script
 COPY init-firewall.sh /usr/local/bin/
+COPY firewall-allowed-domains.txt /usr/local/bin/
 USER root
 RUN chmod +x /usr/local/bin/init-firewall.sh && \
   echo "devcontainer ALL=(root) NOPASSWD: /usr/local/bin/init-firewall.sh" > /etc/sudoers.d/devcontainer-firewall && \

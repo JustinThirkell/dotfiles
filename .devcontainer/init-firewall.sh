@@ -124,10 +124,17 @@ info_log "Added $GH_GIT_COUNT GitHub git CIDR ranges (port 22)"
 debug_log "Creating ipset for allowed domains..."
 ipset create allowed-domains hash:net
 
-# Resolve and add allowed domains
-# DOMAINS_PLACEHOLDER — replaced by init-devcontainer.sh with actual domain list
-info_log "Resolving and allowlisting domains..."
-for domain in "my.1password.com" "api.anthropic.com" "claude.ai" "auth.anthropic.com" "registry.npmjs.org" "registry.yarnpkg.com" ; do
+# Resolve and add allowed domains from external file
+DOMAINS_FILE="/usr/local/bin/firewall-allowed-domains.txt"
+if [ ! -f "$DOMAINS_FILE" ]; then
+  error_log "Domains file not found: $DOMAINS_FILE"
+  exit 1
+fi
+info_log "Resolving and allowlisting domains from $DOMAINS_FILE..."
+while IFS= read -r domain || [ -n "$domain" ]; do
+  domain="${domain%%#*}"           # strip comments
+  domain="${domain//[[:space:]]/}" # strip whitespace
+  [ -z "$domain" ] && continue
   debug_log "Resolving $domain..."
   ips=$(dig +noall +answer +time=3 +tries=1 A "$domain" 2>/dev/null | awk '$4 == "A" {print $5}' || true)
   if [ -z "$ips" ]; then
@@ -146,7 +153,7 @@ for domain in "my.1password.com" "api.anthropic.com" "claude.ai" "auth.anthropic
     IP_COUNT=$((IP_COUNT + 1))
   done < <(echo "$ips")
   info_log "✓ Allowlisted $domain ($IP_COUNT IPs)"
-done
+done <"$DOMAINS_FILE"
 
 # Allow outbound HTTPS to allowed domains (port 443)
 iptables -A OUTPUT -m set --match-set allowed-domains dst -p tcp --dport 443 -j ACCEPT

@@ -1,0 +1,7 @@
+my.1password.com
+api.anthropic.com
+claude.ai
+auth.anthropic.com
+registry.npmjs.org
+registry.yarnpkg.com
+api.clickup.com
