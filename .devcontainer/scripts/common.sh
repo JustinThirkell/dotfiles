@@ -24,8 +24,8 @@ if [ -z "${COLOR_DEBUG:-}" ]; then
     COLOR_RESET=''
   fi
 
-  # Single source of truth: set DEBUG_DEVCONTAINER=true to enable debug logging
-  DEBUG=${DEBUG_DEVCONTAINER:-false}
+  # Single source of truth: set DEVCONTAINER_DEBUG=true to enable debug logging
+  DEBUG=${DEVCONTAINER_DEBUG:-false}
 
   # Debug logging - only shown if DEBUG=true
   debug_log() {

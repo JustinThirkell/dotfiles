@@ -33,11 +33,10 @@
     "NODE_OPTIONS": "--max-old-space-size=4096",
     "CLAUDE_CONFIG_DIR": "/home/devcontainer/.claude",
     "POWERLEVEL9K_DISABLE_GITSTATUS": "true",
-    "DEVCONTAINER_USE_GITHUB_DEPLOY_KEY": "${localEnv:DEVCONTAINER_USE_GITHUB_DEPLOY_KEY:}",
-    "DEBUG_DEVCONTAINER": "true"
+    "DEVCONTAINER_DEBUG": "true"
   },
   "remoteEnv": {
-    "SSH_AUTH_SOCK": "${localEnv:DEVCONTAINER_USE_GITHUB_DEPLOY_KEY:${localEnv:SSH_AUTH_SOCK}}"
+    "SSH_AUTH_SOCK": "${localEnv:SSH_AUTH_SOCK}"
   },
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
   "workspaceFolder": "/workspace",

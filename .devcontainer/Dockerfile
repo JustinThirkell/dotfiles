@@ -74,14 +74,6 @@ RUN ARCH=$(dpkg --print-architecture) && \
   dpkg -i "git-delta_${GIT_DELTA_VERSION}_${ARCH}.deb" && \
   rm "git-delta_${GIT_DELTA_VERSION}_${ARCH}.deb"
 
-# Install entire CLI (git-native task tracking for autonomous agents)
-ARG ENTIRE_VERSION=0.4.9
-RUN ARCH=$(dpkg --print-architecture) && \
-  wget "https://github.com/entireio/cli/releases/download/v${ENTIRE_VERSION}/entire_linux_${ARCH}.tar.gz" && \
-  tar -xzf "entire_linux_${ARCH}.tar.gz" entire && \
-  mv entire /usr/local/bin/entire && \
-  chmod +x /usr/local/bin/entire && \
-  rm "entire_linux_${ARCH}.tar.gz"
 
 USER devcontainer
 ENV DEVCONTAINER=true \

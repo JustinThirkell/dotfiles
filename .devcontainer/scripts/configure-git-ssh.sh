@@ -102,6 +102,11 @@ EOF
 chmod 600 "$SSH_CONFIG"
 info_log "✓ Updated SSH config for github.com with deploy key"
 
+# Disable host SSH agent forwarding so the agent can only use the deploy key.
+# Without this, the forwarded SSH_AUTH_SOCK would still allow access to host keys.
+unset SSH_AUTH_SOCK
+debug_log "Cleared SSH_AUTH_SOCK to prevent host SSH agent fallback"
+
 # Restore git remote to standard github.com URL if it was previously rewritten
 # with an SSH alias (e.g. github.com-dotfiles). This is a one-time migration.
 CURRENT_REMOTE=$(git config --get remote.origin.url)

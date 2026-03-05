@@ -8,7 +8,7 @@ IFS=$'\n\t'
 # ============================================================================
 # Logging Utilities (self-contained — no external dependencies)
 # ============================================================================
-debug_log() { [ "${DEBUG_DEVCONTAINER:-false}" = "true" ] && echo "[DEBUG] $*" >&2 || true; }
+debug_log() { [ "${DEVCONTAINER_DEBUG:-false}" = "true" ] && echo "[DEBUG] $*" >&2 || true; }
 info_log() { echo "[INFO] $*" >&2; }
 warn_log() { echo "[WARN] $*" >&2; }
 error_log() { echo "[ERROR] $*" >&2; }

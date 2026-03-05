@@ -19,6 +19,6 @@ source "$COMMON_FILE"
 # so no SSH setup is needed here.
 info_log "Configuring default profile..."
 debug_log "Using host SSH agent forwarding"
-debug_log "To use a repo-scoped deploy key instead, set DEVCONTAINER_USE_GITHUB_DEPLOY_KEY=true in host ~/.zshrc"
+debug_log "To use a repo-scoped deploy key instead, create a profile that calls configure-git-ssh.sh"
 
 info_log "Default profile complete."
