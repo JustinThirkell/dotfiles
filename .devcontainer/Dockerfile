@@ -1,4 +1,4 @@
-FROM node:24
+FROM node:24-slim
 
 ARG TZ
 ENV TZ="$TZ"
@@ -6,7 +6,7 @@ ENV TZ="$TZ"
 ARG CLAUDE_CODE_VERSION=latest
 
 # Install basic development tools, iptables/ipset, and dependencies for 1Password CLI
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
   less \
   git \
   procps \
@@ -26,6 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   nano \
   vim \
   curl \
+  wget \
   ca-certificates \
   locales \
   zsh-syntax-highlighting \
