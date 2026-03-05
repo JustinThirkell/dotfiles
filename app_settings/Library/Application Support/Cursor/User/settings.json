@@ -76,5 +76,8 @@
 		"**/.git": false
 	},
 	"remote.autoForwardPortsFallback": 30,
-	"remote.autoForwardPortsSource": "hybrid"
+	"remote.autoForwardPortsSource": "hybrid",
+	"dotfiles.repository": "justinthirkell/devcontainer-dotfiles",
+	"dotfiles.targetPath": "~/dotfiles",
+	"dotfiles.installCommand": "install.sh"
 }

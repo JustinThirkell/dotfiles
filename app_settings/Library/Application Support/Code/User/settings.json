@@ -83,5 +83,8 @@
 		"https://json.schemastore.org/": true,
 		"https://json-schema.org/": true,
 		"https://biomejs.dev": true
-	}
+	},
+	"dotfiles.repository": "justinthirkell/devcontainer-dotfiles",
+	"dotfiles.targetPath": "~/dotfiles",
+	"dotfiles.installCommand": "install.sh"
 }
