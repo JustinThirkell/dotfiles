@@ -36,7 +36,8 @@
     "DEVCONTAINER_DEBUG": "true"
   },
   "remoteEnv": {
-    "SSH_AUTH_SOCK": "${localEnv:SSH_AUTH_SOCK}"
+    "SSH_AUTH_SOCK": "${localEnv:SSH_AUTH_SOCK}",
+    "CLICKUP_API_KEY": "${localEnv:CLICKUP_API_KEY}"
   },
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
   "workspaceFolder": "/workspace",
