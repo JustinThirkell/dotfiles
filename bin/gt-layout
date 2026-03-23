@@ -1,0 +1,73 @@
+#!/bin/bash
+# gt-layout — Open a Ghostty window with 4 panes attached to Gas Town sessions
+#
+# Layout:
+#   +------------------+------------------+
+#   |  Mayor           |  Witness         |
+#   |  (top-left)      |  (top-right)     |
+#   +------------------+------------------+
+#   |  Crew: planner   |  Crew: lead      |
+#   |  (bottom-left)   |  (bottom-right)  |
+#   +------------------+------------------+
+#
+# Prerequisites:
+#   - Ghostty 1.3.0+ (for AppleScript support)
+#   - Gas Town running via docker compose
+#   - Host aliases from bootstrap plan (gt-compose, etc.)
+
+set -euo pipefail
+
+COMPOSE_FILE="$HOME/dev/oss/gastown/docker-compose.yml"
+
+# Verify Gas Town container is running
+if ! docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -q gastown; then
+  echo "Error: Gas Town container is not running." >&2
+  echo "Start it with: docker compose -f $COMPOSE_FILE up -d" >&2
+  exit 1
+fi
+
+osascript <<'APPLESCRIPT'
+tell application "Ghostty"
+    activate
+
+    -- Create new window (becomes top-left pane: Mayor)
+    set win to new window
+    set topLeft to terminal 1 of selected tab of win
+
+    -- Split right for top-right pane: Witness
+    set topRight to split topLeft direction right
+
+    -- Split down from top-left for bottom-left pane: Crew planner
+    set bottomLeft to split topLeft direction down
+
+    -- Split down from top-right for bottom-right pane: Crew lead
+    set bottomRight to split topRight direction down
+
+    -- Small delay to let shells initialize
+    delay 0.5
+
+    -- Helper: set OSC title (shows in title bar on focus) then attach
+    set dc to "docker compose -f ~/dev/oss/gastown/docker-compose.yml exec -it gastown"
+
+    -- Mayor (top-left)
+    input text "printf '\\e]0;Mayor\\a' && " & dc & " gt mayor attach" to topLeft
+    send key "enter" to topLeft
+
+    -- Witness (top-right)
+    input text "printf '\\e]0;Witness\\a' && " & dc & " gt witness attach" to topRight
+    send key "enter" to topRight
+
+    -- Crew: planner (bottom-left)
+    input text "printf '\\e]0;Crew: planner\\a' && " & dc & " gt crew at planner" to bottomLeft
+    send key "enter" to bottomLeft
+
+    -- Crew: lead (bottom-right)
+    input text "printf '\\e]0;Crew: lead\\a' && " & dc & " gt crew at lead" to bottomRight
+    send key "enter" to bottomRight
+
+    -- Focus Mayor pane
+    focus topLeft
+end tell
+APPLESCRIPT
+
+echo "Gas Town layout opened in Ghostty."
