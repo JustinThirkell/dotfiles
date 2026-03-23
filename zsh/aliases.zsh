@@ -41,3 +41,24 @@ alias ys="yarn start"
 alias assume="source /opt/homebrew/bin/assume"
 # https://docs.commonfate.io/granted/internals/shell-alias
 export GRANTED_ALIAS_CONFIGURED="true"
+
+# Gas Town docker shortcuts (use a function — zsh doesn't word-split variables in aliases)
+gt-compose() { docker compose -f ~/dev/oss/gastown/docker-compose.yml "$@"; }
+
+# Enter a Gas Town shell (for tmux, crew sessions, interactive work)
+alias gt-shell='gt-compose exec -it gastown zsh'
+
+# Run a gt command without entering a shell (for quick checks)
+alias gtx='gt-compose exec gastown'
+
+# Attach to crew member sessions
+alias gt-crew='gt-compose exec -it gastown gt crew at'
+
+# Attach to Mayor
+alias gt-mayor='gt-compose exec -it gastown gt mayor attach'
+
+# Watch an agent (read-only tmux attach)
+gt-watch() { gt-compose exec -it gastown tmux attach -t "$1" -r; }
+
+# List tmux sessions
+alias gt-sessions='gt-compose exec gastown tmux list-sessions'
