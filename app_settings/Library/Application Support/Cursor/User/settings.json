@@ -11,11 +11,14 @@
   "aws.cloudformation.telemetry.enabled": false,
   "aws.telemetry": false,
   "biome.lsp.trace.server": "messages",
-  "claudeCode.preferredLocation": "sidebar",
+  "claudeCode.preferredLocation": "panel",
   "claudeCode.selectedModel": "default",
   "cursor.composer.shouldChimeAfterChatFinishes": true,
   "cursor.composer.usageSummaryDisplay": "always",
-  "cursor.cpp.disabledLanguages": ["plaintext", "terraform"],
+  "cursor.cpp.disabledLanguages": [
+    "plaintext",
+    "terraform"
+  ],
   "cursor.cpp.enablePartialAccepts": true,
   "diffEditor.ignoreTrimWhitespace": true,
   "docker.extension.enableComposeLanguageServer": false,
@@ -51,7 +54,6 @@
   "javascript.updateImportsOnFileMove.enabled": "always",
   "python.terminal.activateEnvironment": false,
   "remote.autoForwardPortsFallback": 30,
-  "remote.autoForwardPortsSource": "hybrid",
   "security.promptForLocalFileProtocolHandling": false,
   "terminal.external.osxExec": "iTerm.app",
   "terminal.integrated.fontFamily": "MesloLGS Nerd Font Mono",
@@ -85,5 +87,9 @@
   "workbench.editorAssociations": {
     "*.excalidraw.png": "editor.excalidraw"
   },
-  "workbench.iconTheme": "vscode-icons"
+  "workbench.iconTheme": "vscode-icons",
+  "remote.autoForwardPorts": false,
+  "[jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  }
 }
