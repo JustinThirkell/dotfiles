@@ -19,6 +19,7 @@ tap "pb33f/taps"
 tap "teamookla/speedtest"
 tap "entireio/tap"
 tap "peonping/tap"
+tap "sinzin91/tap"
 
 # Brew: A formula (command-line tool or library)
 brew "abseil"
@@ -74,6 +75,9 @@ brew "peonping/tap/peon-ping"
 brew "yamlfmt"
 brew "ripgrep"
 brew "shfmt"
+brew "difftastic"
+brew "mergiraf"
+brew "sinzin91/tap/search-sessions"
 
 # Cask: A macOS application (GUI app).
 cask "1password-cli"

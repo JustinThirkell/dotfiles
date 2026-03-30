@@ -164,3 +164,13 @@ The dev container is configured with Claude Code, Cursor, and other development 
 ## thanks
 
 I copied Lutz Lengemann's excellent [dotfiles](https://github.com/mobilutz/dotfiles) which are based on [Zack Holman](https://github.com/holman)'s [dotfiles](https://github.com/holman/dotfiles) which are based on [Ryan Bates](https://github.com/ryanb) [dotfiles](https://github.com/ryanb/dotfiles).
+
+## updating brewfile
+
+To find out what has been installed via Homebrew but is not in the Brewfile, you can run the following command:
+
+```sh
+brew bundle dump
+```
+
+This will list all the packages that have been installed via Homebrew but are not in the Brewfile.
