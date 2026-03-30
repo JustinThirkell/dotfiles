@@ -6,7 +6,14 @@
     "pr": ""
   },
   "permissions": {
-    "allow": ["WebSearch", "WebFetch", "Bash(vacuum *)", "Read(//Users/justin/.claude/hooks/peon-ping/**)"],
+    "allow": [
+      "WebSearch",
+      "WebFetch",
+      "Bash(vacuum *)",
+      "Read(//Users/justin/.claude/hooks/peon-ping/**)",
+      "Bash(docker *)",
+      "Bash(dig *)"
+    ],
     "deny": [
       "Read(~/.ssh/**)",
       "Read(~/.gnupg/**)",
@@ -19,21 +26,6 @@
       "Write(~/.aws/**)",
       "Read(./.entire/metadata/**)"
     ]
-  },
-  "model": "opus",
-  "statusLine": {
-    "type": "command",
-    "command": "npx ccusage@latest statusline"
-  },
-  "sandbox": {
-    "enabled": true,
-    "autoAllowBashIfSandboxed": false,
-    "filesystem": {
-      "allowWrite": ["~/.claude/hooks/peon-ping"]
-    },
-    "network": {
-      "allowedDomains": ["github.com", "api.github.com", "*.npmjs.org", "registry.yarnpkg.com"]
-    }
   },
   "hooks": {
     "SessionStart": [
@@ -152,5 +144,27 @@
         ]
       }
     ]
-  }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "npx ccusage@latest statusline"
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": false,
+    "network": {
+      "allowedDomains": [
+        "github.com",
+        "api.github.com",
+        "*.npmjs.org",
+        "registry.yarnpkg.com"
+      ]
+    },
+    "filesystem": {
+      "allowWrite": [
+        "~/.claude/hooks/peon-ping"
+      ]
+    }
+  },
+  "effortLevel": "medium"
 }
