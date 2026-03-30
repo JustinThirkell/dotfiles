@@ -74,6 +74,19 @@ up = !git pull --rebase --prune $@ && git submodule update --init --recursive
 wip = commit -am "WIP"
 wipe = "!f() { rev=$(git rev-parse ${1-HEAD}); git add -A && git commit --allow-empty -qm 'WIPE SAVEPOINT' && git reset $rev --hard; }; f"
 
+# Difftastic aliases, so `git dlog -p` is `git log -p`
+# with difftastic and likewise for the other subcommands.
+dlog = -c diff.external=difft log --ext-diff
+dshow = -c diff.external=difft show --ext-diff
+ddiff = -c diff.external=difft diff
+
+# `git log` with patches shown with difftastic.
+dl = -c diff.external=difft log -p --ext-diff
+# Show the most recent commit with difftastic.
+ds = -c diff.external=difft show --ext-diff
+# `git diff` with difftastic.
+dft = -c diff.external=difft diff
+
 ##############################################################################################
 # justin
 ##############################################################################################
