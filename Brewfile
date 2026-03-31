@@ -104,7 +104,7 @@ cask "raycast"
 cask "shortcat"
 cask "stats"
 cask "tower"
-cask "typinator"
+# cask "typinator" # install v9 manually — licensed, do not upgrade
 cask "visual-studio-code"
 cask "voiceink"
 cask "grandperspective"
