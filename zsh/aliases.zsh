@@ -1,7 +1,7 @@
 alias reload!='. ~/.zshrc'
 
 alias cls='clear' # Good 'ol Clear Screen command
-
+alias j="just"
 # Python
 alias python='python3'
 
