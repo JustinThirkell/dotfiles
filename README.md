@@ -170,7 +170,10 @@ I copied Lutz Lengemann's excellent [dotfiles](https://github.com/mobilutz/dotfi
 To find out what has been installed via Homebrew but is not in the Brewfile, you can run the following command:
 
 ```sh
-brew bundle dump
+comm -23 <(brew leaves | sort) <(grep '^brew "' Brewfile | sed 's/brew "//;s/".*//' | sort)
+
 ```
 
-This will list all the packages that have been installed via Homebrew but are not in the Brewfile.
+This shows formulae that are:
+- top-level installs (not just pulled in as deps)
+- NOT already in your Brewfile
