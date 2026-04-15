@@ -78,6 +78,11 @@ brew "shfmt"
 brew "difftastic"
 brew "mergiraf"
 brew "sinzin91/tap/search-sessions"
+brew "terror/tap/just-lsp"
+brew "just"
+brew "ffmpeg"
+brew "jpeg"
+brew "imagemagick"
 
 # Cask: A macOS application (GUI app).
 cask "1password-cli"
@@ -122,6 +127,11 @@ cask "slack"
 cask "clickup"
 cask "pgadmin4"
 cask "ghostty"
+cask "bitwarden"
+cask "entire"
+cask "moom"
+cask "surfshark"
+cask "tableplus"
 
 mas "Actions", id: 1586435171
 mas "Battery Indicator", id: 1206020918
