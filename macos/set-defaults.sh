@@ -13,7 +13,7 @@
 
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
-osascript -e 'tell application "System Preferences" to quit'
+osascript -e 'tell application "System Settings" to quit'
 
 # Ask for the administrator password upfront
 sudo -v
@@ -27,12 +27,13 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
 defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
-defaults write com.apple.finder "AppleShowAllFiles" -bool "true"
-defaults write com.apple.finder "ShowPathbar" -bool "true"
-defaults write com.apple.finder "FXRemoveOldTrashItems" -bool "true"
-defaults write com.apple.finder "FXEnableExtensionChangeWarning" -bool "false"
-defaults write com.apple.finder "_FXSortFoldersFirst" -bool "true"
-defaults write com.apple.finder "_FXSortFoldersFirstOnDesktop" -bool "true"
+defaults write com.apple.finder AppleShowAllFiles -bool true
+defaults write com.apple.finder ShowPathbar -bool true
+defaults write com.apple.finder FXRemoveOldTrashItems -bool true
+defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+defaults write com.apple.finder _FXSortFoldersFirst -bool true
+defaults write com.apple.finder _FXSortFoldersFirstOnDesktop -bool true
+defaults write com.apple.finder _FXEnableColumnAutoSizing -bool true
 
 # Always open everything in Finder's list view. This is important.
 defaults write com.apple.Finder FXPreferredViewStyle Nlsv
@@ -61,6 +62,8 @@ defaults write NSGlobalDomain NSToolbarTitleViewRolloverDelay -float 0
 defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 # Increase window resize speed for Cocoa applications
 defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
+# Show all file extensions in the Finder
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 
 ###############################################################################
 # Typing
@@ -83,8 +86,6 @@ defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 
 # Random other OS settings
 defaults write com.apple.screencapture "location" -string "~/Pictures"
-defaults write NSGlobalDomain "AppleShowAllExtensions" -bool "true"
-defaults write NSGlobalDomain "NSDocumentSaveNewDocumentsToCloud" -bool "false"
 defaults write com.apple.TextEdit "RichText" -bool "false"
 defaults write com.apple.ActivityMonitor "IconType" -int "6"
 defaults write com.apple.dock "scroll-to-open" -bool "true"
@@ -98,14 +99,6 @@ defaults write com.apple.spaces "spans-displays" -bool "true"
 defaults write com.apple.LaunchServices LSQuarantine -bool false
 # Remove duplicates in the "Open With" menu (also see `lscleanup` alias)
 /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -r -domain local -domain system -domain user
-# Disable the crash reporter
-defaults write com.apple.CrashReporter DialogType -string "none"
-# Set Help Viewer windows to non-floating mode
-defaults write com.apple.helpviewer DevMode -bool true
-
-# Reveal IP address, hostname, OS version, etc. when clicking the clock
-# in the login window
-sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
 
 # Run the screensaver if we're in the bottom-left hot corner.
 defaults write com.apple.dock wvous-bl-corner -int 5
@@ -157,9 +150,6 @@ defaults write com.apple.dock wvous-bl-modifier -int 0
 # # Enable “natural” scrolling
 # defaults write NSGlobalDomain com.apple.swipescrolldirection -bool true
 
-# Use AirDrop over every interface. srsly this should be a default.
-defaults write com.apple.NetworkBrowser BrowseAllInterfaces 1
-
 # Disable press-and-hold for keys in favor of key repeat.
 defaults write -g ApplePressAndHoldEnabled -bool false
 
@@ -174,11 +164,6 @@ defaults write NSGlobalDomain InitialKeyRepeat -int 25
 # (e.g. enable Tab in modal dialogs)
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
-# Stop iTunes from responding to the keyboard media keys
-launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
-
-# Increase sound quality for Bluetooth headphones/headsets
-defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
 
 ###############################################################################
 # Everything else
