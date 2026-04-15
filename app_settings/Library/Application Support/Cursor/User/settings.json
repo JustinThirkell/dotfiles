@@ -11,7 +11,7 @@
   "aws.cloudformation.telemetry.enabled": false,
   "aws.telemetry": false,
   "biome.lsp.trace.server": "messages",
-  "claudeCode.preferredLocation": "panel",
+  "claudeCode.preferredLocation": "sidebar",
   "claudeCode.selectedModel": "default",
   "cursor.composer.shouldChimeAfterChatFinishes": true,
   "cursor.composer.usageSummaryDisplay": "always",
@@ -87,7 +87,7 @@
   "workbench.editorAssociations": {
     "*.excalidraw.png": "editor.excalidraw"
   },
-  "workbench.iconTheme": "vscode-icons",
+  "workbench.iconTheme": "Monokai Pro Icons",
   "remote.autoForwardPorts": false,
   "[jsonc]": {
     "editor.defaultFormatter": "biomejs.biome"
