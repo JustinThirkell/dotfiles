@@ -15,10 +15,7 @@
   "claudeCode.selectedModel": "default",
   "cursor.composer.shouldChimeAfterChatFinishes": true,
   "cursor.composer.usageSummaryDisplay": "always",
-  "cursor.cpp.disabledLanguages": [
-    "plaintext",
-    "terraform"
-  ],
+  "cursor.cpp.disabledLanguages": ["plaintext", "terraform"],
   "cursor.cpp.enablePartialAccepts": true,
   "diffEditor.ignoreTrimWhitespace": true,
   "docker.extension.enableComposeLanguageServer": false,
