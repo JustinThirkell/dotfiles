@@ -7,7 +7,7 @@ function aws-sso-refresh-roles() {
 }
 
 function aws-local() {
-  assume local/LeadEngineer --duration 8h
+  assume staging --duration 8h
 }
 
 function aws-daily() {
