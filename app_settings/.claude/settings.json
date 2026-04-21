@@ -6,13 +6,27 @@
     "pr": ""
   },
   "permissions": {
+    "defaultMode": "default",
     "allow": [
       "WebSearch",
       "WebFetch",
       "Bash(vacuum *)",
       "Read(//Users/justin/.claude/hooks/peon-ping/**)",
       "Bash(docker *)",
-      "Bash(dig *)"
+      "Bash(dig *)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(ls:*)",
+      "Bash(pwd)",
+      "Bash(which:*)",
+      "Bash(aws sts get-caller-identity)",
+      "Bash(aws logs *)",
+      "Bash(aws ecs *)",
+      "Bash(IMAGE_TAG=test npm test *)",
+      "Bash(bunx @biomejs/biome ci *)"
     ],
     "deny": [
       "Read(~/.ssh/**)",
@@ -21,9 +35,15 @@
       "Read(~/.envrc)",
       "Read(~/*.local)",
       "Read(~/.config/op/**)",
+      "Read(~/.1password/**)",
+      "Read(~/Library/Keychains/**)",
+      "Read(~/Library/Application Support/1Password/**)",
       "Write(~/.ssh/**)",
       "Write(~/.gnupg/**)",
       "Write(~/.aws/**)",
+      "Write(~/.1password/**)",
+      "Write(~/Library/Keychains/**)",
+      "Write(~/Library/Application Support/1Password/**)",
       "Read(./.entire/metadata/**)"
     ]
   },
@@ -149,22 +169,28 @@
     "type": "command",
     "command": "npx ccusage@latest statusline"
   },
-  "sandbox": {
-    "enabled": true,
-    "autoAllowBashIfSandboxed": false,
-    "network": {
-      "allowedDomains": [
-        "github.com",
-        "api.github.com",
-        "*.npmjs.org",
-        "registry.yarnpkg.com"
-      ]
-    },
-    "filesystem": {
-      "allowWrite": [
-        "~/.claude/hooks/peon-ping"
-      ]
+  "enabledPlugins": {
+    "caveman@caveman": true,
+    "greptile@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
     }
   },
-  "effortLevel": "medium"
+  "sandbox": {
+    "enabled": false,
+    "autoAllowBashIfSandboxed": false,
+    "network": {
+      "allowedDomains": ["github.com", "api.github.com", "*.npmjs.org", "registry.yarnpkg.com"]
+    },
+    "filesystem": {
+      "allowWrite": ["~/.claude/hooks/peon-ping"]
+    }
+  },
+  "showTurnDuration": true,
+  "effortLevel": "max"
 }
