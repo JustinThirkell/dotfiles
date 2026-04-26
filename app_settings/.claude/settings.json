@@ -6,7 +6,6 @@
     "pr": ""
   },
   "permissions": {
-    "defaultMode": "default",
     "allow": [
       "WebSearch",
       "WebFetch",
@@ -26,7 +25,9 @@
       "Bash(aws logs *)",
       "Bash(aws ecs *)",
       "Bash(IMAGE_TAG=test npm test *)",
-      "Bash(bunx @biomejs/biome ci *)"
+      "Bash(bunx @biomejs/biome ci *)",
+      "Bash(gh pr *)",
+      "Bash(gh run *)"
     ],
     "deny": [
       "Read(~/.ssh/**)",
@@ -45,7 +46,8 @@
       "Write(~/Library/Keychains/**)",
       "Write(~/Library/Application Support/1Password/**)",
       "Read(./.entire/metadata/**)"
-    ]
+    ],
+    "defaultMode": "default"
   },
   "hooks": {
     "SessionStart": [
@@ -185,12 +187,18 @@
     "enabled": false,
     "autoAllowBashIfSandboxed": false,
     "network": {
-      "allowedDomains": ["github.com", "api.github.com", "*.npmjs.org", "registry.yarnpkg.com"]
+      "allowedDomains": [
+        "github.com",
+        "api.github.com",
+        "*.npmjs.org",
+        "registry.yarnpkg.com"
+      ]
     },
     "filesystem": {
-      "allowWrite": ["~/.claude/hooks/peon-ping"]
+      "allowWrite": [
+        "~/.claude/hooks/peon-ping"
+      ]
     }
   },
-  "showTurnDuration": true,
-  "effortLevel": "max"
+  "showTurnDuration": true
 }
