@@ -15,7 +15,10 @@
   "claudeCode.selectedModel": "default",
   "cursor.composer.shouldChimeAfterChatFinishes": true,
   "cursor.composer.usageSummaryDisplay": "always",
-  "cursor.cpp.disabledLanguages": ["plaintext", "terraform"],
+  "cursor.cpp.disabledLanguages": [
+    "plaintext",
+    "terraform"
+  ],
   "cursor.cpp.enablePartialAccepts": true,
   "diffEditor.ignoreTrimWhitespace": true,
   "docker.extension.enableComposeLanguageServer": false,
@@ -84,9 +87,10 @@
   "workbench.editorAssociations": {
     "*.excalidraw.png": "editor.excalidraw"
   },
-  "workbench.iconTheme": "Monokai Pro Icons",
+  "workbench.iconTheme": "vscode-icons",
   "remote.autoForwardPorts": false,
   "[jsonc]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  }
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "biome.suggestInstallingGlobally": false
 }
