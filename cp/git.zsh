@@ -180,12 +180,12 @@ git_checkout_task_branch() {
 
   # Sanitize JSON to handle any remaining control characters before jq parsing
   local sanitized_task
-  sanitized_task=$(echo "$task" | tr -d '\000-\037')
+  sanitized_task=$(tr -d '\000-\037' <<<"$task")
   [[ "$DEBUG" == "true" ]] && debug "Sanitized task JSON"
 
   # Extract task name using jq
   local task_name
-  task_name=$(echo "$sanitized_task" | jq -r '.name')
+  task_name=$(jq -r '.name' <<<"$sanitized_task")
 
   if [[ -z "$task_name" || "$task_name" == "null" ]]; then
     error "Could not extract task name from ClickUp response for task ID: $task_id"
@@ -306,15 +306,15 @@ git_pr_task_branch() {
 
   # Sanitize JSON to handle any remaining control characters before jq parsing
   local sanitized_task
-  sanitized_task=$(echo "$task" | tr -d '\000-\037')
+  sanitized_task=$(tr -d '\000-\037' <<<"$task")
 
   # Extract task fields - extract description separately to preserve newlines
   local task_name task_url
-  task_name=$(echo "$sanitized_task" | jq -r '.name')
-  task_url=$(echo "$sanitized_task" | jq -r '.url')
+  task_name=$(jq -r '.name' <<<"$sanitized_task")
+  task_url=$(jq -r '.url' <<<"$sanitized_task")
   # Extract description with newlines preserved (jq -r outputs raw, including \n)
   local task_description
-  task_description=$(echo "$sanitized_task" | jq -r '.text_content // ""')
+  task_description=$(jq -r '.text_content // ""' <<<"$sanitized_task")
 
   if [[ -z "$task_name" || "$task_name" == "null" ]]; then
     error "Could not extract task name from ClickUp response for task ID: $task_id_from_branch"
@@ -411,8 +411,8 @@ Only return the PR description, don't return anything else."
   if [ $? -eq 0 ]; then
     # PR exists, update it
     # Sanitize the JSON output before passing it to jq to handle control characters
-    sanitized_pr=$(echo "$existing_pr" | tr -d '\000-\037')
-    pr_number=$(echo "$sanitized_pr" | jq -r .number)
+    sanitized_pr=$(tr -d '\000-\037' <<<"$existing_pr")
+    pr_number=$(jq -r .number <<<"$sanitized_pr")
 
     if [[ "$SKIP_LLM" == "true" ]]; then
       if [[ -n "$pr_description" && "$pr_description" != "" ]]; then
