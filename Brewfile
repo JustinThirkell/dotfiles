@@ -6,9 +6,7 @@ cask_args appdir: '/Applications'
 
 # Tap: A repository of formulas/casks. Adds a source (e.g., homebrew/cask-fonts). You can install from taps, but the tap itself is separate.
 tap "auth0/auth0-cli"
-tap "aws/tap"
 tap "common-fate/granted"
-tap 'github/gh'
 tap 'hashicorp/tap'
 tap 'homebrew/bundle'
 tap "oven-sh/bun"
@@ -20,6 +18,7 @@ tap "teamookla/speedtest"
 tap "entireio/tap"
 tap "peonping/tap"
 tap "sinzin91/tap"
+tap "daveshanley/vacuum"
 
 # Brew: A formula (command-line tool or library)
 brew "abseil"
@@ -115,7 +114,6 @@ cask "voiceink"
 cask "grandperspective"
 cask "github"
 cask "linear-linear"
-cask "claude"
 cask "zed"
 cask "zen"
 cask "coteditor"
