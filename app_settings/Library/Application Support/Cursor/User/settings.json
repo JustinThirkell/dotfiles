@@ -90,7 +90,8 @@
   "workbench.iconTheme": "vscode-icons",
   "remote.autoForwardPorts": false,
   "[jsonc]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
+    "editor.defaultFormatter": "biomejs.biome"
   },
-  "biome.suggestInstallingGlobally": false
+  "biome.suggestInstallingGlobally": false,
+  "json.schemaDownload.enable": true
 }
