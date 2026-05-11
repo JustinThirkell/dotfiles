@@ -93,5 +93,7 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "biome.suggestInstallingGlobally": false,
-  "json.schemaDownload.enable": true
+  "json.schemaDownload.enable": true,
+  "yaml.format.printWidth": 120,
+  "window.autoDetectColorScheme": false
 }
