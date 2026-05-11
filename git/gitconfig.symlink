@@ -41,6 +41,9 @@ status = auto
 branch = auto
 ui = true
 
+[fetch]
+  prune = true
+  
 [pull]
 rebase = false
 
