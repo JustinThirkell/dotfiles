@@ -1,6 +1,9 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "cleanupPeriodDays": 99999,
+  "env": {
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
+  },
   "attribution": {
     "commit": "Co-Authored-By: Claude",
     "pr": ""
@@ -27,7 +30,8 @@
       "Bash(IMAGE_TAG=test npm test *)",
       "Bash(bunx @biomejs/biome ci *)",
       "Bash(gh pr *)",
-      "Bash(gh run *)"
+      "Bash(gh run *)",
+      "Bash(openspec list *)"
     ],
     "deny": [
       "Read(~/.ssh/**)",
@@ -47,7 +51,7 @@
       "Write(~/Library/Application Support/1Password/**)",
       "Read(./.entire/metadata/**)"
     ],
-    "defaultMode": "default"
+    "defaultMode": "auto"
   },
   "hooks": {
     "SessionStart": [
@@ -200,5 +204,7 @@
       ]
     }
   },
-  "showTurnDuration": true
+  "showTurnDuration": true,
+  "skipAutoPermissionPrompt": true,
+  "effortLevel": "max"
 }
