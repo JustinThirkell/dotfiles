@@ -13,5 +13,17 @@
 		"command": "workbench.action.terminal.sendSequence",
 		"args": { "text": "\u0005" },
 		"when": "terminalFocus"
+	},
+	{
+		"key": "alt+left",
+		"command": "workbench.action.terminal.sendSequence",
+		"args": { "text": "\u001bb" },
+		"when": "terminalFocus"
+	},
+	{
+		"key": "alt+right",
+		"command": "workbench.action.terminal.sendSequence",
+		"args": { "text": "\u001bf" },
+		"when": "terminalFocus"
 	}
 ]
