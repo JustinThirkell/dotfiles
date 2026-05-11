@@ -1,89 +1,86 @@
 [include]
-# local/private config goes in the include
-path = ~/.gitconfig.local.personal
-path = ~/.gitconfig.aliases
+  # local/private config goes in the include
+  path = ~/.gitconfig.local.personal
+  path = ~/.gitconfig.aliases
 
 # Work repos use work email
 [includeIf "gitdir:~/dev/cp/"]
-path = ~/.gitconfig.local.work
+  path = ~/.gitconfig.local.work
 
 [gpg]
-format = ssh
+  format = ssh
 
 [gpg "ssh"]
-program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+  program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
 	
 [commit]
-gpgSign = true
+  gpgSign = true
 
 [init]
-defaultBranch = main
+  defaultBranch = main
 
 [core]
-editor = code --wait
-excludesfile = ~/.gitignore_global
+  editor = code --wait
+  excludesfile = ~/.gitignore_global
 
 [filter "lfs"]
-clean = git-lfs clean -- %f
-smudge = git-lfs smudge -- %f
-process = git-lfs filter-process
-required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
 
 [pager]
-branch = false
-# Use a pager if the difftool output is larger than one screenful,
-# consistent with the behaviour of `git diff`.
-difftool = true
+  branch = false
+  # Use a pager if the difftool output is larger than one screenful,
+  # consistent with the behaviour of `git diff`.
+  difftool = true
     
 [color]
-diff = auto
-status = auto
-branch = auto
-ui = true
+  diff = auto
+  status = auto
+  branch = auto
+  ui = true
 
 [fetch]
   prune = true
   
 [pull]
-rebase = false
+  rebase = false
 
 [push]
-# Setting to git 2.0 default to suppress warning message
-# default = simple
-
-autoSetupRemote = true
+  autoSetupRemote = true
 
 [rebase]
-autosquash = true
+  autosquash = true
 
 [rerere]
-enabled = true
+  enabled = true
 
 [diff]
-# Set difftastic as the default difftool, so we don't need to specify
-# `-t difftastic` every time.
-tool = difft
-external = difft
+  # Set difftastic as the default difftool, so we don't need to specify
+  # `-t difftastic` every time.
+  tool = difft
+  external = difft
 
 [merge]
-tool = mergiraf
+  tool = mergiraf
 
 [difftool]
-# Run the difftool immediately, don't ask 'are you sure' each time.
-prompt = false
-trustExitCode = true
+  # Run the difftool immediately, don't ask 'are you sure' each time.
+  prompt = false
+  trustExitCode = true
 
 [difftool "Kaleidoscope"]
-cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+  cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
 
 [mergetool "Kaleidoscope"]
-cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
-trustExitCode = true
+  cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+  trustExitCode = true
 
 [merge "mergiraf"]
-name = mergiraf
-driver = mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L
+  name = mergiraf
+  driver = mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L
 
 [difftool "difftastic"]
-# See `man git-difftool` for a description of MERGED, LOCAL and REMOTE.
-cmd = difft "$MERGED" "$LOCAL" "abcdef1" "100644" "$REMOTE" "abcdef2" "100644"
+  # See `man git-difftool` for a description of MERGED, LOCAL and REMOTE.
+  cmd = difft "$MERGED" "$LOCAL" "abcdef1" "100644" "$REMOTE" "abcdef2" "100644"
