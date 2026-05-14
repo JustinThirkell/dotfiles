@@ -10,9 +10,9 @@ infer_branch_name() {
   local title="$2"
   local DEBUG="${3:-false}"
 
-  # Validate USER environment variable is set
-  if [[ -z "$USER" ]]; then
-    error "USER environment variable is not set. Cannot infer branch name."
+  # Validate ISSUE_BRANCH_PREFIX environment variable is set
+  if [[ -z "$ISSUE_BRANCH_PREFIX" ]]; then
+    error "ISSUE_BRANCH_PREFIX environment variable is not set. Cannot infer branch name."
     return 1
   fi
 
@@ -35,8 +35,7 @@ infer_branch_name() {
   # - Collapse multiple consecutive dashes
   # - Remove leading/trailing dashes
   local branch_name_slug
-  branch_name_slug=$(echo "$title" | \
-    tr '[:upper:]' '[:lower:]' | \
+  branch_name_slug=$(tr '[:upper:]' '[:lower:]' <<<"$title" | \
     sed 's/[^a-z0-9]/-/g' | \
     sed 's/-\+/-/g' | \
     sed 's/^-\|-$//g')
@@ -44,7 +43,7 @@ infer_branch_name() {
   [[ "$DEBUG" == "true" ]] && debug "infer_branch_name: branch_name_slug=$branch_name_slug"
 
   # Construct branch name: username/CU-{taskid}-{slug}
-  local branch_name="${USER}/CU-${task_id}-${branch_name_slug}"
+  local branch_name="${ISSUE_BRANCH_PREFIX}/CU-${task_id}-${branch_name_slug}"
 
   [[ "$DEBUG" == "true" ]] && debug "infer_branch_name: result=$branch_name"
   info "Constructed branch name: $branch_name"
@@ -79,7 +78,7 @@ infer_pr_title() {
 
   # Ensure the first letter of the task title is capitalized
   local title_capitalized
-  title_capitalized=$(echo "$title" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')
+  title_capitalized=$(awk '{print toupper(substr($0,1,1)) substr($0,2)}' <<<"$title")
   [[ "$DEBUG" == "true" ]] && debug "infer_pr_title: title_capitalized=$title_capitalized"
 
   # Format the PR title with CU- prefix, task ID and capitalized title
@@ -97,9 +96,9 @@ git_infer_task_id() {
   local branch_name="$1"
   local DEBUG="${2:-false}"
 
-  # Validate USER environment variable is set
-  if [[ -z "$USER" ]]; then
-    error "USER environment variable is not set. Cannot infer task ID."
+  # Validate ISSUE_BRANCH_PREFIX environment variable is set
+  if [[ -z "$ISSUE_BRANCH_PREFIX" ]]; then
+    error "ISSUE_BRANCH_PREFIX environment variable is not set. Cannot infer task ID."
     return 1
   fi
 
@@ -114,13 +113,13 @@ git_infer_task_id() {
   # Extract the task ID from branch format: username/CU-{taskid}-{slug}
   # Example: justin/CU-86ew4x0vz-update-canvas-dependency -> 86ew4x0vz
   local task_id
-  task_id=$(echo "$branch_name" | sed 's|.*/||' | sed 's/^CU-//' | sed 's/-.*//')
+  task_id=$(sed 's|.*/||' <<<"$branch_name" | sed 's/^CU-//' | sed 's/-.*//')
 
   [[ "$DEBUG" == "true" ]] && debug "git_infer_task_id: extracted task_id=$task_id"
 
   # Validate extracted task ID
   if [[ -z "$task_id" ]]; then
-    error "No task ID detected in branch name. Expected format: username/CU-{taskid}-{slug} (e.g. ${USER}/CU-86ew4x0vz-fix-the-bug)"
+    error "No task ID detected in branch name. Expected format: {ISSUE_BRANCH_PREFIX}/CU-{taskid}-{slug} (e.g. justin/CU-86ew4x0vz-fix-the-bug)"
     info "Please use a branch with a valid task identifier."
     return 1
   fi
@@ -234,12 +233,18 @@ git_pr_task_branch() {
   local DEBUG=false
   local reviewer="${GITHUB_DEFAULT_PR_REVIEWER:-}"
   local custom_body=""
+  local ai_review=false
+  local ai_review_label="${GREPTILE_LABEL:-greptile}"
 
   # Process command line arguments
   while [[ $# -gt 0 ]]; do
     case "$1" in
     --skip-llm)
       SKIP_LLM=true
+      shift
+      ;;
+    --ai-review|-ar|--greptile)
+      ai_review=true
       shift
       ;;
     --debug)
@@ -250,7 +255,7 @@ git_pr_task_branch() {
       shift
       if [[ $# -lt 1 ]]; then
         echo "Missing value for --body"
-        echo "Usage: git_pr_task_branch [--skip-llm] [--debug] [--body DESCRIPTION]"
+        echo "Usage: git_pr_task_branch [--skip-llm] [--debug] [--body DESCRIPTION] [--ai-review|-ar|--greptile]"
         return 1
       fi
       custom_body="$1"
@@ -258,7 +263,7 @@ git_pr_task_branch() {
       ;;
     *)
       echo "Unknown option: $1"
-      echo "Usage: git_pr_task_branch [--skip-llm] [--debug] [--body DESCRIPTION]"
+      echo "Usage: git_pr_task_branch [--skip-llm] [--debug] [--body DESCRIPTION] [--ai-review|-ar|--greptile]"
       return 1
       ;;
     esac
@@ -337,7 +342,7 @@ git_pr_task_branch() {
   
   # Capitalize title for use in description
   local title_capitalized
-  title_capitalized=$(echo "$task_name" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')
+  title_capitalized=$(awk '{print toupper(substr($0,1,1)) substr($0,2)}' <<<"$task_name")
 
   # PR description: custom body overrides ClickUp/LLM
   local pr_description
@@ -418,13 +423,16 @@ Only return the PR description, don't return anything else."
       if [[ -n "$pr_description" && "$pr_description" != "" ]]; then
         info "🔄 Updating existing PR #$pr_number"
         gh pr edit $pr_number --title "$pr_title" --body "$pr_description"
+        [[ "$ai_review" == true ]] && gh pr edit "$pr_number" --add-label "$ai_review_label"
       else
         info "🔄 Updating existing PR #$pr_number (title only)"
         gh pr edit $pr_number --title "$pr_title"
+        [[ "$ai_review" == true ]] && gh pr edit "$pr_number" --add-label "$ai_review_label"
       fi
     else
       info "🔄 Updating existing PR #$pr_number"
       gh pr edit $pr_number --title "$pr_title" --body "$pr_description"
+      [[ "$ai_review" == true ]] && gh pr edit "$pr_number" --add-label "$ai_review_label"
     fi
     echo "🎉 Successfully updated PR"
   else
@@ -439,6 +447,10 @@ Only return the PR description, don't return anything else."
     
     if [[ -n "$reviewer" ]]; then
       pr_args+=(--reviewer "$reviewer")
+    fi
+
+    if [[ "$ai_review" == true ]]; then
+      pr_args+=(--label "$ai_review_label")
     fi
     
     if [[ "$SKIP_LLM" == "true" && (-n "$pr_description" && "$pr_description" != "") ]]; then
@@ -455,4 +467,56 @@ Only return the PR description, don't return anything else."
     # Open the new PR in the browser so you can review it
     gh pr view --web
   fi
+}
+
+# Remove worktrees whose checked-out branch is in the provided list.
+# Used after a PR merges and its remote branch is gone — the worktree
+# would otherwise pin the local branch and block `git branch -D`.
+#
+# Usage: git_remove_gone_worktrees <branch> [<branch>...]
+# Returns: 0 on success; non-zero if any removal failed.
+# Notes:
+#   - Skips the worktree containing the current working directory.
+#   - No --force; dirty worktrees fail loudly so the operator can decide.
+#   - Always runs `git worktree prune` at the end.
+git_remove_gone_worktrees() {
+  if [[ $# -eq 0 ]]; then
+    return 0
+  fi
+
+  local -a gone_branches=("$@")
+  local current_wt
+  current_wt=$(git rev-parse --show-toplevel 2>/dev/null)
+
+  local wt_path="" wt_branch="" line failed=0
+  while IFS= read -r line; do
+    case "$line" in
+    "worktree "*)
+      wt_path="${line#worktree }"
+      wt_branch=""
+      ;;
+    "branch refs/heads/"*)
+      wt_branch="${line#branch refs/heads/}"
+      if [[ -n "${gone_branches[(r)$wt_branch]}" ]]; then
+        if [[ "$wt_path" == "$current_wt" ]]; then
+          info "Skipping current worktree $wt_path (branch $wt_branch); rerun cleanup from elsewhere to remove it."
+        else
+          info "Removing worktree $wt_path (branch $wt_branch — upstream gone)."
+          if ! git worktree remove "$wt_path"; then
+            error "Failed to remove worktree $wt_path (uncommitted changes? run 'git worktree remove --force $wt_path' manually if intended)."
+            failed=1
+          fi
+        fi
+      fi
+      ;;
+    "")
+      wt_path=""
+      wt_branch=""
+      ;;
+    esac
+  done < <(git worktree list --porcelain)
+
+  git worktree prune
+
+  return $failed
 }

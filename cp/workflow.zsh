@@ -26,7 +26,7 @@ cp_new_task() {
         description="$1"
       else
         error "Unknown option or too many arguments: $1"
-        echo "Usage: cp_new_task <title> <description> [--no-assignment] [--no-start] [--debug]"
+        echo "Usage: cp_new_task <title> [description] [--no-assignment] [--no-start] [--debug]"
         return 1
       fi
       shift
@@ -36,19 +36,17 @@ cp_new_task() {
 
   if [[ -z "$title" ]]; then
     error "Title is required"
-    echo "Usage: cp_new_task <title> <description> [--no-assignment] [--no-start] [--debug]"
+    echo "Usage: cp_new_task <title> [description] [--no-assignment] [--no-start] [--debug]"
     echo "Example: cp_new_task \"Fix login bug\" \"Description of the fix\""
     return 1
   fi
 
   if [[ -z "$description" ]]; then
-    error "Description is required"
-    echo "Usage: cp_new_task <title> <description> [--no-assignment] [--no-start] [--debug]"
-    return 1
+    description="$title"
+    [[ "$DEBUG" == "true" ]] && debug "No description provided; defaulting description to title"
   fi
 
-  # Create new ClickUp task with title and description
-  info "📝 Creating ClickUp task: $title"
+  info "Creating ClickUp task: $title"
   local create_result
   if [[ "$no_assignment" == "true" ]]; then
     create_result=$(clickup create-task "$title" "$description" --no-assignment)
@@ -79,22 +77,22 @@ cp_new_task() {
   if [[ "$start" == "true" ]]; then
     cp_start_task "$task_id"
   else
-    # Copy task ID to clipboard
-    echo -n "$task_id" | pbcopy
-
-    info "✅ Created ClickUp task: $task_id (copied to clipboard)"
-    info "💡 Run: cp_start_task $task_id"
+    if command -v pbcopy &>/dev/null; then
+      echo -n "$task_id" | pbcopy
+      info "Created ClickUp task: $task_id (copied to clipboard)"
+    else
+      info "Created ClickUp task: $task_id"
+    fi
+    info "Run: cp_start_task $task_id"
   fi
 }
 
 alias new=cp_new_task
 
 cp_start_task() {
-  # Default options
   local DEBUG=false
   local task_id=""
 
-  # Process command line arguments
   while [[ $# -gt 0 ]]; do
     case "$1" in
     --debug)
@@ -117,7 +115,6 @@ cp_start_task() {
   [[ "$DEBUG" == "true" ]] && echo "Debug mode enabled"
   [[ "$DEBUG" == "true" ]] && debug "Task ID: $task_id"
 
-  # Validate task ID is provided
   if [[ -z "$task_id" ]]; then
     error "Task ID is required"
     echo "Usage: cp_start_task <task-id> [--debug]"
@@ -126,7 +123,6 @@ cp_start_task() {
     return 1
   fi
 
-  # If task_id looks like a ClickUp URL, extract the task ID
   if [[ "$task_id" == *"/t/"* ]]; then
     local resolved_id
     resolved_id=$(clickup_infer-task-id "$task_id")
@@ -138,8 +134,7 @@ cp_start_task() {
     task_id="$resolved_id"
   fi
 
-  # First, checkout the git branch
-  info "📦 Checking out git branch for task $task_id"
+  info "Checking out git branch for task $task_id"
   if [[ "$DEBUG" == "true" ]]; then
     git_checkout_task_branch "$task_id" --debug
   else
@@ -153,8 +148,7 @@ cp_start_task() {
     return 1
   fi
 
-  # Then, mark the task as in progress in ClickUp
-  info "🚀 Marking task $task_id as IN PROGRESS in ClickUp"
+  info "Marking task $task_id as IN PROGRESS in ClickUp"
   local start_result
   start_result=$(clickup start-task "$task_id" 2>&1)
   local start_exit_code=$?
@@ -168,10 +162,9 @@ cp_start_task() {
   fi
 
   [[ "$DEBUG" == "true" ]] && debug "start-task result: $start_result"
-  info "✅ Successfully marked task $task_id as IN PROGRESS"
+  info "Successfully marked task $task_id as IN PROGRESS"
 
-  # add task to current sprint 
-  info "📋 Adding task $task_id to current sprint (Team - Platform)"
+  info "Adding task $task_id to current sprint (Team - Platform)"
   local sprint_result
   sprint_result=$(clickup add-task-to-current-sprint "$task_id" 2>&1)
   local sprint_exit_code=$?
@@ -182,18 +175,17 @@ cp_start_task() {
     return 1
   fi
 
-  info "✅ Task $task_id added to current sprint"
-  info "✅ Task $task_id is now ready for work!"
+  info "Task $task_id added to current sprint"
+  info "Task $task_id is now ready for work!"
 }
 
 alias start=cp_start_task
 
 cp_pr_task() {
-  # Default options
   local DEBUG=false
   local pr_body=""
+  local ai_review=false
 
-  # Process command line arguments
   while [[ $# -gt 0 ]]; do
     case "$1" in
     --debug)
@@ -204,15 +196,19 @@ cp_pr_task() {
       shift
       if [[ $# -lt 1 ]]; then
         echo "Missing value for --body"
-        echo "Usage: cp_pr_task [--debug] [--body DESCRIPTION]"
+        echo "Usage: cp_pr_task [--debug] [--body DESCRIPTION] [--ai-review|-ar|--greptile]"
         return 1
       fi
       pr_body="$1"
       shift
       ;;
+    --ai-review|-ar|--greptile)
+      ai_review=true
+      shift
+      ;;
     *)
       echo "Unknown option: $1"
-      echo "Usage: cp_pr_task [--debug] [--body DESCRIPTION]"
+      echo "Usage: cp_pr_task [--debug] [--body DESCRIPTION] [--ai-review|-ar|--greptile]"
       return 1
       ;;
     esac
@@ -220,7 +216,6 @@ cp_pr_task() {
 
   [[ "$DEBUG" == "true" ]] && echo "Debug mode enabled"
 
-  # Get current branch name
   local current_branch
   current_branch=$(git branch --show-current)
 
@@ -229,7 +224,6 @@ cp_pr_task() {
     return 1
   fi
 
-  # Extract the task ID from branch using git_infer_task_id function
   local task_id
   task_id=$(git_infer_task_id "$current_branch" "$DEBUG")
 
@@ -240,19 +234,13 @@ cp_pr_task() {
 
   [[ "$DEBUG" == "true" ]] && debug "Extracted task ID from branch: $task_id"
 
-  # First, create/update the PR
-  info "📝 Creating/updating PR for task $task_id"
-  if [[ -n "$pr_body" ]]; then
-    if [[ "$DEBUG" == "true" ]]; then
-      git_pr_task_branch --body "$pr_body" --debug
-    else
-      git_pr_task_branch --body "$pr_body"
-    fi
-  elif [[ "$DEBUG" == "true" ]]; then
-    git_pr_task_branch --debug
-  else
-    git_pr_task_branch
-  fi
+  info "Creating/updating PR for task $task_id"
+  local pr_args=()
+  [[ -n "$pr_body" ]] && pr_args+=(--body "$pr_body")
+  [[ "$DEBUG" == "true" ]] && pr_args+=(--debug)
+  [[ "$ai_review" == true ]] && pr_args+=(--ai-review)
+
+  git_pr_task_branch "${pr_args[@]}"
 
   local pr_exit_code=$?
 
@@ -261,8 +249,7 @@ cp_pr_task() {
     return 1
   fi
 
-  # Then, mark the task as in review in ClickUp
-  info "🚀 Marking task $task_id as IN REVIEW in ClickUp"
+  info "Marking task $task_id as IN REVIEW in ClickUp"
   local pr_task_result
   pr_task_result=$(clickup pr-task "$task_id" 2>&1)
   local pr_task_exit_code=$?
@@ -276,16 +263,12 @@ cp_pr_task() {
   fi
 
   [[ "$DEBUG" == "true" ]] && debug "pr-task result: $pr_task_result"
-  info "✅ Successfully marked task $task_id as IN REVIEW"
-  info "✅ PR created/updated and task $task_id is now in review!"
+  info "Successfully marked task $task_id as IN REVIEW"
+  info "PR created/updated and task $task_id is now in review!"
 }
 
 alias pr=cp_pr_task
 
-# Clean up Git branches that have been merged (upstream gone) and mark related ClickUp tasks as DONE.
-# 1. Determine which branches would be removed by "git bclean" (git gone).
-# 2. For each branch, infer the ClickUp task ID and mark that task complete (DONE).
-# 3. Run "git bclean" to delete the branches.
 cp_cleanup_branches() {
   local DEBUG=false
   while [[ $# -gt 0 ]]; do
@@ -333,6 +316,9 @@ cp_cleanup_branches() {
       [[ "$DEBUG" == "true" ]] && debug "No task ID for branch $branch; skipping ClickUp."
     fi
   done
+
+  info "Removing worktrees for gone branches before deletion."
+  git_remove_gone_worktrees "${gone_branches[@]}" || failed=1
 
   info "Running git bclean to delete gone branches."
   git bclean
