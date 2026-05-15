@@ -15,10 +15,7 @@
   "claudeCode.selectedModel": "default",
   "cursor.composer.shouldChimeAfterChatFinishes": true,
   "cursor.composer.usageSummaryDisplay": "always",
-  "cursor.cpp.disabledLanguages": [
-    "plaintext",
-    "terraform"
-  ],
+  "cursor.cpp.disabledLanguages": ["plaintext", "terraform"],
   "cursor.cpp.enablePartialAccepts": true,
   "diffEditor.ignoreTrimWhitespace": true,
   "docker.extension.enableComposeLanguageServer": false,
@@ -44,7 +41,7 @@
   "files.exclude": {
     "**/.git": false
   },
-  "git.autofetch": true,
+  "git.autofetch": false,
   "git.confirmEmptyCommits": false,
   "git.confirmSync": false,
   "git.suggestSmartCommit": false,
@@ -95,5 +92,6 @@
   "biome.suggestInstallingGlobally": false,
   "json.schemaDownload.enable": true,
   "yaml.format.printWidth": 120,
-  "window.autoDetectColorScheme": false
+  "window.autoDetectColorScheme": false,
+  "editor.accessibilitySupport": "off"
 }
