@@ -7,6 +7,11 @@ cp_new_task() {
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
+    --help|-h)
+      echo "Usage: cp_new_task <title> [description] [--no-assignment] [--no-start] [--debug]"
+      echo "Example: cp_new_task \"Fix login bug\" \"Description of the fix\""
+      return 0
+      ;;
     --no-assignment)
       no_assignment=true
       shift
@@ -95,6 +100,12 @@ cp_start_task() {
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
+    --help|-h)
+      echo "Usage: cp_start_task <task-id> [--debug]"
+      echo "Example: cp_start_task 86ew4x0vz"
+      echo "Example: cp_start_task https://app.clickup.com/t/86ewdbtbh"
+      return 0
+      ;;
     --debug)
       DEBUG=true
       shift
@@ -188,6 +199,11 @@ cp_pr_task() {
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
+    --help|-h)
+      echo "Usage: cp_pr_task [--debug] [--body DESCRIPTION] [--ai-review|-ar|--greptile]"
+      echo "Creates or updates a PR for the current branch and marks the task as IN REVIEW."
+      return 0
+      ;;
     --debug)
       DEBUG=true
       shift
@@ -273,6 +289,11 @@ cp_cleanup_branches() {
   local DEBUG=false
   while [[ $# -gt 0 ]]; do
     case "$1" in
+    --help|-h)
+      echo "Usage: cp_cleanup_branches [--debug]"
+      echo "Marks ClickUp tasks for gone branches as DONE, removes their worktrees, and runs git bclean."
+      return 0
+      ;;
     --debug)
       DEBUG=true
       shift

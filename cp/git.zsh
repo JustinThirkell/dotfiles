@@ -6,6 +6,12 @@
 # Usage: infer_branch_name <task_id> <title> [debug]
 # Returns: branch name in format username/CU-{taskid}-{slug}
 infer_branch_name() {
+  if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+    echo "Usage: infer_branch_name <task_id> <title> [debug]"
+    echo "Returns: branch name in format \${ISSUE_BRANCH_PREFIX}/CU-{taskid}-{slug}"
+    return 0
+  fi
+
   local task_id="$1"
   local title="$2"
   local DEBUG="${3:-false}"
@@ -55,6 +61,12 @@ infer_branch_name() {
 # Usage: infer_pr_title <task_id> <title> [debug]
 # Returns: PR title in format [CU-{taskid}] {Capitalized Title}
 infer_pr_title() {
+  if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+    echo "Usage: infer_pr_title <task_id> <title> [debug]"
+    echo "Returns: PR title in format [CU-{taskid}] {Capitalized Title}"
+    return 0
+  fi
+
   local task_id="$1"
   local title="$2"
   local DEBUG="${3:-false}"
@@ -93,6 +105,12 @@ infer_pr_title() {
 # Usage: git_infer_task_id <branch_name> [debug]
 # Returns: task ID extracted from branch name, or empty string if invalid
 git_infer_task_id() {
+  if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+    echo "Usage: git_infer_task_id <branch_name> [debug]"
+    echo "Returns: task ID extracted from branch name (format: \${ISSUE_BRANCH_PREFIX}/CU-{taskid}-{slug})"
+    return 0
+  fi
+
   local branch_name="$1"
   local DEBUG="${2:-false}"
 
@@ -135,6 +153,11 @@ git_checkout_task_branch() {
   # Process command line arguments
   while [[ $# -gt 0 ]]; do
     case "$1" in
+    --help|-h)
+      echo "Usage: git_checkout_task_branch <task-id> [--debug]"
+      echo "Example: git_checkout_task_branch 86ew4x0vz"
+      return 0
+      ;;
     --debug)
       DEBUG=true
       shift
@@ -239,6 +262,11 @@ git_pr_task_branch() {
   # Process command line arguments
   while [[ $# -gt 0 ]]; do
     case "$1" in
+    --help|-h)
+      echo "Usage: git_pr_task_branch [--skip-llm] [--debug] [--body DESCRIPTION] [--ai-review|-ar|--greptile]"
+      echo "Pushes the current branch and creates or updates a draft PR for its ClickUp task."
+      return 0
+      ;;
     --skip-llm)
       SKIP_LLM=true
       shift
@@ -480,6 +508,12 @@ Only return the PR description, don't return anything else."
 #   - No --force; dirty worktrees fail loudly so the operator can decide.
 #   - Always runs `git worktree prune` at the end.
 git_remove_gone_worktrees() {
+  if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+    echo "Usage: git_remove_gone_worktrees <branch> [<branch>...]"
+    echo "Removes worktrees whose checked-out branch is in the provided list, then prunes."
+    return 0
+  fi
+
   if [[ $# -eq 0 ]]; then
     return 0
   fi
@@ -520,3 +554,48 @@ git_remove_gone_worktrees() {
 
   return $failed
 }
+
+# Push the branch corresponding to a worktree path.
+# Useful from the host when a devcontainer lacks credentials to push
+# (e.g. GHA workflow changes). The worktree dir may not exist on the host,
+# so the branch is derived from the path basename: ${ISSUE_BRANCH_PREFIX}/<basename>.
+#
+# Usage: git_push_worktree <worktree-path>
+# Example: git_push_worktree ~/worktrees/CU-86exncw1z-runtime-control-split
+#          -> git push origin -u justin/CU-86exncw1z-runtime-control-split
+git_push_worktree() {
+  if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+    echo "Usage: git_push_worktree <worktree-path>"
+    echo "Pushes \${ISSUE_BRANCH_PREFIX}/<basename of path> to origin with -u."
+    echo "Example: git_push_worktree ~/worktrees/CU-86exncw1z-runtime-control-split"
+    return 0
+  fi
+
+  local worktree_path="$1"
+
+  if [[ -z "$worktree_path" ]]; then
+    error "Worktree path is required"
+    echo "Usage: git_push_worktree <worktree-path>"
+    return 1
+  fi
+
+  if [[ -z "$ISSUE_BRANCH_PREFIX" ]]; then
+    error "ISSUE_BRANCH_PREFIX environment variable is not set. Cannot derive branch name."
+    return 1
+  fi
+
+  local basename="${worktree_path%/}"
+  basename="${basename##*/}"
+
+  if [[ -z "$basename" ]]; then
+    error "Could not extract basename from worktree path: $worktree_path"
+    return 1
+  fi
+
+  local branch="${ISSUE_BRANCH_PREFIX}/${basename}"
+
+  info "Pushing branch $branch to origin (-u)"
+  git push origin -u "$branch"
+}
+
+alias push-wt=git_push_worktree
