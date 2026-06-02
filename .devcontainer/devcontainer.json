@@ -33,7 +33,8 @@
     "NODE_OPTIONS": "--max-old-space-size=4096",
     "CLAUDE_CONFIG_DIR": "/home/devcontainer/.claude",
     "POWERLEVEL9K_DISABLE_GITSTATUS": "true",
-    "DEVCONTAINER_DEBUG": "true"
+    "DEVCONTAINER_DEBUG": "true",
+    "AWS_PAGER": ""
   },
   "remoteEnv": {
     "SSH_AUTH_SOCK": "${localEnv:SSH_AUTH_SOCK}",

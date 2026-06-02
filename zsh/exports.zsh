@@ -48,3 +48,6 @@ export GPG_TTY=$(tty)
 
 # Hide the “default interactive shell is now zsh” warning on macOS.
 export BASH_SILENCE_DEPRECATION_WARNING=1
+
+# Disable AWS CLI v2 pager so output stays in scrollback (default pipes through less).
+export AWS_PAGER=""
