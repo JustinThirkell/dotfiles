@@ -11,6 +11,7 @@ import stringify from 'safe-stable-stringify'
     • start-task <task-id>               – update task status to "IN PROGRESS"
     • pr-task <task-id>                  – update task status to "IN REVIEW"
     • complete-task <task-id>            – update task status to "DONE"
+    • delete-task <task-id>              – permanently delete a task
     • create-task <title> <description>    – create a new task (requires CLICKUP_DEFAULT_LIST_ID and CLICKUP_USER_ID)
     • add-task-to-current-sprint <task-id> – move task to current sprint (requires CLICKUP_TEAM_PLATFORM_FOLDER_ID)
 
@@ -21,13 +22,14 @@ import stringify from 'safe-stable-stringify'
     npx tsx clickup.ts start-task 86ew4x0vz
     npx tsx clickup.ts pr-task 86ew4x0vz
     npx tsx clickup.ts complete-task 86ew4x0vz
+    npx tsx clickup.ts delete-task 86ew4x0vz
     npx tsx clickup.ts create-task "My title" "My description"
     npx tsx clickup.ts create-task "My title" "My description" --no-assignment
     npx tsx clickup.ts add-task-to-current-sprint 86ew4x0vz
 
   Notes:
   • Commands that return data (whoami, get-task, create-task, add-task-to-current-sprint) output JSON to stdout.
-  • Status-update commands (start-task, pr-task, complete-task) write only to stderr on success; use exit code for success/failure.
+  • Status-update commands (start-task, pr-task, complete-task) and delete-task write only to stderr on success; use exit code for success/failure.
   • Use the --debug flag for verbose logging to stderr.
 */
 
@@ -93,6 +95,12 @@ async function main(): Promise<void> {
         await completeTask(taskId)
         return
       }
+      case 'delete-task': {
+        // Accept task ID as positional argument or --id flag. No stdout on success (exit code + stderr only).
+        const taskId = rest[0] && !rest[0].startsWith('--') ? rest[0] : (params.id as string)
+        await deleteTask(taskId)
+        return
+      }
       case 'create-task': {
         const title = rest[0] && !rest[0].startsWith('--') ? rest[0] : (params.title as string)
         const description = rest[1] && !rest[1].startsWith('--') ? rest[1] : (params.description as string)
@@ -111,7 +119,7 @@ async function main(): Promise<void> {
         console.error(
           JSON.stringify({
             error: `Unknown command: ${command}`,
-            supported: ['whoami', 'get-task', 'start-task', 'pr-task', 'complete-task', 'create-task', 'add-task-to-current-sprint'],
+            supported: ['whoami', 'get-task', 'start-task', 'pr-task', 'complete-task', 'delete-task', 'create-task', 'add-task-to-current-sprint'],
           }),
         )
         process.exit(1)
@@ -222,6 +230,13 @@ async function completeTask(taskId: string): Promise<unknown> {
   const task = await clickUp.updateTask(taskId, { status: 'DONE' })
   debug('Task updated:', task)
   return task
+}
+
+async function deleteTask(taskId: string): Promise<void> {
+  if (!taskId) throw new Error("Task ID is required for delete-task (e.g., '86ew4x0vz' or '--id 86ew4x0vz')")
+  info(`Deleting task ${taskId}…`)
+  await clickUp.deleteTask(taskId)
+  debug('Task deleted.')
 }
 
 async function createTask(title: string, description: string, noAssignment: boolean): Promise<unknown> {

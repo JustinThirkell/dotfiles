@@ -122,6 +122,36 @@ export class ClickUpClient {
     return await response.json()
   }
 
+  async deleteTask(taskId: string): Promise<void> {
+    const url = `${CLICKUP_API_BASE}/task/${taskId}`
+
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        Authorization: this.apiKey,
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      let errorMessage = `HTTP ${response.status}: ${response.statusText}`
+      try {
+        const errorJson = JSON.parse(errorText)
+        if (errorJson.err) {
+          errorMessage = errorJson.err
+        } else if (errorJson.message) {
+          errorMessage = errorJson.message
+        }
+      } catch {
+        if (errorText) {
+          errorMessage = `${errorMessage} - ${errorText}`
+        }
+      }
+      throw new Error(errorMessage)
+    }
+  }
+
   async createTask(listId: string, task: { name: string; description?: string; assignees?: number[] }): Promise<unknown> {
     const url = `${CLICKUP_API_BASE}/list/${listId}/task`
 

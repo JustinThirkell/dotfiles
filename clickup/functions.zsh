@@ -19,6 +19,7 @@ clickup() {
     echo "  start-task <task-id>              - Update task status to \"IN PROGRESS\""
     echo "  pr-task <task-id>                 - Update task status to \"IN REVIEW\""
     echo "  complete-task <task-id>           - Update task status to \"DONE\""
+    echo "  delete-task <task-id>             - Permanently delete a task"
     echo "  create-task <title> <description> - Create a new task (requires CLICKUP_DEFAULT_LIST_ID and CLICKUP_USER_ID)"
     echo "  add-task-to-current-sprint <task-id> - Move task to current sprint (requires CLICKUP_TEAM_PLATFORM_FOLDER_ID)"
     echo ""
@@ -29,6 +30,7 @@ clickup() {
     echo "  clickup start-task 86ew4x0vz"
     echo "  clickup pr-task 86ew4x0vz"
     echo "  clickup complete-task 86ew4x0vz"
+    echo "  clickup delete-task 86ew4x0vz"
     echo "  clickup create-task \"My title\" \"My description\""
     echo "  clickup create-task \"My title\" \"My description\" --no-assignment"
     echo "  clickup add-task-to-current-sprint 86ew4x0vz"
@@ -86,6 +88,10 @@ clickup_complete-task() {
   clickup complete-task "$@"
 }
 
+clickup_delete-task() {
+  clickup delete-task "$@"
+}
+
 # Mark a ClickUp task as complete (status DONE). Used by cp_cleanup_branches.
 # Usage: cp_complete_task <task-id>
 cp_complete_task() {
@@ -95,6 +101,17 @@ cp_complete_task() {
     return 1
   fi
   clickup complete-task "$task_id"
+}
+
+# Permanently delete a ClickUp task. Used by cleanup_aborted_prs.
+# Usage: cp_delete_task <task-id>
+cp_delete_task() {
+  local task_id="$1"
+  if [[ -z "$task_id" ]]; then
+    echo "Usage: cp_delete_task <task-id>" >&2
+    return 1
+  fi
+  clickup delete-task "$task_id"
 }
 
 clickup_create-task() {
