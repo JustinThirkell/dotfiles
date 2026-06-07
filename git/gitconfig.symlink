@@ -48,6 +48,12 @@
   rebase = false
   ff = only  
 
+[checkout]
+	guess = false
+
+[switch]
+	guess = false
+
 [push]
   autoSetupRemote = true
 
