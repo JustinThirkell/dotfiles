@@ -177,6 +177,7 @@
   },
   "enabledPlugins": {
     "caveman@caveman": true,
+    "gitkraken-hooks@gitkraken": true,
     "greptile@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
@@ -185,26 +186,24 @@
         "source": "github",
         "repo": "JuliusBrussee/caveman"
       }
+    },
+    "gitkraken": {
+      "source": {
+        "path": "/Users/justin/.claude/plugins/marketplaces/gitkraken",
+        "source": "directory"
+      }
     }
   },
   "sandbox": {
     "enabled": false,
     "autoAllowBashIfSandboxed": false,
     "network": {
-      "allowedDomains": [
-        "github.com",
-        "api.github.com",
-        "*.npmjs.org",
-        "registry.yarnpkg.com"
-      ]
+      "allowedDomains": ["github.com", "api.github.com", "*.npmjs.org", "registry.yarnpkg.com"]
     },
     "filesystem": {
-      "allowWrite": [
-        "~/.claude/hooks/peon-ping"
-      ]
+      "allowWrite": ["~/.claude/hooks/peon-ping"]
     }
   },
   "showTurnDuration": true,
-  "skipAutoPermissionPrompt": true,
-  "effortLevel": "max"
+  "skipAutoPermissionPrompt": true
 }
