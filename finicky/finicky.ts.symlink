@@ -21,5 +21,16 @@ export default {
       match: 'apple.com/*',
       browser: 'Safari',
     },
+    {
+      match: '*.carepatron.com/*',
+      browser: { name: 'Google Chrome', profile: 'Profile 3' },
+    },
+    {
+      match: '*.carepatron-staging.com/*',
+      browser: { name: 'Google Chrome', profile: 'Profile 3' },
+    },
   ],
 }
+
+// Firefox Container Traffic Control:
+// [{"containerName":"Corporate","action":"open","urlPattern":"figma.com","highPriority":false},{"containerName":"Corporate","action":"open","urlPattern":"app.vacationtracker.io","highPriority":false},{"containerName":"Corporate","action":"open","urlPattern":"carepatron.slack.com","highPriority":false},{"containerName":"Corporate","action":"open","urlPattern":"app.clickup.com","highPriority":false},{"containerName":"AWS","action":"restricted","urlPattern":"https://d-9a670adb76.awsapps.com","highPriority":false},{"containerName":"AWS","action":"restricted","urlPattern":"https://ap-southeast-2.console.aws.amazon.com","highPriority":false},{"containerName":"Work","action":"open","urlPattern":"github.com","highPriority":false},{"containerName":"Work","action":"open","urlPattern":"carepatron.sentry.io","highPriority":false},{"containerName":"Work","action":"open","urlPattern":"us.posthog.com","highPriority":false},{"containerName":"Work","action":"open","urlPattern":"ui.honeycomb.io","highPriority":false},{"containerName":"Work","action":"open","urlPattern":"developer.mend.io","highPriority":false},{"containerName":"Work","action":"open","urlPattern":"app.greptile.com","highPriority":false},{"containerName":"Work","action":"open","urlPattern":"bitwarden.com","highPriority":false}]
