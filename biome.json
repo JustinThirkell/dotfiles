@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.8/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.16/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -8,30 +8,29 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": [
-      "**",
-      "!**/.git"
-    ]
+    "includes": ["**", "!**/.git"]
   },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2,
     "lineWidth": 160,
-    "useEditorconfig": true
+    "useEditorconfig": true,
+    "formatWithErrors": true
   },
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": true,
+      "suspicious": {
+        "noExplicitAny": "off"
+      },
       "style": {
         "useFilenamingConvention": {
           "level": "warn",
           "options": {
             "requireAscii": true,
-            "filenameCases": [
-              "kebab-case"
-            ]
+            "filenameCases": ["kebab-case"]
           }
         }
       }
@@ -45,6 +44,10 @@
     }
   },
   "json": {
+    "parser": {
+      "allowComments": true,
+      "allowTrailingCommas": true
+    },
     "formatter": {
       "trailingCommas": "none"
     }

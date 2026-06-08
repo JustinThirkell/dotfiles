@@ -8,8 +8,6 @@
     "autoAllowBashIfSandboxed": true
   },
   "permissions": {
-    "allow": [
-      "Bash(docker *)"
-    ]
+    "allow": ["Bash(docker *)"]
   }
 }

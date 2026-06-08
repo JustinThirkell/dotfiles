@@ -1,5 +1,5 @@
-import { ClickUpClient } from './clickup-client'
 import stringify from 'safe-stable-stringify'
+import { ClickUpClient } from './clickup-client'
 
 /*
   ------------------------------------------------------------------------------------

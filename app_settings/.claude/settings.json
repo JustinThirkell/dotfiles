@@ -189,8 +189,8 @@
     },
     "gitkraken": {
       "source": {
-        "path": "/Users/justin/.claude/plugins/marketplaces/gitkraken",
-        "source": "directory"
+        "source": "directory",
+        "path": "/Users/justin/.claude/plugins/marketplaces/gitkraken"
       }
     }
   },
@@ -205,5 +205,6 @@
     }
   },
   "showTurnDuration": true,
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "effortLevel": "xhigh"
 }

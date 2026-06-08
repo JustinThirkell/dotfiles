@@ -5,9 +5,7 @@
     },
     "awslabs.dynamodb-mcp-server": {
       "command": "uvx",
-      "args": [
-        "awslabs.dynamodb-mcp-server@latest"
-      ],
+      "args": ["awslabs.dynamodb-mcp-server@latest"],
       "env": {
         "DDB-MCP-READONLY": "true",
         "AWS_PROFILE": "default",
@@ -24,12 +22,7 @@
       "command": "/Users/justin/Library/Application Support/Cursor/User/globalStorage/eamodio.gitlens/gk",
       "type": "stdio",
       "name": "GitKraken",
-      "args": [
-        "mcp",
-        "--host=cursor",
-        "--source=gitlens",
-        "--scheme=cursor"
-      ],
+      "args": ["mcp", "--host=cursor", "--source=gitlens", "--scheme=cursor"],
       "env": {}
     }
   }

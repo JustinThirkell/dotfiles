@@ -1,4 +1,4 @@
-import type { Team, Project, Issue } from '@linear/sdk'
+import type { Issue, Project, Team } from '@linear/sdk'
 import { LinearClient } from '@linear/sdk'
 import stringify from 'safe-stable-stringify'
 
@@ -42,7 +42,7 @@ if (!apiKey) {
 const linear = new LinearClient({ apiKey })
 
 // Optionally supplied user id (used later for filtering in mutations)
-const LINEAR_USER_ID: string | undefined = process.env.LINEAR_USER_ID
+const _LINEAR_USER_ID: string | undefined = process.env.LINEAR_USER_ID
 
 // -------------------------------------------------------------------------------------------------
 // Main
@@ -154,7 +154,7 @@ function info(message: unknown, ...optional: unknown[]): void {
 // Remove global flags (like --debug) from argv before command dispatch
 function stripGlobalFlags(argv: string[]): string[] {
   const copy = [...argv]
-  return copy.filter((token, idx) => {
+  return copy.filter((token, _idx) => {
     if (!token.startsWith('--')) return true
     const key = token.slice(2)
     if (key === 'debug') {
