@@ -349,3 +349,79 @@ cp_cleanup_branches() {
 }
 
 alias cleanup=cp_cleanup_branches
+
+# Cleans up after PRs that were CLOSED without being merged:
+#   1. Delete the head branch on origin (via git_purge_branches_for_aborted_prs).
+#   2. Delete the corresponding ClickUp task (via cp_delete_task).
+#
+# Dry-run by default; pass --yes to actually delete on both sides.
+cleanup_aborted_prs() {
+  local DRY_RUN=true
+  local DEBUG=false
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+    --yes | -y)
+      DRY_RUN=false
+      shift
+      ;;
+    --debug)
+      DEBUG=true
+      shift
+      ;;
+    --help | -h)
+      echo "Usage: cleanup_aborted_prs [--yes] [--debug]"
+      echo "  For each of your closed-without-merge PRs:"
+      echo "    - deletes the head branch on origin"
+      echo "    - deletes the matching ClickUp task"
+      echo "  Dry-run unless --yes is passed. Skips the currently checked-out branch."
+      return 0
+      ;;
+    *)
+      error "Unknown option: $1"
+      echo "Usage: cleanup_aborted_prs [--yes] [--debug]"
+      return 1
+      ;;
+    esac
+  done
+
+  local purge_args=()
+  [[ "$DRY_RUN" == "false" ]] && purge_args+=(--yes)
+  [[ "$DEBUG" == "true" ]] && purge_args+=(--debug)
+
+  local branches
+  branches=("${(f)$(git_purge_branches_for_aborted_prs "${purge_args[@]}")}")
+  local purge_exit=$?
+  local failed=0
+  [[ $purge_exit -ne 0 ]] && failed=1
+
+  if [[ ${#branches[@]} -eq 0 || -z "${branches[1]}" ]]; then
+    [[ $failed -eq 1 ]] && return 1
+    return 0
+  fi
+
+  local branch task_id
+  for branch in "${branches[@]}"; do
+    [[ -z "$branch" ]] && continue
+    task_id=$(git_infer_task_id "$branch" "$DEBUG" 2>/dev/null)
+    if [[ -z "$task_id" ]]; then
+      [[ "$DEBUG" == "true" ]] && debug "No task ID for branch $branch; skipping ClickUp."
+      continue
+    fi
+    if [[ "$DRY_RUN" == "true" ]]; then
+      info "Would delete ClickUp task $task_id (branch $branch)."
+    else
+      info "Deleting ClickUp task $task_id (branch $branch)."
+      if ! cp_delete_task "$task_id"; then
+        error "Failed to delete ClickUp task $task_id"
+        failed=1
+      fi
+    fi
+  done
+
+  if [[ "$DRY_RUN" == "true" ]]; then
+    info "Dry-run. Re-run with --yes to delete branches and ClickUp tasks."
+  fi
+
+  [[ $failed -eq 1 ]] && return 1
+  return 0
+}

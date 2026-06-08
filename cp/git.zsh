@@ -599,3 +599,122 @@ git_push_worktree() {
 }
 
 alias push-wt=git_push_worktree
+
+# Purges remote branches on origin whose PRs were CLOSED without being merged.
+#
+# Why: GitHub's "auto-delete head branches" setting only fires on PR merge, not on
+# close. Branches from closed-without-merge PRs linger on origin indefinitely and
+# clutter `git checkout` completion (which surfaces all refs/remotes/origin/*).
+# `cleanup`/`git gone` cannot help: it targets LOCAL branches whose REMOTE upstream
+# was already deleted, and these branches still exist on origin.
+#
+# Destructive on the remote — may discard commits that exist only on those
+# branches (the PR was closed, not merged). Dry-run by default; pass --yes to
+# actually delete.
+#
+# Stdout: one branch name per line (candidates in dry-run, successfully deleted
+# branches in --yes mode). Human-readable status goes to stderr so callers can
+# capture the branch list cleanly.
+git_purge_branches_for_aborted_prs() {
+  local DRY_RUN=true
+  local DEBUG=false
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+    --yes | -y)
+      DRY_RUN=false
+      shift
+      ;;
+    --debug)
+      DEBUG=true
+      shift
+      ;;
+    --help | -h)
+      echo "Usage: git_purge_branches_for_aborted_prs [--yes] [--debug]"
+      echo "  Lists (default) or deletes origin branches for your closed-without-merge PRs."
+      echo "  Dry-run unless --yes is passed. Skips the currently checked-out branch."
+      echo "  Emits operated-on branch refs (one per line) to stdout."
+      return 0
+      ;;
+    *)
+      error "Unknown option: $1"
+      echo "Usage: git_purge_branches_for_aborted_prs [--yes] [--debug]" >&2
+      return 1
+      ;;
+    esac
+  done
+
+  if ! command -v gh >/dev/null 2>&1; then
+    error "gh CLI is required."
+    return 1
+  fi
+
+  local candidates
+  candidates=("${(f)$(gh pr list --state closed --author @me --limit 200 \
+    --json headRefName,number,title,mergedAt \
+    --jq '.[] | select(.mergedAt==null) | "\(.headRefName)\t#\(.number) \(.title)"' 2>/dev/null)}")
+
+  if [[ ${#candidates[@]} -eq 0 || -z "${candidates[1]}" ]]; then
+    info "No closed-without-merge PRs found for current user."
+    return 0
+  fi
+
+  local current_branch
+  current_branch=$(git branch --show-current)
+
+  # Filter to branches still present on origin (skip ones already deleted) and
+  # exclude the currently checked-out branch as a safety guard.
+  local existing=()
+  local line headref label
+  for line in "${candidates[@]}"; do
+    [[ -z "$line" ]] && continue
+    headref="${line%%	*}"
+    label="${line#*	}"
+    if [[ "$headref" == "$current_branch" ]]; then
+      info "Skipping currently checked-out branch: $headref ($label)"
+      continue
+    fi
+    if git ls-remote --exit-code --heads origin "$headref" >/dev/null 2>&1; then
+      existing+=("$headref	$label")
+    else
+      [[ "$DEBUG" == "true" ]] && debug "Already gone from origin: $headref"
+    fi
+  done
+
+  if [[ ${#existing[@]} -eq 0 ]]; then
+    info "No remote branches to purge (origin already clean)."
+    return 0
+  fi
+
+  info "Closed-without-merge PR branches still present on origin:"
+  for line in "${existing[@]}"; do
+    printf '  %s\n' "$line" >&2
+  done
+
+  if [[ "$DRY_RUN" == "true" ]]; then
+    info "Dry-run. Re-run with --yes to delete these from origin."
+    for line in "${existing[@]}"; do
+      headref="${line%%	*}"
+      printf '%s\n' "$headref"
+    done
+    return 0
+  fi
+
+  local failed=0
+  for line in "${existing[@]}"; do
+    headref="${line%%	*}"
+    label="${line#*	}"
+    info "Deleting origin/$headref ($label)"
+    if git push origin --delete "$headref"; then
+      printf '%s\n' "$headref"
+    else
+      error "Failed to delete origin/$headref"
+      failed=1
+    fi
+  done
+
+  info "Pruning local remote-tracking refs."
+  git fetch --prune --quiet
+
+  [[ $failed -eq 1 ]] && return 1
+  return 0
+}
