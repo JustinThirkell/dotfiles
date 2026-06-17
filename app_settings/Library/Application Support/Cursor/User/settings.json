@@ -93,5 +93,37 @@
   "json.schemaDownload.enable": true,
   "yaml.format.printWidth": 120,
   "window.autoDetectColorScheme": false,
-  "editor.accessibilitySupport": "off"
+  "editor.accessibilitySupport": "off",
+  "editor.tokenColorCustomizations": {
+    "[Monokai Pro]": {
+      "textMateRules": [
+        {
+          "scope": ["text.html.markdown", "meta.paragraph.markdown"],
+          "settings": { "foreground": "#c8c8c8" } // soft body text
+        },
+        {
+          "scope": "markup.heading.markdown",
+          "settings": { "foreground": "#ffd866", "fontStyle": "bold" } // Monokai Pro yellow
+        },
+        {
+          "scope": "markup.inline.raw.markdown", // `inline code`
+          "settings": { "foreground": "#ff6188" }
+        },
+        {
+          "scope": ["markup.bold.markdown"],
+          "settings": { "fontStyle": "bold", "foreground": "#fc9867" }
+        },
+        {
+          "scope": ["markup.italic.markdown"],
+          "settings": { "fontStyle": "italic", "foreground": "#ab9df2" }
+        },
+        {
+          "scope": "markup.quote.markdown", // blockquotes
+          "settings": { "foreground": "#939293", "fontStyle": "italic" }
+        }
+      ]
+    }
+  },
+  "terminal.integrated.mouseWheelScrollSensitivity": 3,
+  "terminal.integrated.gpuAcceleration": "off"
 }
