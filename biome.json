@@ -8,7 +8,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!**/.git"]
+    "includes": ["**", "!**/.git", "!**/.claude/settings.json"]
   },
   "formatter": {
     "enabled": true,
