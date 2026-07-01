@@ -64,10 +64,13 @@
   enabled = true
 
 [diff]
-  # Set difftastic as the default difftool, so we don't need to specify
-  # `-t difftastic` every time.
-  tool = difft
-  external = difft
+  # difftastic as the default *difftool* (git difftool, /resolve-conflicts).
+  # NOTE: value is `difftastic`, not `difft` -- git resolves the tool by the
+  # `[difftool "difftastic"]` block name. `difft` silently fails to resolve.
+  tool = difftastic
+  # NO `external = ...` here. `diff.external` hijacks plain `git diff`/`show`/
+  # `log -p` with a side-by-side renderer that is not a unified diff -- it
+  # breaks `git add -p`, patch tooling, and any agent reading the diff.
 
 [merge]
   tool = mergiraf

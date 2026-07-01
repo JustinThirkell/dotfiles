@@ -79,6 +79,7 @@ wipe = "!f() { rev=$(git rev-parse ${1-HEAD}); git add -A && git commit --allow-
 dlog = -c diff.external=difft log --ext-diff
 dshow = -c diff.external=difft show --ext-diff
 ddiff = -c diff.external=difft diff
+dft = difftool -t difftastic   # opt in to side-by-side when you want it
 
 # `git log` with patches shown with difftastic.
 dl = -c diff.external=difft log -p --ext-diff
