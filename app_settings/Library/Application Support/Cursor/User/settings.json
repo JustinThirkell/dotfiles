@@ -1,129 +1,130 @@
 {
-  "[properties]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format"
-  },
-  "[shellscript]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format"
-  },
-  "[yaml]": {
-    "editor.defaultFormatter": "redhat.vscode-yaml"
-  },
-  "aws.cloudformation.telemetry.enabled": false,
-  "aws.telemetry": false,
-  "biome.lsp.trace.server": "messages",
-  "claudeCode.preferredLocation": "sidebar",
-  "claudeCode.selectedModel": "default",
-  "cursor.composer.shouldChimeAfterChatFinishes": true,
-  "cursor.composer.usageSummaryDisplay": "always",
-  "cursor.cpp.disabledLanguages": ["plaintext", "terraform"],
-  "cursor.cpp.enablePartialAccepts": true,
-  "diffEditor.ignoreTrimWhitespace": true,
-  "docker.extension.enableComposeLanguageServer": false,
-  "dotfiles.installCommand": "install.sh",
-  "dotfiles.repository": "justinthirkell/devcontainer-dotfiles",
-  "dotfiles.targetPath": "~/dotfiles",
-  "dotnet.formatting.organizeImportsOnFormat": true,
-  "dotnet.inlayHints.enableInlayHintsForIndexerParameters": true,
-  "dotnet.inlayHints.enableInlayHintsForLiteralParameters": true,
-  "dotnet.inlayHints.enableInlayHintsForObjectCreationParameters": true,
-  "dotnet.inlayHints.enableInlayHintsForOtherParameters": true,
-  "dotnet.inlayHints.enableInlayHintsForParameters": true,
-  "dotnet.inlayHints.suppressInlayHintsForParametersThatMatchArgumentName": true,
-  "editor.defaultFormatter": "biomejs.biome",
-  "editor.fontFamily": "MesloLGMDZ Nerd Font Mono, CaskaydiaCove Nerd Font, FireCode Nerd Font, Menlo, Monaco, 'Courier New', monospace",
-  "editor.fontLigatures": true,
-  "editor.fontSize": 12,
-  "editor.formatOnSave": true,
-  "explorer.autoReveal": "focusNoScroll",
-  "explorer.confirmDelete": false,
-  "explorer.confirmDragAndDrop": false,
-  "explorer.confirmPasteNative": false,
-  "files.exclude": {
-    "**/.git": false
-  },
-  "git.autofetch": false,
-  "git.confirmEmptyCommits": false,
-  "git.confirmSync": false,
-  "git.suggestSmartCommit": false,
-  "gitlens.ai.gitkraken.model": "gemini:gemini-2.0-flash",
-  "gitlens.ai.model": "gitkraken",
-  "gitlens.graph.minimap.enabled": false,
-  "javascript.updateImportsOnFileMove.enabled": "always",
-  "python.terminal.activateEnvironment": false,
-  "remote.autoForwardPortsFallback": 30,
-  "security.promptForLocalFileProtocolHandling": false,
-  "terminal.external.osxExec": "iTerm.app",
-  "terminal.integrated.fontFamily": "MesloLGS Nerd Font Mono",
-  "terminal.integrated.fontLigatures.enabled": true,
-  "terminal.integrated.fontSize": 12,
-  "terminal.integrated.scrollback": 10000,
-  "terminal.integrated.shellIntegration.decorationsEnabled": "overviewRuler",
-  "totalTypeScript.hideAllTips": true,
-  "totalTypeScript.hideBasicTips": true,
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "typescript.format.insertSpaceAfterTypeAssertion": true,
-  "typescript.inlayHints.enumMemberValues.enabled": true,
-  "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
-  "typescript.inlayHints.parameterNames.enabled": "all",
-  "typescript.inlayHints.parameterTypes.enabled": true,
-  "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
-  "typescript.inlayHints.variableTypes.enabled": true,
-  "typescript.preferences.preferTypeOnlyAutoImports": true,
-  "typescript.tsserver.maxTsServerMemory": 4096,
-  "typescript.tsserver.useSyntaxServer": "auto",
-  "typescript.updateImportsOnFileMove.enabled": "always",
-  "typescriptExplorer.typeTree.meta.typeArguments.includeInFunctions": true,
-  "typescriptExplorer.typeTree.readonly.enable": true,
-  "vsicons.dontShowNewVersionMessage": true,
-  "window.commandCenter": true,
-  "window.zoomLevel": 1,
-  "workbench.activityBar.orientation": "vertical",
-  "workbench.colorTheme": "Monokai Pro",
-  "workbench.editor.pinnedTabsOnSeparateRow": true,
-  "workbench.editor.wrapTabs": true,
-  "workbench.editorAssociations": {
-    "*.excalidraw.png": "editor.excalidraw"
-  },
-  "workbench.iconTheme": "vscode-icons",
-  "remote.autoForwardPorts": false,
-  "[jsonc]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "biome.suggestInstallingGlobally": false,
-  "json.schemaDownload.enable": true,
-  "yaml.format.printWidth": 120,
-  "window.autoDetectColorScheme": false,
-  "editor.accessibilitySupport": "off",
-  "editor.tokenColorCustomizations": {
-    "[Monokai Pro]": {
-      "textMateRules": [
-        {
-          "scope": ["text.html.markdown", "meta.paragraph.markdown"],
-          "settings": { "foreground": "#c8c8c8" } // soft body text
-        },
-        {
-          "scope": "markup.heading.markdown",
-          "settings": { "foreground": "#ffd866", "fontStyle": "bold" } // Monokai Pro yellow
-        },
-        {
-          "scope": "markup.inline.raw.markdown", // `inline code`
-          "settings": { "foreground": "#ff6188" }
-        },
-        {
-          "scope": ["markup.bold.markdown"],
-          "settings": { "fontStyle": "bold", "foreground": "#fc9867" }
-        },
-        {
-          "scope": ["markup.italic.markdown"],
-          "settings": { "fontStyle": "italic", "foreground": "#ab9df2" }
-        },
-        {
-          "scope": "markup.quote.markdown", // blockquotes
-          "settings": { "foreground": "#939293", "fontStyle": "italic" }
-        }
-      ]
-    }
-  },
-  "terminal.integrated.mouseWheelScrollSensitivity": 3,
-  "terminal.integrated.gpuAcceleration": "off"
+	"[properties]": {
+		"editor.defaultFormatter": "foxundermoon.shell-format"
+	},
+	"[shellscript]": {
+		"editor.defaultFormatter": "foxundermoon.shell-format"
+	},
+	"[yaml]": {
+		"editor.defaultFormatter": "redhat.vscode-yaml"
+	},
+	"aws.cloudformation.telemetry.enabled": false,
+	"aws.telemetry": false,
+	"biome.lsp.trace.server": "messages",
+	"claudeCode.preferredLocation": "sidebar",
+	"claudeCode.selectedModel": "default",
+	"cursor.composer.shouldChimeAfterChatFinishes": true,
+	"cursor.composer.usageSummaryDisplay": "always",
+	"cursor.cpp.disabledLanguages": ["plaintext", "terraform"],
+	"cursor.cpp.enablePartialAccepts": true,
+	"diffEditor.ignoreTrimWhitespace": true,
+	"docker.extension.enableComposeLanguageServer": false,
+	"dotfiles.installCommand": "install.sh",
+	"dotfiles.repository": "justinthirkell/devcontainer-dotfiles",
+	"dotfiles.targetPath": "~/dotfiles",
+	"dotnet.formatting.organizeImportsOnFormat": true,
+	"dotnet.inlayHints.enableInlayHintsForIndexerParameters": true,
+	"dotnet.inlayHints.enableInlayHintsForLiteralParameters": true,
+	"dotnet.inlayHints.enableInlayHintsForObjectCreationParameters": true,
+	"dotnet.inlayHints.enableInlayHintsForOtherParameters": true,
+	"dotnet.inlayHints.enableInlayHintsForParameters": true,
+	"dotnet.inlayHints.suppressInlayHintsForParametersThatMatchArgumentName": true,
+	"editor.defaultFormatter": "biomejs.biome",
+	"editor.fontFamily": "MesloLGMDZ Nerd Font Mono, CaskaydiaCove Nerd Font, FireCode Nerd Font, Menlo, Monaco, 'Courier New', monospace",
+	"editor.fontLigatures": true,
+	"editor.fontSize": 12,
+	"editor.formatOnSave": true,
+	"explorer.autoReveal": "focusNoScroll",
+	"explorer.confirmDelete": false,
+	"explorer.confirmDragAndDrop": false,
+	"explorer.confirmPasteNative": false,
+	"files.exclude": {
+		"**/.git": false
+	},
+	"git.autofetch": false,
+	"git.confirmEmptyCommits": false,
+	"git.confirmSync": false,
+	"git.suggestSmartCommit": false,
+	"gitlens.ai.gitkraken.model": "gemini:gemini-2.0-flash",
+	"gitlens.ai.model": "gitkraken",
+	"gitlens.graph.minimap.enabled": false,
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"python.terminal.activateEnvironment": false,
+	"remote.autoForwardPortsFallback": 30,
+	"security.promptForLocalFileProtocolHandling": false,
+	"terminal.external.osxExec": "iTerm.app",
+	"terminal.integrated.fontFamily": "MesloLGS Nerd Font Mono",
+	"terminal.integrated.fontLigatures.enabled": true,
+	"terminal.integrated.fontSize": 12,
+	"terminal.integrated.scrollback": 10000,
+	"terminal.integrated.shellIntegration.decorationsEnabled": "overviewRuler",
+	"totalTypeScript.hideAllTips": true,
+	"totalTypeScript.hideBasicTips": true,
+	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"typescript.format.insertSpaceAfterTypeAssertion": true,
+	"typescript.inlayHints.enumMemberValues.enabled": true,
+	"typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+	"typescript.inlayHints.parameterNames.enabled": "all",
+	"typescript.inlayHints.parameterTypes.enabled": true,
+	"typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+	"typescript.inlayHints.variableTypes.enabled": true,
+	"typescript.preferences.preferTypeOnlyAutoImports": true,
+	"typescript.tsserver.maxTsServerMemory": 4096,
+	"typescript.tsserver.useSyntaxServer": "auto",
+	"typescript.updateImportsOnFileMove.enabled": "always",
+	"typescriptExplorer.typeTree.meta.typeArguments.includeInFunctions": true,
+	"typescriptExplorer.typeTree.readonly.enable": true,
+	"vsicons.dontShowNewVersionMessage": true,
+	"window.commandCenter": true,
+	"window.zoomLevel": 1,
+	"workbench.activityBar.orientation": "vertical",
+	"workbench.colorTheme": "Monokai Pro",
+	"workbench.editor.pinnedTabsOnSeparateRow": true,
+	"workbench.editor.wrapTabs": true,
+	"workbench.editorAssociations": {
+		"*.excalidraw.png": "editor.excalidraw"
+	},
+	"workbench.iconTheme": "vscode-icons",
+	"remote.autoForwardPorts": false,
+	"[jsonc]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"biome.suggestInstallingGlobally": false,
+	"json.schemaDownload.enable": true,
+	"yaml.format.printWidth": 120,
+	"window.autoDetectColorScheme": false,
+	"editor.accessibilitySupport": "off",
+	"editor.tokenColorCustomizations": {
+		"[Monokai Pro]": {
+			"textMateRules": [
+				{
+					"scope": ["text.html.markdown", "meta.paragraph.markdown"],
+					"settings": { "foreground": "#c8c8c8" } // soft body text
+				},
+				{
+					"scope": "markup.heading.markdown",
+					"settings": { "foreground": "#ffd866", "fontStyle": "bold" } // Monokai Pro yellow
+				},
+				{
+					"scope": "markup.inline.raw.markdown", // `inline code`
+					"settings": { "foreground": "#ff6188" }
+				},
+				{
+					"scope": ["markup.bold.markdown"],
+					"settings": { "fontStyle": "bold", "foreground": "#fc9867" }
+				},
+				{
+					"scope": ["markup.italic.markdown"],
+					"settings": { "fontStyle": "italic", "foreground": "#ab9df2" }
+				},
+				{
+					"scope": "markup.quote.markdown", // blockquotes
+					"settings": { "foreground": "#939293", "fontStyle": "italic" }
+				}
+			]
+		}
+	},
+	"terminal.integrated.mouseWheelScrollSensitivity": 3,
+	"terminal.integrated.gpuAcceleration": "off",
+	"terminal.integrated.macOptionIsMeta": true
 }
